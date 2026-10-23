@@ -1,3 +1,6 @@
 *.blend binary
 *.fbx binary
 *.png binary
+*.webp binary
+*.jpg binary
+*.glb binary

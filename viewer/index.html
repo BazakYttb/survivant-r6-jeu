@@ -1,0 +1,714 @@
+<title>Survivant R6 anatomique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: full-bleed dissection-table canvas, one floating atlas panel (left on desktop, bottom sheet on phones).
+     Single deliberate dark look (a lightbox), so the tokens are defined once with color-scheme: dark. */
+  :root {
+    --bg: #0c1113;           /* slate with a teal bias, like a lightbox */
+    --panel: rgba(18, 25, 28, 0.88);
+    --line: #27343a;
+    --line-hi: #4a5b62;
+    --ink: #ece6d8;          /* bone ivory */
+    --muted: #93a2a4;
+    --accent: #c9463c;       /* arterial red */
+    --focus: #e8cf72;        /* nerve yellow */
+    --prim: #cdb77c;         /* field-jacket khaki */
+    --prim-ink: #1c1a12;
+    --ok: #8fc27a;
+    --f-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+    --f-ui: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    color-scheme: dark;
+  }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg); color: var(--ink); font-family: var(--f-ui); font-size: 14px;
+    overflow: hidden;
+  }
+  #scene { position: fixed; inset: 0; display: block; width: 100%; height: 100%; touch-action: none; }
+  .panel {
+    position: fixed; z-index: 2;
+    top: calc(16px + env(safe-area-inset-top, 0px)); left: calc(16px + env(safe-area-inset-left, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    width: 312px; max-width: calc(100% - 32px);
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 18px 18px 16px; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--panel); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    overflow-y: auto; overscroll-behavior: contain;
+  }
+  .head h1 {
+    margin: 0; font-family: var(--f-display); font-weight: 600; font-size: 30px; line-height: 1.02;
+    letter-spacing: 0.01em; text-wrap: balance;
+  }
+  .head h1 em { font-style: italic; font-weight: 500; color: var(--muted); }
+  .head p { margin: 6px 0 0; color: var(--muted); line-height: 1.45; }
+  .stats { display: flex; gap: 14px; font-family: var(--f-mono); font-size: 11.5px; color: var(--muted);
+    font-variant-numeric: tabular-nums; flex-wrap: wrap; }
+  .stats b { color: var(--ink); font-weight: 500; }
+  h2 { margin: 0 0 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+  /* downloads */
+  .dl { display: flex; flex-direction: column; gap: 6px; }
+  .get {
+    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 10px;
+    padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; background: transparent;
+    color: var(--ink); font: inherit; text-align: left; cursor: pointer;
+  }
+  .get .t { font-weight: 600; font-size: 13.5px; }
+  .get .s { grid-column: 1; font-family: var(--f-mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .get .z { grid-row: 1 / span 2; grid-column: 2; font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+  .get.primary { background: var(--prim); border-color: var(--prim); color: var(--prim-ink); }
+  .get.primary .s, .get.primary .z { color: var(--prim-ink); opacity: 0.75; }
+  .get:disabled { cursor: default; opacity: 0.55; }
+  .get:not(:disabled):hover { border-color: var(--line-hi); }
+  .get.primary:not(:disabled):hover { border-color: var(--ink); }
+  .dlmsg { margin: 2px 0 0; min-height: 1.4em; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+  .dlmsg.ok { color: var(--ok); }
+  .dlmsg.err { color: var(--accent); }
+
+  /* outfit mode */
+  .seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button {
+    padding: 7px 6px; border: 0; border-left: 1px solid var(--line); background: transparent; color: var(--muted);
+    font: inherit; font-size: 12.5px; cursor: pointer;
+  }
+  .seg button:first-child { border-left: 0; }
+  .seg button[aria-checked="true"] { background: var(--ink); color: var(--bg); font-weight: 600; }
+
+  .layers { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  /* animations */
+  .clips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .clips button {
+    padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; background: transparent;
+    color: var(--muted); font: inherit; font-size: 12.5px; cursor: pointer; white-space: nowrap;
+  }
+  .clips button[aria-checked="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); font-weight: 600; }
+  .clips button:hover { border-color: var(--line-hi); }
+  .animinfo { margin: 8px 0 0; font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; min-height: 1.4em; }
+  .chip {
+    display: flex; align-items: center; gap: 8px; min-width: 0;
+    padding: 7px 9px; border: 1px solid var(--line); border-radius: 7px;
+    background: transparent; color: var(--ink); font: inherit; font-size: 12.5px; text-align: left; cursor: pointer;
+  }
+  .chip .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; background: var(--c); box-shadow: 0 0 0 2px var(--bg) inset; }
+  .chip span.l { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chip[aria-pressed="false"] { color: var(--muted); border-style: dashed; }
+  .chip[aria-pressed="false"] .dot { background: transparent; box-shadow: 0 0 0 1.5px var(--c) inset; }
+  .row { display: flex; gap: 6px; flex-wrap: wrap; }
+  button.act {
+    padding: 7px 11px; border: 1px solid var(--line); border-radius: 7px; background: transparent;
+    color: var(--ink); font: inherit; font-size: 12.5px; cursor: pointer;
+  }
+  button.act[aria-pressed="true"] { border-color: var(--ink); }
+  button.act:hover, .chip:hover, .seg button:hover { border-color: var(--line-hi); }
+  button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .card { border-top: 1px solid var(--line); padding-top: 12px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .card .name { font-family: var(--f-mono); font-size: 13px; overflow-wrap: anywhere; }
+  .card .desc { font-family: var(--f-display); font-size: 19px; line-height: 1.2; }
+  .card dl { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 2px 0 0; font-size: 12.5px; }
+  .card dt { color: var(--muted); }
+  .card dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .hint { color: var(--muted); font-size: 12.5px; line-height: 1.45; margin: 0; }
+  .load { position: fixed; z-index: 3; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(320px, 70vw);
+    text-align: center; color: var(--muted); font-family: var(--f-mono); font-size: 12px; }
+  .bar { height: 2px; margin-top: 10px; background: var(--line); border-radius: 2px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  @media (min-width: 721px) {
+    .load { left: calc(50% + 172px); }
+  }
+  @media (max-width: 720px) {
+    .panel { top: auto; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px));
+      width: auto; max-width: none; max-height: 50%; padding: 14px; gap: 12px; }
+    .head h1 { font-size: 24px; }
+    .head p { display: none; }
+    .layers { grid-template-columns: 1fr 1fr 1fr; }
+    .clips button { padding: 5px 8px; font-size: 12px; }
+    .load { top: 24%; }
+  }
+  @media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+
+<canvas id="scene" aria-label="Survivant R6 anatomique animé en 3D : faites glisser pour tourner, molette ou pincement pour zoomer"></canvas>
+<div class="load" id="load">Chargement du modèle 3D…<div class="bar"><i id="barfill"></i></div></div>
+
+<aside class="panel" aria-label="Commandes de l'atlas">
+  <div class="head">
+    <h1>Survivant <em>R6</em></h1>
+    <p>Un survivant au format R6 de Roblox, avec squelette, organes, articulations, vaisseaux et nerfs à l'intérieur, bras et jambes articulés aux coudes et aux genoux, et 15 animations prêtes pour Roblox. Cliquez sur une pièce pour l'identifier.</p>
+  </div>
+
+  <section class="dl" aria-labelledby="dl-h">
+    <h2 id="dl-h">Télécharger pour Roblox Studio</h2>
+    <button class="get primary" id="get-roblox" data-pack="roblox" disabled>
+      <span class="t">Pack Roblox</span>
+      <span class="s" id="sub-roblox">FBX léger + scripts + animations</span>
+      <span class="z" id="size-roblox">.zip</span>
+    </button>
+    <button class="get" id="get-ultra" data-pack="ultra" disabled>
+      <span class="t">Pack Ultra</span>
+      <span class="s" id="sub-ultra">FBX pleine résolution + scripts + animations</span>
+      <span class="z" id="size-ultra">.zip</span>
+    </button>
+    <button class="get" id="get-blender" data-pack="blender" disabled>
+      <span class="t">Pack Blender</span>
+      <span class="s" id="sub-blender">Scène .blend animée (armature R6 articulée)</span>
+      <span class="z" id="size-blender">.zip</span>
+    </button>
+    <p class="dlmsg" id="dlmsg" aria-live="polite">Préparation des téléchargements…</p>
+  </section>
+
+  <div class="stats" id="stats"><span><b id="st-parts">224</b> MeshParts</span><span><b id="st-anims">15</b> animations</span><span><b id="st-tris">…</b> triangles</span></div>
+
+  <section aria-labelledby="skin-h">
+    <h2 id="skin-h">Tenue du survivant</h2>
+    <div class="seg" role="radiogroup" aria-labelledby="skin-h" id="skinseg">
+      <button role="radio" aria-checked="false" data-skin="opaque" id="skin-opaque">Opaque</button>
+      <button role="radio" aria-checked="true" data-skin="glass" id="skin-glass">Radiographie</button>
+      <button role="radio" aria-checked="false" data-skin="off" id="skin-off">Sans tenue</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="anim-h">
+    <h2 id="anim-h">Animations Roblox</h2>
+    <div class="clips" role="radiogroup" aria-labelledby="anim-h" id="clips"></div>
+    <p class="animinfo" id="animinfo" aria-live="polite"></p>
+    <div class="row">
+      <button class="act" id="play" aria-pressed="true">Pause</button>
+      <button class="act" id="slow" aria-pressed="false">Ralenti ×0,25</button>
+      <button class="act" id="floorbtn" aria-pressed="true">Sol qui défile</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Calques</h2>
+    <div class="layers" id="layers"></div>
+  </section>
+  <section>
+    <h2>Vue</h2>
+    <div class="row">
+      <button class="act" id="calv" aria-pressed="true">Calotte crânienne</button>
+      <button class="act" id="reset">Recentrer</button>
+    </div>
+  </section>
+  <section class="card" id="card" aria-live="polite">
+    <p class="hint" id="hint">Cliquez sur un os, un organe ou un vaisseau. En mode Opaque, cliquez sur la tenue. Le sol défile à la vitesse du personnage en jeu : les bottes ne doivent pas glisser.</p>
+    <div id="info" hidden>
+      <div class="name" id="pname"></div>
+      <div class="desc" id="pdesc"></div>
+      <dl>
+        <dt>Catégorie</dt><dd id="pcat"></dd>
+        <dt>Soudée à</dt><dd id="pr6"></dd>
+        <dt>Triangles</dt><dd id="ptris"></dd>
+      </dl>
+      <div class="row" style="margin-top:6px">
+        <button class="act" id="hide">Masquer la pièce</button>
+        <button class="act" id="showall">Tout réafficher</button>
+      </div>
+    </div>
+  </section>
+</aside>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const $ = id => document.getElementById(id);
+
+// ---------------------------------------------------------------------------------------------
+// Downloads: each pack is a .zip shipped as base64 text chunks (artifacts serve text files);
+// the page reassembles it, checks its SHA-256 and hands it to the viewer's save dialog.
+// ---------------------------------------------------------------------------------------------
+const mo = n => (n / 1048576).toLocaleString('fr-FR', { maximumFractionDigits: 0 }) + ' Mo';
+let PACKS = null, downloads = null, busy = false;
+
+function dlMessage(text, kind) {
+  const el = $('dlmsg');
+  el.textContent = text;
+  el.className = 'dlmsg' + (kind ? ' ' + kind : '');
+}
+function setButtons(enabled) {
+  for (const b of document.querySelectorAll('.get')) b.disabled = !enabled || !PACKS?.[b.dataset.pack];
+}
+
+async function initDownloads() {
+  try {
+    PACKS = await fetch('dl/packs.json').then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+  } catch {
+    dlMessage('La liste des fichiers n\'a pas pu être chargée. Rechargez la page.', 'err');
+    return;
+  }
+  for (const [id, p] of Object.entries(PACKS)) {
+    if ($('size-' + id)) $('size-' + id).textContent = mo(p.bytes);
+    if ($('sub-' + id) && p.sub) $('sub-' + id).textContent = p.sub;
+  }
+  try {
+    downloads = window.claude && typeof window.claude.use === 'function' ? await window.claude.use('downloads') : null;
+  } catch { downloads = null; }
+  if (!downloads) {
+    dlMessage('Le téléchargement n\'est pas disponible dans cette vue. Ouvrez cette page dans claude.ai ou dans l\'app Claude.', 'err');
+    return;
+  }
+  setButtons(true);
+  dlMessage('Choisissez un pack : un .zip à décompresser, avec le mode d\'emploi en français.');
+}
+
+function b64ToBytes(txt) {
+  const bin = atob(txt.replace(/\s+/g, ''));
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+async function fetchText(url, onBytes) {
+  const res = await fetch(url);
+  if (!res.ok) throw Object.assign(new Error('HTTP ' + res.status), { code: 'fetch' });
+  if (!res.body || !res.body.getReader) { const t = await res.text(); onBytes(t.length); return t; }
+  const reader = res.body.getReader(); const parts = [];
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    parts.push(value); onBytes(value.length);
+  }
+  return new TextDecoder().decode(await new Blob(parts).arrayBuffer());
+}
+
+const SAVE_ERRORS = {
+  declined: ['Téléchargement annulé.', ''],
+  rate_limited: ['Une autre demande d\'enregistrement est ouverte. Réessayez dans un instant.', 'err'],
+  too_large: ['Fichier trop volumineux pour cette app : prenez le Pack Roblox, ou ouvrez la page sur un ordinateur.', 'err'],
+  rejected_extension: ['Ce type de fichier est refusé ici. Ouvrez la page dans claude.ai sur un ordinateur.', 'err'],
+  extension_not_enabled: ['Les fichiers .zip ne sont pas autorisés dans cette vue. Ouvrez la page dans claude.ai sur un ordinateur.', 'err'],
+};
+
+async function getPack(id) {
+  const p = PACKS?.[id];
+  if (!p || !downloads || busy) return;
+  busy = true; setButtons(false);
+  const total = p.sizes.reduce((a, b) => a + b, 0);
+  let got = 0;
+  const tick = n => { got += n; dlMessage(`Préparation de ${p.file}… ${Math.min(99, Math.floor(100 * got / total))} %`); };
+  try {
+    tick(0);
+    const chunks = [];
+    for (const url of p.parts) chunks.push(b64ToBytes(await fetchText(url, tick)));
+    const blob = new Blob(chunks, { type: 'application/zip' });
+    if (blob.size !== p.bytes) throw Object.assign(new Error('size'), { code: 'integrity' });
+    if (crypto?.subtle) {
+      const h = new Uint8Array(await crypto.subtle.digest('SHA-256', await blob.arrayBuffer()));
+      const hex = Array.from(h, x => x.toString(16).padStart(2, '0')).join('');
+      if (hex !== p.sha256) throw Object.assign(new Error('hash'), { code: 'integrity' });
+    }
+    dlMessage(`${p.file} (${mo(p.bytes)}) est prêt : confirmez l'enregistrement.`);
+    await downloads.save({ filename: p.file, data: blob });
+    dlMessage(`${p.file} enregistré. Décompressez-le, puis suivez INSTALLATION_RAPIDE.txt.`, 'ok');
+  } catch (e) {
+    const code = e && e.code;
+    if (code === 'fetch') dlMessage('Le fichier n\'a pas pu être récupéré (réseau). Réessayez.', 'err');
+    else if (code === 'integrity') dlMessage('Le fichier reçu est incomplet. Réessayez.', 'err');
+    else if (SAVE_ERRORS[code]) dlMessage(...SAVE_ERRORS[code]);
+    else if (['unavailable', 'not_granted', 'capability_disabled', 'capability_removed'].includes(code)) {
+      dlMessage('Le téléchargement n\'est pas disponible dans cette vue. Ouvrez cette page dans claude.ai ou dans l\'app Claude.', 'err');
+      downloads = null;
+    } else dlMessage('Le téléchargement a échoué. Réessayez.', 'err');
+  } finally {
+    busy = false; setButtons(!!downloads);
+  }
+}
+for (const b of document.querySelectorAll('.get')) b.addEventListener('click', () => getPack(b.dataset.pack));
+initDownloads();
+
+// ---------------------------------------------------------------------------------------------
+// 3D atlas
+// ---------------------------------------------------------------------------------------------
+const CATS = [
+  { key: 'bone', label: 'Os', c: '#e6dcc4', rough: 0.72 },
+  { key: 'organ', label: 'Organes', c: '#d98c84', rough: 0.42 },
+  { key: 'brain', label: 'Encéphale', c: '#e2b2ad', rough: 0.5 },
+  { key: 'vessel', label: 'Vaisseaux', c: '#c9463c', rough: 0.4 },
+  { key: 'nerve', label: 'Nerfs', c: '#e8cf72', rough: 0.55 },
+  { key: 'cartilage', label: 'Cartilages', c: '#bcd3df', rough: 0.35 },
+  { key: 'disc', label: 'Disques', c: '#cfd8d6', rough: 0.45 },
+  { key: 'ligament', label: 'Ligaments', c: '#d8d2c0', rough: 0.5 },
+  { key: 'muscle', label: 'Muscles', c: '#9c3a33', rough: 0.5 },
+  { key: 'gland', label: 'Glandes', c: '#d9a04a', rough: 0.45 },
+  { key: 'tooth', label: 'Dents', c: '#f2eee2', rough: 0.3 },
+  { key: 'eye', label: 'Yeux', c: '#f4f1ea', rough: 0.15 },
+];
+const CAT = Object.fromEntries(CATS.map(c => [c.key, c]));
+CAT.skin = { key: 'skin', label: 'Tenue du survivant', c: '#596040', rough: 0.74 };
+CAT.gear = { key: 'gear', label: 'Accessoire (masqué en radiographie)', c: '#746648', rough: 0.7 };
+// jointed R6 ("R6 articulé"): 10 body parts, each arm and leg split at the elbow / knee
+const R6 = {
+  Head: ['Tête', 'Neck'], Torso: ['Torse', 'RootJoint'],
+  RightUpperArm: ['Bras droit (haut)', 'RightShoulder'], RightLowerArm: ['Avant-bras droit', 'RightElbow'],
+  LeftUpperArm: ['Bras gauche (haut)', 'LeftShoulder'], LeftLowerArm: ['Avant-bras gauche', 'LeftElbow'],
+  RightUpperLeg: ['Cuisse droite', 'RightHip'], RightLowerLeg: ['Jambe droite (bas)', 'RightKnee'],
+  LeftUpperLeg: ['Cuisse gauche', 'LeftHip'], LeftLowerLeg: ['Jambe gauche (bas)', 'LeftKnee'],
+};
+const REGION_PART = Object.fromEntries(Object.keys(R6).map(k => [k, k]));      // regions are the part names
+const GLASS = 0.3;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const canvas = $('scene');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#0c1113');
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 100);
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true; controls.dampingFactor = 0.08;
+controls.minDistance = 0.6; controls.maxDistance = 32;
+const HOME = { pos: new THREE.Vector3(5.9, 4.2, 10.6), target: new THREE.Vector3(0, 2.3, 0) };
+function home() {
+  // desktop: shift the view so the model sits right of the panel; phones: fit it in the space above the sheet
+  const narrow = canvas.clientWidth <= 720;
+  const offset = HOME.pos.clone().sub(HOME.target);
+  const tanH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  const target = HOME.target.clone();
+  let dist = offset.length();
+  if (narrow) {
+    const sheet = document.querySelector('.panel').offsetHeight + 24;
+    const frac = Math.min(0.6, sheet / Math.max(1, canvas.clientHeight));
+    dist = Math.max(4.8 / (2 * tanH * camera.aspect), 6.0 / (2 * tanH * (1 - frac)));
+    target.y -= frac * tanH * dist;
+  }
+  camera.position.copy(target).add(offset.setLength(dist));
+  controls.target.copy(target);
+  if (!narrow) {
+    const dir = new THREE.Vector3().subVectors(camera.position, target).normalize();
+    const right = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), dir).normalize();
+    const shift = -1.55 * Math.min(1, 900 / canvas.clientWidth);
+    camera.position.addScaledVector(right, shift); controls.target.addScaledVector(right, shift);
+  }
+  controls.update();
+}
+
+scene.add(new THREE.HemisphereLight(0xeef2f0, 0x1a1412, 0.6));
+const key = new THREE.DirectionalLight(0xfff4e6, 1.55); key.position.set(-4, 7, 6); scene.add(key);
+const rim = new THREE.DirectionalLight(0xbcd6ff, 0.8); rim.position.set(5, 4, -6); scene.add(rim);
+
+// Floor: a checker of 2-stud squares that scrolls at the speed the character moves at in Roblox
+// (the speed each clip is made for), so planted boots can be checked. Edges fade into the background.
+function canvasTex(draw, size = 256) {
+  const cv = document.createElement('canvas'); cv.width = cv.height = size;
+  draw(cv.getContext('2d'), size);
+  return new THREE.CanvasTexture(cv);
+}
+const FLOOR = 40, SQUARE = 2;
+const floorTex = canvasTex((g, n) => {
+  g.fillStyle = '#151c1f'; g.fillRect(0, 0, n, n);
+  g.fillStyle = '#1d272a'; g.fillRect(0, 0, n / 2, n / 2); g.fillRect(n / 2, n / 2, n / 2, n / 2);
+});
+floorTex.colorSpace = THREE.SRGBColorSpace;
+floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
+floorTex.repeat.set(FLOOR / (2 * SQUARE), FLOOR / (2 * SQUARE));
+floorTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+const floorFade = canvasTex((g, n) => {
+  const gr = g.createRadialGradient(n / 2, n / 2, 0, n / 2, n / 2, n / 2);
+  gr.addColorStop(0, '#fff'); gr.addColorStop(0.45, '#fff'); gr.addColorStop(1, '#000');
+  g.fillStyle = gr; g.fillRect(0, 0, n, n);
+});
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(FLOOR, FLOOR),
+  new THREE.MeshStandardMaterial({ map: floorTex, alphaMap: floorFade, transparent: true, depthWrite: false,
+    roughness: 0.95, metalness: 0, envMapIntensity: 0.25 }));
+floor.rotation.x = -Math.PI / 2; floor.position.y = -0.004; floor.renderOrder = -1;
+scene.add(floor);
+
+// Each body part is a group; an animation pose sets its matrix to C · W(t) · REST⁻¹ · C⁻¹, where W(t) is the
+// limb pose in Roblox rig space (HumanoidRootPart frame) and C maps that space to the model's (glTF) space.
+const C = new THREE.Matrix4().set(-1, 0, 0, 0, 0, 1, 0, 3, 0, 0, -1, 0, 0, 0, 0, 1);
+const Cinv = C.clone().invert();
+const limbs = {};
+for (const p of Object.values(REGION_PART)) {
+  const g = new THREE.Group(); g.name = p; g.matrixAutoUpdate = false; scene.add(g); limbs[p] = g;
+}
+
+const meta = await fetch('parts.json').then(r => r.json()).catch(() => ({}));
+const parts = [], outfit = [], gear = [];
+const hidden = new Set();
+const catOn = Object.fromEntries(CATS.map(c => [c.key, true]));
+let calvariaOn = true, skinMode = 'glass', fade = null, selected = null;
+
+function applyVisibility() {
+  for (const m of parts) {
+    const c = m.userData.cat;
+    m.visible = catOn[c] !== false && !hidden.has(m) && (calvariaOn || m.name !== 'Head_Skull_Calvaria');
+  }
+}
+
+function setOpacity(list, o) {
+  for (const m of list) {
+    const mat = m.material;
+    const glass = o < 0.999;
+    mat.opacity = o;
+    if (mat.transparent !== glass) {
+      // see-through: both walls of each piece (drawn back then front) keep the colours readable
+      mat.transparent = glass; mat.side = glass ? THREE.DoubleSide : THREE.FrontSide; mat.needsUpdate = true;
+    }
+    mat.depthWrite = !glass;
+  }
+}
+
+function setLook(o, gearO) {
+  setOpacity(outfit, o);
+  setOpacity(gear, Math.max(gearO, 0.001));
+  for (const m of gear) m.visible = skinMode !== 'off' && gearO > 0.01;
+}
+
+function setSkinMode(mode, animate) {
+  skinMode = mode; fade = null;
+  for (const b of $('skinseg').children) b.setAttribute('aria-checked', String(b.dataset.skin === mode));
+  for (const m of outfit) m.visible = mode !== 'off';
+  if (mode === 'opaque') setLook(1, 1);
+  else if (mode === 'off') setLook(1, 0);
+  else if (animate && !reduceMotion) { setLook(1, 1); fade = { t0: performance.now() + 1400, dur: 1600 }; }
+  else setLook(GLASS, 0);
+  if (selected && (selected.userData.cat === 'skin' || selected.userData.cat === 'gear') && mode !== 'opaque') select(null);
+}
+for (const b of $('skinseg').children) b.addEventListener('click', () => setSkinMode(b.dataset.skin, false));
+
+// The model ships as base64 text (artifacts serve text, not .glb): stream it with progress, decode, parse.
+async function loadModel() {
+  const res = await fetch('anatomie_glb.txt');
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const total = Number(res.headers.get('content-length')) || 13800000;
+  const reader = res.body.getReader();
+  const chunks = []; let got = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value); got += value.length;
+    $('barfill').style.width = Math.min(100, 100 * got / total).toFixed(0) + '%';
+  }
+  const txt = new TextDecoder().decode(await new Blob(chunks).arrayBuffer());
+  const buf = b64ToBytes(txt.trim());
+  return new Promise((ok, ko) => new GLTFLoader().parse(buf.buffer, '', ok, ko));
+}
+
+loadModel().then(gltf => {
+  let tris = 0;
+  const meshes = [];
+  gltf.scene.updateMatrixWorld(true);
+  gltf.scene.traverse(o => { if (o.isMesh) meshes.push(o); });
+  for (const o of meshes) {
+    const name = (o.name || '').replace(/_\d+$/, '');
+    const pname = meta[name] ? name : (o.parent?.name || name);
+    const info = meta[pname] || {};
+    const cat = info.cat || 'bone';
+    tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3;
+    o.userData = { name: pname, cat, info };
+    limbs[REGION_PART[info.region] || 'Torso'].attach(o);
+    if (cat === 'skin' || cat === 'gear') {
+      // cloth-like material, drawn after the anatomy so it can turn see-through; each piece is re-centred
+      // on its own origin so the renderer sorts the see-through pieces back to front
+      o.geometry.computeBoundingBox();
+      const c = o.geometry.boundingBox.getCenter(new THREE.Vector3());
+      o.geometry.translate(-c.x, -c.y, -c.z);
+      o.position.add(c.multiply(o.scale).applyQuaternion(o.quaternion));
+      o.material = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: CAT[cat].rough, metalness: 0,
+        envMapIntensity: 0.45, transparent: false, opacity: 1 });
+      o.renderOrder = pname === 'Survivor_Face' ? 11 : cat === 'gear' ? 12 : 10;
+      (cat === 'gear' ? gear : outfit).push(o);
+    } else {
+      o.material = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: (CAT[cat] || CAT.bone).rough,
+        metalness: 0, envMapIntensity: 0.55 });
+      parts.push(o);
+    }
+  }
+  $('st-parts').textContent = String(parts.length + outfit.length + gear.length);
+  $('st-tris').textContent = Math.round(tris / 1000).toLocaleString('fr-FR') + ' k';
+  buildLayers();
+  $('load').hidden = true;
+  setSkinMode('glass', true);       // the survivor appears dressed, then turns see-through to reveal the anatomy
+}).catch(err => {
+  console.error(err);
+  $('load').textContent = 'Le modèle 3D n\'a pas pu être chargé. Rechargez la page.';
+});
+
+function buildLayers() {
+  const present = new Set(parts.map(p => p.userData.cat));
+  const wrap = $('layers');
+  for (const c of CATS) {
+    if (!present.has(c.key)) continue;
+    const n = parts.filter(p => p.userData.cat === c.key).length;
+    const b = document.createElement('button');
+    b.className = 'chip'; b.id = 'layer-' + c.key; b.setAttribute('aria-pressed', 'true');
+    b.style.setProperty('--c', c.c);
+    b.innerHTML = `<span class="dot"></span><span class="l">${c.label}</span>`;
+    b.title = `${c.label} : ${n} pièce${n > 1 ? 's' : ''}`;
+    b.addEventListener('click', () => {
+      catOn[c.key] = !catOn[c.key];
+      b.setAttribute('aria-pressed', String(catOn[c.key]));
+      applyVisibility();
+    });
+    wrap.appendChild(b);
+  }
+}
+
+function toggle(btn, fn) {
+  btn.addEventListener('click', () => {
+    const on = btn.getAttribute('aria-pressed') !== 'true';
+    btn.setAttribute('aria-pressed', String(on));
+    fn(on);
+  });
+}
+toggle($('calv'), on => { calvariaOn = on; applyVisibility(); });
+$('reset').addEventListener('click', home);
+
+// ---------------------------------------------------------------------------------------------
+// Animations (anims.json: the 15 Roblox clips sampled at 30 fps, poses interpolated in between)
+// ---------------------------------------------------------------------------------------------
+let ANIMS = null, clip = null, clipT = 0, playing = !reduceMotion, slow = false, travel = 0;
+const restInv = {};
+const _p = new THREE.Vector3(), _qa = new THREE.Quaternion(), _qb = new THREE.Quaternion(), _q = new THREE.Quaternion();
+const _one = new THREE.Vector3(1, 1, 1), _W = new THREE.Matrix4();
+const HOLD = 0.9;                  // one-shot clips replay after a short hold on their last pose
+const num = (v, d) => v.toLocaleString('fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d });
+
+function poseRest() {
+  for (const g of Object.values(limbs)) { g.matrix.identity(); g.matrixWorldNeedsUpdate = true; }
+}
+
+function poseAt(c, t) {
+  const n = c.frames.length;
+  const f = t / c.dt;
+  let i = Math.floor(f), a = f - i, j;
+  if (c.loop) { i = ((i % n) + n) % n; j = (i + 1) % n; }
+  else { if (i >= n - 1) { i = n - 1; a = 0; } j = Math.min(i + 1, n - 1); }
+  const A = c.frames[i], B = c.frames[j];
+  ANIMS.parts.forEach((p, k) => {
+    const x = A[k], y = B[k];
+    _p.set(x[0] + (y[0] - x[0]) * a, x[1] + (y[1] - x[1]) * a, x[2] + (y[2] - x[2]) * a);
+    _qa.set(x[3], x[4], x[5], x[6]); _qb.set(y[3], y[4], y[5], y[6]);
+    _q.slerpQuaternions(_qa, _qb, a);
+    _W.compose(_p, _q, _one);
+    const g = limbs[p];
+    g.matrix.copy(C).multiply(_W).multiply(restInv[p]).multiply(Cinv);
+    g.matrixWorldNeedsUpdate = true;
+  });
+}
+
+function clipInfo(c) {
+  if (!c) return 'Pose de référence (rig R6 articulé au repos)';
+  const bits = [c.label, c.loop ? `boucle de ${num(c.length, 2)} s` : `${num(c.length, 2)} s, jouée une fois`];
+  if (c.speed) bits.push(`${num(c.speed, c.speed % 1 ? 1 : 0)} studs/s en jeu`);
+  if (slow) bits.push('ralenti ×0,25');
+  return bits.join(' · ');
+}
+
+function setClip(key) {
+  clip = ANIMS?.clips.find(c => c.key === key) || null;
+  clipT = 0;
+  for (const b of $('clips').children) b.setAttribute('aria-checked', String(b.dataset.clip === (clip ? clip.key : 'rest')));
+  $('animinfo').textContent = clipInfo(clip);
+  if (!clip) poseRest();
+  else poseAt(clip, 0);
+}
+
+fetch('anims.json').then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(data => {
+  ANIMS = data;
+  for (const p of data.parts) {
+    const r = data.rest[p];
+    restInv[p] = new THREE.Matrix4().makeTranslation(-r[0], -r[1], -r[2]);
+  }
+  const wrap = $('clips');
+  const mk = (key, label) => {
+    const b = document.createElement('button');
+    b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false'); b.dataset.clip = key; b.textContent = label;
+    b.addEventListener('click', () => setClip(key));
+    wrap.appendChild(b);
+  };
+  for (const c of data.clips) mk(c.key, c.label);
+  mk('rest', 'Pose fixe');
+  $('st-anims').textContent = String(data.clips.length);
+  setClip(reduceMotion ? 'rest' : 'idle');
+}).catch(() => { $('animinfo').textContent = 'Les animations n\'ont pas pu être chargées.'; });
+
+toggle($('play'), on => { playing = on; $('play').textContent = on ? 'Pause' : 'Lecture'; });
+if (!playing) { $('play').setAttribute('aria-pressed', 'false'); $('play').textContent = 'Lecture'; }
+toggle($('slow'), on => { slow = on; $('animinfo').textContent = clipInfo(clip); });
+toggle($('floorbtn'), on => { floor.visible = on; });
+
+// picking: the outfit is clickable only when it is opaque
+const ray = new THREE.Raycaster();
+const ptr = new THREE.Vector2();
+let down = null;
+const HILITE = new THREE.Color('#e8cf72');
+canvas.addEventListener('pointerdown', e => { down = [e.clientX, e.clientY]; });
+canvas.addEventListener('pointerup', e => {
+  if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5) return;
+  const r = canvas.getBoundingClientRect();
+  ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ptr, camera);
+  const pickable = parts.filter(p => p.visible);
+  if (skinMode === 'opaque') pickable.push(...outfit, ...gear);
+  const hit = ray.intersectObjects(pickable, false)[0];
+  select(hit ? hit.object : null);
+});
+
+function select(m) {
+  if (selected) { selected.material.emissive.setRGB(0, 0, 0); }
+  selected = m;
+  $('info').hidden = !m; $('hint').hidden = !!m;
+  if (!m) return;
+  m.material.emissive.copy(HILITE).multiplyScalar(0.28);
+  const u = m.userData, c = CAT[u.cat] || CAT.bone, r6 = R6[u.info.region] || ['?', '?'];
+  $('pname').textContent = u.name;
+  $('pdesc').textContent = u.info.info || u.name;
+  $('pcat').textContent = c.label;
+  $('pr6').textContent = `${u.info.region || '?'} · ${r6[0]} (Motor6D « ${r6[1]} »)`;
+  $('ptris').textContent = (u.info.tris || 0).toLocaleString('fr-FR') + ' dans la version Ultra';
+  $('hide').hidden = u.cat === 'skin' || u.cat === 'gear';
+}
+$('hide').addEventListener('click', () => { if (selected) { hidden.add(selected); select(null); applyVisibility(); } });
+$('showall').addEventListener('click', () => {
+  hidden.clear(); calvariaOn = true; $('calv').setAttribute('aria-pressed', 'true');
+  for (const c of CATS) { catOn[c.key] = true; const b = $('layer-' + c.key); if (b) b.setAttribute('aria-pressed', 'true'); }
+  applyVisibility();
+});
+
+function resize() {
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize);
+resize();
+home();
+let last = performance.now();
+renderer.setAnimationLoop(now => {
+  const dt = Math.min(0.1, Math.max(0, (now - last) / 1000)); last = now;
+  if (fade) {
+    const t = Math.min(1, Math.max(0, (now - fade.t0) / fade.dur));
+    const e = t * t * (3 - 2 * t);
+    setLook(1 + (GLASS - 1) * e, 1 - e);
+    if (t >= 1) fade = null;
+  }
+  if (clip && playing) {
+    const step = dt * (slow ? 0.25 : 1);
+    clipT += step;
+    if (clip.loop) poseAt(clip, clipT % clip.length);
+    else poseAt(clip, Math.min(clipT % (clip.length + HOLD), clip.length));
+    if (clip.speed) {
+      travel = (travel + clip.speed * step) % (2 * SQUARE);
+      floorTex.offset.y = -travel / (2 * SQUARE);
+    }
+  }
+  controls.update();
+  renderer.render(scene, camera);
+});
+</script>

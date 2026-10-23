@@ -1,0 +1,72 @@
+SURVIVANT R6 ARTICULÉ ET ANATOMIQUE POUR ROBLOX STUDIO - INSTALLATION RAPIDE
+===========================================================================
+
+Look R6, mais bras et jambes coupés au coude et au genou (10 pièces) : les 15 animations plient
+les coudes et les genoux. Anatomie complète à l'intérieur (radiographie : touche R).
+
+Contenu du dossier
+  Anatomie_R6_Leger.fbx (ou Anatomie_R6_Ultra.fbx)  le modèle 3D : survivant + anatomie à l'intérieur
+  AnatomieR6_Setup.lua                               1) installe le personnage (barre de commande)
+  SurvivantR6_Animations.lua                         2) installe les 15 animations, le contrôleur et
+                                                        l'éditeur SurvivantEditeur
+  AnatomieR6_Outils.lua                              outils : radiographie, crâne, catégories, etc.
+  Survivant_R6_Anime.blend                           (Pack Blender) la scène animée pour Blender
+  CLAUDE.md                                          consignes pour Claude (modifier le perso dans Studio)
+  README.md / LISTE_DES_PIECES.md                    mode d'emploi complet et liste des pièces
+
+A. LE PERSONNAGE
+1. Décompressez ce .zip dans un dossier (clic droit > Extraire tout).
+2. Roblox Studio > onglet Accueil (ou Avatar) > Importer 3D, choisissez le fichier .fbx.
+   - laissez « Import Only As Model » coché, ne cochez PAS « Merge Meshes » ;
+   - ne cochez PAS « Ignore Vertex Colors » (sinon les couleurs disparaissent) ;
+   - l'échelle et l'orientation n'ont pas d'importance ; si Studio propose un rig : « No Rig ».
+   Cliquez sur Import et attendez la fin du téléversement des maillages.
+3. Affichage > Barre de commande (View > Command Bar).
+4. Ouvrez AnatomieR6_Setup.lua avec le Bloc-notes, Ctrl+A, Ctrl+C, collez dans la barre de
+   commande, Entrée. Le survivant « Anatomie_R6 » apparaît : rig articulé (Torso, Head,
+   RightUpperArm, RightLowerArm, LeftUpperArm, LeftLowerArm, RightUpperLeg, RightLowerLeg,
+   LeftUpperLeg, LeftLowerLeg), tenue opaque, squelette, organes, articulations, vaisseaux et
+   nerfs à l'intérieur. Ctrl+Z annule tout.
+
+B. LES ANIMATIONS
+5. Même chose avec SurvivantR6_Animations.lua (Ctrl+A, Ctrl+C, coller dans la barre de
+   commande, Entrée). Il crée les 15 animations (ReplicatedStorage > SurvivantAnimations),
+   le contrôleur « Animate », le personnage jouable (StarterPlayer > StarterCharacter) et le
+   module ServerStorage > SurvivantEditeur.
+6. Bouton Jouer (Play) :
+     touches de déplacement  marcher            Maj (maintenir)  courir
+     C                       s'accroupir         X                s'allonger / ramper
+     Espace                  sauter              R                radiographie (voir l'anatomie)
+     automatique : grimper (échelles, treillis), assis (sièges), outil en main (Tool équipé)
+   Sur mobile, des boutons Courir, Accroupi, Allongé et Radio apparaissent.
+7. Jeu publié : Roblox n'accepte que les animations publiées par le créateur du jeu.
+   Clic droit sur chaque KeyframeSequence de ReplicatedStorage > SurvivantAnimations >
+   « Save to Roblox… », puis collez l'identifiant obtenu dans SurvivantAnimations >
+   AnimationIds > (valeur du même nom). Dans Studio (bouton Jouer), ce n'est pas nécessaire.
+
+Vitesses : marche 6, course 16, accroupi 3, ramper 1,5 studs/s, réglables en haut du script
+« Animate » (CONFIG.VITESSE). Les animations suivent la vitesse réelle du personnage (les bottes
+restent plantées au sol) ; pour grimper, elles suivent la vitesse de montée (mains et bottes
+restent sur les barreaux).
+
+Éditer une animation à la main : Avatar > Éditeur d'animation, sélectionnez le rig Anatomie_R6,
+menu « … » > Charger (Load), choisissez Survivant_Marche, Survivant_Course, etc.
+
+C. LE FAIRE MODIFIER PAR CLAUDE DANS ROBLOX STUDIO
+Claude Desktop ou Claude Code doit être installé sur le même ordinateur que Studio.
+8.  Studio > Assistant > menu … > Manage MCP Servers > activez « Enable Studio as MCP server ».
+9.  Assistant Settings > MCP Servers > Quick connect > activez Claude Desktop ou Claude Code
+    (s'ils n'apparaissent pas : installez-les, puis redémarrez Studio).
+10. Ouvrez la place avec le survivant. Claude Code : lancez-le dans ce dossier (il lit
+    CLAUDE.md). Claude Desktop : glissez CLAUDE.md dans la conversation.
+11. Demandez par exemple : « Dans Studio, plie davantage les genoux dans la marche accroupie »,
+    « Pose le survivant comme s'il visait, puis fais une capture d'écran ».
+Claude passe par le module ServerStorage > SurvivantEditeur ; tout peut être restauré.
+Attention : un client MCP peut lire et modifier les places ouvertes ; gardez une copie.
+
+D. BLENDER (Pack Blender)
+Ouvrez Survivant_R6_Anime.blend : armature « Rig_R6_Articule » (11 os nommés comme les pièces du
+rig, aux pivots des Motor6D : épaules, coudes, hanches, genoux), tenue et anatomie attachées aux
+os, une action par animation à 30 images/s. Choisissez l'action dans Dope Sheet > Éditeur
+d'actions (Survivant_Marche, Survivant_Course…) puis Espace pour lire. Collection « Anatomie » :
+masquez-la pour ne garder que le survivant.

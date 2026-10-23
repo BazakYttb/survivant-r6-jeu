@@ -1,0 +1,2690 @@
+{
+ "Head_Skull_Calvaria": {
+  "name": "Head_Skull_Calvaria",
+  "region": "Head",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 17000,
+  "info": "Calotte cr\u00e2nienne (amovible pour voir le cerveau)"
+ },
+ "Head_Teeth_Upper": {
+  "name": "Head_Teeth_Upper",
+  "region": "Head",
+  "cat": "tooth",
+  "base": [
+   0.96,
+   0.94,
+   0.86
+  ],
+  "tris": 14000,
+  "info": "Dents sup\u00e9rieures (16 : incisives, canines, pr\u00e9molaires, molaires)"
+ },
+ "Head_Mandible": {
+  "name": "Head_Mandible",
+  "region": "Head",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 12000,
+  "info": "Mandibule (corps, branches, condyles, processus corono\u00efdes, foramens mentonniers)"
+ },
+ "Head_Atlas_C1": {
+  "name": "Head_Atlas_C1",
+  "region": "Head",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 6000,
+  "info": "Atlas (1re vert\u00e8bre cervicale)"
+ },
+ "Head_Axis_C2": {
+  "name": "Head_Axis_C2",
+  "region": "Head",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 6000,
+  "info": "Axis (2e vert\u00e8bre cervicale, dent de l'axis)"
+ },
+ "Head_Eye_L": {
+  "name": "Head_Eye_L",
+  "region": "Head",
+  "cat": "eye",
+  "base": [
+   0.95,
+   0.94,
+   0.9
+  ],
+  "tris": 5000,
+  "info": "Globe oculaire gauche (scl\u00e8re, iris, pupille, corn\u00e9e)"
+ },
+ "Head_Eye_R": {
+  "name": "Head_Eye_R",
+  "region": "Head",
+  "cat": "eye",
+  "base": [
+   0.95,
+   0.94,
+   0.9
+  ],
+  "tris": 5000,
+  "info": "Globe oculaire droit (scl\u00e8re, iris, pupille, corn\u00e9e)"
+ },
+ "Head_Hyoid": {
+  "name": "Head_Hyoid",
+  "region": "Head",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 2500,
+  "info": "Os hyo\u00efde"
+ },
+ "Head_Teeth_Lower": {
+  "name": "Head_Teeth_Lower",
+  "region": "Head",
+  "cat": "tooth",
+  "base": [
+   0.96,
+   0.94,
+   0.86
+  ],
+  "tris": 14000,
+  "info": "Dents inf\u00e9rieures (16)"
+ },
+ "Head_Skull_Base": {
+  "name": "Head_Skull_Base",
+  "region": "Head",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 19000,
+  "info": "Base du cr\u00e2ne: temporaux, occipital, foramen magnum, masto\u00efdes"
+ },
+ "Head_Skull_Face": {
+  "name": "Head_Skull_Face",
+  "region": "Head",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 19000,
+  "info": "Massif facial: orbites, maxillaires, os zygomatiques, os nasaux"
+ },
+ "Head_Vessels": {
+  "name": "Head_Vessels",
+  "region": "Head",
+  "cat": "vessel",
+  "base": [
+   0.7,
+   0.1,
+   0.1
+  ],
+  "tris": 15958,
+  "info": "Vaisseaux de la t\u00eate (carotides interne et externe, temporale superficielle, faciale, vert\u00e9brales, jugulaires internes)"
+ },
+ "Head_EyeMuscles": {
+  "name": "Head_EyeMuscles",
+  "region": "Head",
+  "cat": "muscle",
+  "base": [
+   0.6,
+   0.17,
+   0.15
+  ],
+  "tris": 5984,
+  "info": "Muscles droits de l'\u0153il (sup\u00e9rieur, inf\u00e9rieur, m\u00e9dial, lat\u00e9ral)"
+ },
+ "Head_Brainstem": {
+  "name": "Head_Brainstem",
+  "region": "Head",
+  "cat": "brain",
+  "base": [
+   0.9,
+   0.82,
+   0.74
+  ],
+  "tris": 7000,
+  "info": "Tronc c\u00e9r\u00e9bral (m\u00e9senc\u00e9phale, pont, bulbe), chiasma et bandelettes optiques, bulbes olfactifs"
+ },
+ "Head_Tongue": {
+  "name": "Head_Tongue",
+  "region": "Head",
+  "cat": "organ",
+  "base": [
+   0.8,
+   0.42,
+   0.42
+  ],
+  "tris": 6000,
+  "info": "Langue"
+ },
+ "Head_OpticNerves": {
+  "name": "Head_OpticNerves",
+  "region": "Head",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 2240,
+  "info": "Nerfs optiques"
+ },
+ "Head_SpinalCord": {
+  "name": "Head_SpinalCord",
+  "region": "Head",
+  "cat": "nerve",
+  "base": [
+   0.93,
+   0.88,
+   0.78
+  ],
+  "tris": 1296,
+  "info": "Moelle \u00e9pini\u00e8re cervicale haute"
+ },
+ "Head_Cerebellum": {
+  "name": "Head_Cerebellum",
+  "region": "Head",
+  "cat": "brain",
+  "base": [
+   0.82,
+   0.66,
+   0.62
+  ],
+  "tris": 19000,
+  "info": "Cervelet (h\u00e9misph\u00e8res, vermis, lamelles)"
+ },
+ "Head_Brain_L_Posterior": {
+  "name": "Head_Brain_L_Posterior",
+  "region": "Head",
+  "cat": "brain",
+  "base": [
+   0.85,
+   0.7,
+   0.66
+  ],
+  "tris": 18996,
+  "info": "Lobes pari\u00e9tal, temporal et occipital gauche"
+ },
+ "Head_Brain_L_Frontal": {
+  "name": "Head_Brain_L_Frontal",
+  "region": "Head",
+  "cat": "brain",
+  "base": [
+   0.85,
+   0.7,
+   0.66
+  ],
+  "tris": 19000,
+  "info": "Lobe frontal gauche"
+ },
+ "Head_Brain_R_Posterior": {
+  "name": "Head_Brain_R_Posterior",
+  "region": "Head",
+  "cat": "brain",
+  "base": [
+   0.85,
+   0.7,
+   0.66
+  ],
+  "tris": 18994,
+  "info": "Lobes pari\u00e9tal, temporal et occipital droit"
+ },
+ "Head_Brain_R_Frontal": {
+  "name": "Head_Brain_R_Frontal",
+  "region": "Head",
+  "cat": "brain",
+  "base": [
+   0.85,
+   0.7,
+   0.66
+  ],
+  "tris": 19000,
+  "info": "Lobe frontal droit"
+ },
+ "Torso_CostalCartilage_L": {
+  "name": "Torso_CostalCartilage_L",
+  "region": "Torso",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 6840,
+  "info": "Cartilages costaux gauches (c\u00f4tes 1 \u00e0 10, rebord costal)"
+ },
+ "Torso_CostalCartilage_R": {
+  "name": "Torso_CostalCartilage_R",
+  "region": "Torso",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 6840,
+  "info": "Cartilages costaux droites (c\u00f4tes 1 \u00e0 10, rebord costal)"
+ },
+ "Torso_Sacrum": {
+  "name": "Torso_Sacrum",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 13000,
+  "info": "Sacrum (ailes, promontoire, foramens sacr\u00e9s, cr\u00eate sacrale)"
+ },
+ "Torso_HipBone_R": {
+  "name": "Torso_HipBone_R",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 18000,
+  "info": "Os coxal droite (ilium, ischium, pubis, cotyle, trou obtur\u00e9)"
+ },
+ "Torso_HipBone_L": {
+  "name": "Torso_HipBone_L",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 18000,
+  "info": "Os coxal gauche (ilium, ischium, pubis, cotyle, trou obtur\u00e9)"
+ },
+ "Torso_Discs_Thoracic": {
+  "name": "Torso_Discs_Thoracic",
+  "region": "Torso",
+  "cat": "disc",
+  "base": [
+   0.84,
+   0.87,
+   0.87
+  ],
+  "tris": 7000,
+  "info": "Disques intervert\u00e9braux thoraciques (anneau fibreux)"
+ },
+ "Torso_Scapula_L": {
+  "name": "Torso_Scapula_L",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 13000,
+  "info": "Omoplate gauche (\u00e9pine, acromion, processus coraco\u00efde, cavit\u00e9 gl\u00e9no\u00efde)"
+ },
+ "Torso_Clavicle_L": {
+  "name": "Torso_Clavicle_L",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 5000,
+  "info": "Clavicule gauche"
+ },
+ "Torso_Vertebra_L1": {
+  "name": "Torso_Vertebra_L1",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4800,
+  "info": "Vert\u00e8bre lombaire L1 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_L2": {
+  "name": "Torso_Vertebra_L2",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4800,
+  "info": "Vert\u00e8bre lombaire L2 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_L3": {
+  "name": "Torso_Vertebra_L3",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4800,
+  "info": "Vert\u00e8bre lombaire L3 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Clavicle_R": {
+  "name": "Torso_Clavicle_R",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 5000,
+  "info": "Clavicule droite"
+ },
+ "Torso_Vertebra_L5": {
+  "name": "Torso_Vertebra_L5",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4800,
+  "info": "Vert\u00e8bre lombaire L5 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_L4": {
+  "name": "Torso_Vertebra_L4",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4800,
+  "info": "Vert\u00e8bre lombaire L4 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Scapula_R": {
+  "name": "Torso_Scapula_R",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 13000,
+  "info": "Omoplate droite (\u00e9pine, acromion, processus coraco\u00efde, cavit\u00e9 gl\u00e9no\u00efde)"
+ },
+ "Torso_Vertebra_T1": {
+  "name": "Torso_Vertebra_T1",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T1 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_T2": {
+  "name": "Torso_Vertebra_T2",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T2 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_T3": {
+  "name": "Torso_Vertebra_T3",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T3 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_T4": {
+  "name": "Torso_Vertebra_T4",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T4 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_T5": {
+  "name": "Torso_Vertebra_T5",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T5 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_T6": {
+  "name": "Torso_Vertebra_T6",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T6 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_T7": {
+  "name": "Torso_Vertebra_T7",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T7 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_T8": {
+  "name": "Torso_Vertebra_T8",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T8 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_T9": {
+  "name": "Torso_Vertebra_T9",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T9 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_T10": {
+  "name": "Torso_Vertebra_T10",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T10 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_T11": {
+  "name": "Torso_Vertebra_T11",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T11 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Discs_Lumbar": {
+  "name": "Torso_Discs_Lumbar",
+  "region": "Torso",
+  "cat": "disc",
+  "base": [
+   0.84,
+   0.87,
+   0.87
+  ],
+  "tris": 4000,
+  "info": "Disques intervert\u00e9braux lombaires (anneau fibreux)"
+ },
+ "Torso_Vertebra_T12": {
+  "name": "Torso_Vertebra_T12",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 4300,
+  "info": "Vert\u00e8bre thoracique T12 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_C4": {
+  "name": "Torso_Vertebra_C4",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 3800,
+  "info": "Vert\u00e8bre cervicale C4 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_C5": {
+  "name": "Torso_Vertebra_C5",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 3800,
+  "info": "Vert\u00e8bre cervicale C5 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Vertebra_C3": {
+  "name": "Torso_Vertebra_C3",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 3800,
+  "info": "Vert\u00e8bre cervicale C3 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Discs_Cervical": {
+  "name": "Torso_Discs_Cervical",
+  "region": "Torso",
+  "cat": "disc",
+  "base": [
+   0.84,
+   0.87,
+   0.87
+  ],
+  "tris": 3000,
+  "info": "Disques intervert\u00e9braux cervicales (anneau fibreux)"
+ },
+ "Torso_Rib_L01": {
+  "name": "Torso_Rib_L01",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1440,
+  "info": "C\u00f4te 1 gauche"
+ },
+ "Torso_Rib_L02": {
+  "name": "Torso_Rib_L02",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1704,
+  "info": "C\u00f4te 2 gauche"
+ },
+ "Torso_Rib_L03": {
+  "name": "Torso_Rib_L03",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1896,
+  "info": "C\u00f4te 3 gauche"
+ },
+ "Torso_Rib_L04": {
+  "name": "Torso_Rib_L04",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1992,
+  "info": "C\u00f4te 4 gauche"
+ },
+ "Torso_Rib_L05": {
+  "name": "Torso_Rib_L05",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1992,
+  "info": "C\u00f4te 5 gauche"
+ },
+ "Torso_Rib_L06": {
+  "name": "Torso_Rib_L06",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1968,
+  "info": "C\u00f4te 6 gauche"
+ },
+ "Torso_Rib_L07": {
+  "name": "Torso_Rib_L07",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1944,
+  "info": "C\u00f4te 7 gauche"
+ },
+ "Torso_Rib_L08": {
+  "name": "Torso_Rib_L08",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1872,
+  "info": "C\u00f4te 8 gauche"
+ },
+ "Torso_Rib_L09": {
+  "name": "Torso_Rib_L09",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1800,
+  "info": "C\u00f4te 9 gauche"
+ },
+ "Torso_Rib_L10": {
+  "name": "Torso_Rib_L10",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1704,
+  "info": "C\u00f4te 10 gauche"
+ },
+ "Torso_Rib_L11": {
+  "name": "Torso_Rib_L11",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1584,
+  "info": "C\u00f4te 11 gauche (flottante)"
+ },
+ "Torso_Rib_L12": {
+  "name": "Torso_Rib_L12",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1152,
+  "info": "C\u00f4te 12 gauche (flottante)"
+ },
+ "Torso_Rib_R01": {
+  "name": "Torso_Rib_R01",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1440,
+  "info": "C\u00f4te 1 droite"
+ },
+ "Torso_Rib_R02": {
+  "name": "Torso_Rib_R02",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1704,
+  "info": "C\u00f4te 2 droite"
+ },
+ "Torso_Rib_R03": {
+  "name": "Torso_Rib_R03",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1896,
+  "info": "C\u00f4te 3 droite"
+ },
+ "Torso_Rib_R04": {
+  "name": "Torso_Rib_R04",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1992,
+  "info": "C\u00f4te 4 droite"
+ },
+ "Torso_Rib_R05": {
+  "name": "Torso_Rib_R05",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1992,
+  "info": "C\u00f4te 5 droite"
+ },
+ "Torso_Rib_R06": {
+  "name": "Torso_Rib_R06",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1968,
+  "info": "C\u00f4te 6 droite"
+ },
+ "Torso_Rib_R07": {
+  "name": "Torso_Rib_R07",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1944,
+  "info": "C\u00f4te 7 droite"
+ },
+ "Torso_Vertebra_C6": {
+  "name": "Torso_Vertebra_C6",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 3800,
+  "info": "Vert\u00e8bre cervicale C6 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Rib_R08": {
+  "name": "Torso_Rib_R08",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1872,
+  "info": "C\u00f4te 8 droite"
+ },
+ "Torso_Rib_R09": {
+  "name": "Torso_Rib_R09",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1800,
+  "info": "C\u00f4te 9 droite"
+ },
+ "Torso_Rib_R10": {
+  "name": "Torso_Rib_R10",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1704,
+  "info": "C\u00f4te 10 droite"
+ },
+ "Torso_Rib_R11": {
+  "name": "Torso_Rib_R11",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1584,
+  "info": "C\u00f4te 11 droite (flottante)"
+ },
+ "Torso_Rib_R12": {
+  "name": "Torso_Rib_R12",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 1152,
+  "info": "C\u00f4te 12 droite (flottante)"
+ },
+ "Torso_Coccyx": {
+  "name": "Torso_Coccyx",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 2500,
+  "info": "Coccyx (4 vert\u00e8bres soud\u00e9es)"
+ },
+ "Torso_AcetabularLabrum_L": {
+  "name": "Torso_AcetabularLabrum_L",
+  "region": "Torso",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2000,
+  "info": "Bourrelet cotylo\u00efdien gauche (articulation de la hanche)"
+ },
+ "Torso_GlenoidLabrum_L": {
+  "name": "Torso_GlenoidLabrum_L",
+  "region": "Torso",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 1500,
+  "info": "Bourrelet gl\u00e9no\u00efdien gauche (articulation de l'\u00e9paule)"
+ },
+ "Torso_AcetabularLabrum_R": {
+  "name": "Torso_AcetabularLabrum_R",
+  "region": "Torso",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2000,
+  "info": "Bourrelet cotylo\u00efdien droite (articulation de la hanche)"
+ },
+ "Torso_GlenoidLabrum_R": {
+  "name": "Torso_GlenoidLabrum_R",
+  "region": "Torso",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 1500,
+  "info": "Bourrelet gl\u00e9no\u00efdien droite (articulation de l'\u00e9paule)"
+ },
+ "Torso_PubicSymphysis": {
+  "name": "Torso_PubicSymphysis",
+  "region": "Torso",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 800,
+  "info": "Symphyse pubienne (disque fibrocartilagineux)"
+ },
+ "Torso_SternoclavicularDiscs": {
+  "name": "Torso_SternoclavicularDiscs",
+  "region": "Torso",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 800,
+  "info": "Disques articulaires sterno-claviculaires"
+ },
+ "Torso_Sternum": {
+  "name": "Torso_Sternum",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 13998,
+  "info": "Sternum (manubrium, corps, processus xipho\u00efde)"
+ },
+ "Torso_SacroiliacCartilage": {
+  "name": "Torso_SacroiliacCartilage",
+  "region": "Torso",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 1500,
+  "info": "Cartilages des articulations sacro-iliaques"
+ },
+ "Torso_Vertebra_C7": {
+  "name": "Torso_Vertebra_C7",
+  "region": "Torso",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 3800,
+  "info": "Vert\u00e8bre cervicale C7 (corps, p\u00e9dicules, lames, processus \u00e9pineux, transverses et articulaires)"
+ },
+ "Torso_Heart": {
+  "name": "Torso_Heart",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.55,
+   0.13,
+   0.12
+  ],
+  "tris": 19000,
+  "info": "C\u0153ur (ventricules, oreillettes, auricules, graisse \u00e9picardique dans les sillons)"
+ },
+ "Torso_Lung_R_Lower": {
+  "name": "Torso_Lung_R_Lower",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.84,
+   0.55,
+   0.56
+  ],
+  "tris": 16000,
+  "info": "Poumon droit - lobe inf\u00e9rieur"
+ },
+ "Torso_Lung_R_Middle": {
+  "name": "Torso_Lung_R_Middle",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.84,
+   0.55,
+   0.56
+  ],
+  "tris": 16000,
+  "info": "Poumon droit - lobe moyen"
+ },
+ "Torso_GreatVessels": {
+  "name": "Torso_GreatVessels",
+  "region": "Torso",
+  "cat": "vessel",
+  "base": [
+   0.7,
+   0.1,
+   0.1
+  ],
+  "tris": 11276,
+  "info": "Aorte ascendante, tronc et art\u00e8res pulmonaires (bleu), veines caves, veines pulmonaires (rouge)"
+ },
+ "Torso_Lung_R_Upper": {
+  "name": "Torso_Lung_R_Upper",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.84,
+   0.55,
+   0.56
+  ],
+  "tris": 16000,
+  "info": "Poumon droit - lobe sup\u00e9rieur"
+ },
+ "Torso_CoronaryVessels": {
+  "name": "Torso_CoronaryVessels",
+  "region": "Torso",
+  "cat": "vessel",
+  "base": [
+   0.7,
+   0.1,
+   0.1
+  ],
+  "tris": 12000,
+  "info": "Art\u00e8res coronaires (droite, interventriculaire ant\u00e9rieure, circonflexe) et veines cardiaques"
+ },
+ "Torso_Trachea": {
+  "name": "Torso_Trachea",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.88,
+   0.75,
+   0.7
+  ],
+  "tris": 9040,
+  "info": "Trach\u00e9e (anneaux cartilagineux et paroi membraneuse post\u00e9rieure)"
+ },
+ "Torso_Larynx": {
+  "name": "Torso_Larynx",
+  "region": "Torso",
+  "cat": "cartilage",
+  "base": [
+   0.82,
+   0.86,
+   0.86
+  ],
+  "tris": 5000,
+  "info": "Larynx (cartilage thyro\u00efde / pomme d'Adam, crico\u00efde, aryt\u00e9no\u00efdes, \u00e9piglotte)"
+ },
+ "Torso_Thyroid": {
+  "name": "Torso_Thyroid",
+  "region": "Torso",
+  "cat": "gland",
+  "base": [
+   0.62,
+   0.22,
+   0.18
+  ],
+  "tris": 4000,
+  "info": "Glande thyro\u00efde (deux lobes et isthme)"
+ },
+ "Torso_Diaphragm": {
+  "name": "Torso_Diaphragm",
+  "region": "Torso",
+  "cat": "muscle",
+  "base": [
+   0.6,
+   0.16,
+   0.14
+  ],
+  "tris": 14000,
+  "info": "Diaphragme (coupoles, centre tendineux, piliers, orifices)"
+ },
+ "Torso_Lung_L_Upper": {
+  "name": "Torso_Lung_L_Upper",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.84,
+   0.55,
+   0.56
+  ],
+  "tris": 16000,
+  "info": "Poumon gauche - lobe sup\u00e9rieur (avec la lingula)"
+ },
+ "Torso_Lung_L_Lower": {
+  "name": "Torso_Lung_L_Lower",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.84,
+   0.55,
+   0.56
+  ],
+  "tris": 16000,
+  "info": "Poumon gauche - lobe inf\u00e9rieur"
+ },
+ "Torso_Esophagus": {
+  "name": "Torso_Esophagus",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.8,
+   0.52,
+   0.48
+  ],
+  "tris": 8260,
+  "info": "\u0152sophage"
+ },
+ "Torso_Bronchi_R": {
+  "name": "Torso_Bronchi_R",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.9,
+   0.78,
+   0.72
+  ],
+  "tris": 17374,
+  "info": "Arbre bronchique droit (souche, lobaires, segmentaires) - visible si les poumons sont transparents"
+ },
+ "Torso_Bronchi_L": {
+  "name": "Torso_Bronchi_L",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.9,
+   0.78,
+   0.72
+  ],
+  "tris": 15176,
+  "info": "Arbre bronchique gauche (souche, lobaires, segmentaires) - visible si les poumons sont transparents"
+ },
+ "Torso_Colon_1": {
+  "name": "Torso_Colon_1",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.82,
+   0.62,
+   0.5
+  ],
+  "tris": 12576,
+  "info": "C\u00f4lon ascendant, caecum, appendice et c\u00f4lon transverse (haustrations, bandelettes)"
+ },
+ "Torso_Colon_2": {
+  "name": "Torso_Colon_2",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.82,
+   0.62,
+   0.5
+  ],
+  "tris": 8432,
+  "info": "C\u00f4lon descendant, sigmo\u00efde, rectum et canal anal"
+ },
+ "Torso_Stomach": {
+  "name": "Torso_Stomach",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.86,
+   0.6,
+   0.52
+  ],
+  "tris": 15000,
+  "info": "Estomac (fundus, corps, antre, pylore, vaisseaux des courbures)"
+ },
+ "Torso_SmallIntestine_2": {
+  "name": "Torso_SmallIntestine_2",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.9,
+   0.68,
+   0.6
+  ],
+  "tris": 13020,
+  "info": "Intestin gr\u00eale - il\u00e9on"
+ },
+ "Torso_Duodenum": {
+  "name": "Torso_Duodenum",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.86,
+   0.62,
+   0.52
+  ],
+  "tris": 4508,
+  "info": "Duod\u00e9num (bulbe, portions descendante, horizontale et ascendante)"
+ },
+ "Torso_SmallIntestine_1": {
+  "name": "Torso_SmallIntestine_1",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.92,
+   0.66,
+   0.58
+  ],
+  "tris": 13300,
+  "info": "Intestin gr\u00eale - j\u00e9junum"
+ },
+ "Torso_Kidney_L": {
+  "name": "Torso_Kidney_L",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.56,
+   0.2,
+   0.14
+  ],
+  "tris": 7000,
+  "info": "Rein gauche et bassinet"
+ },
+ "Torso_Spleen": {
+  "name": "Torso_Spleen",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.46,
+   0.12,
+   0.2
+  ],
+  "tris": 7000,
+  "info": "Rate"
+ },
+ "Torso_Bladder": {
+  "name": "Torso_Bladder",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.86,
+   0.74,
+   0.64
+  ],
+  "tris": 6000,
+  "info": "Vessie"
+ },
+ "Torso_BileDucts": {
+  "name": "Torso_BileDucts",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.5,
+   0.6,
+   0.25
+  ],
+  "tris": 3248,
+  "info": "Voies biliaires (canaux h\u00e9patiques, cystique, chol\u00e9doque) et canal pancr\u00e9atique"
+ },
+ "Torso_Ureters": {
+  "name": "Torso_Ureters",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.88,
+   0.76,
+   0.62
+  ],
+  "tris": 4000,
+  "info": "Uret\u00e8res"
+ },
+ "Torso_Pancreas": {
+  "name": "Torso_Pancreas",
+  "region": "Torso",
+  "cat": "gland",
+  "base": [
+   0.92,
+   0.78,
+   0.55
+  ],
+  "tris": 8980,
+  "info": "Pancr\u00e9as (t\u00eate, crochet, corps, queue)"
+ },
+ "Torso_Gallbladder": {
+  "name": "Torso_Gallbladder",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.32,
+   0.5,
+   0.24
+  ],
+  "tris": 3000,
+  "info": "V\u00e9sicule biliaire"
+ },
+ "Torso_Kidney_R": {
+  "name": "Torso_Kidney_R",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.56,
+   0.2,
+   0.14
+  ],
+  "tris": 7000,
+  "info": "Rein droit et bassinet"
+ },
+ "Torso_Adrenals": {
+  "name": "Torso_Adrenals",
+  "region": "Torso",
+  "cat": "gland",
+  "base": [
+   0.86,
+   0.62,
+   0.26
+  ],
+  "tris": 3000,
+  "info": "Glandes surr\u00e9nales"
+ },
+ "Torso_Liver": {
+  "name": "Torso_Liver",
+  "region": "Torso",
+  "cat": "organ",
+  "base": [
+   0.48,
+   0.15,
+   0.1
+  ],
+  "tris": 19000,
+  "info": "Foie (lobes droit, gauche, caud\u00e9, ligament falciforme, empreintes)"
+ },
+ "Torso_Veins_Abdomen": {
+  "name": "Torso_Veins_Abdomen",
+  "region": "Torso",
+  "cat": "vessel",
+  "base": [
+   0.2,
+   0.25,
+   0.55
+  ],
+  "tris": 14840,
+  "info": "Veine cave inf\u00e9rieure, veines h\u00e9patiques, r\u00e9nales, syst\u00e8me porte, veines iliaques"
+ },
+ "Torso_Veins_Thorax": {
+  "name": "Torso_Veins_Thorax",
+  "region": "Torso",
+  "cat": "vessel",
+  "base": [
+   0.2,
+   0.25,
+   0.55
+  ],
+  "tris": 18624,
+  "info": "Veine cave sup\u00e9rieure, troncs brachio-c\u00e9phaliques, jugulaires internes, subclavi\u00e8res, azygos"
+ },
+ "Torso_Arteries_Abdomen": {
+  "name": "Torso_Arteries_Abdomen",
+  "region": "Torso",
+  "cat": "vessel",
+  "base": [
+   0.72,
+   0.1,
+   0.09
+  ],
+  "tris": 19000,
+  "info": "Aorte abdominale, tronc c\u0153liaque, m\u00e9sent\u00e9riques, r\u00e9nales, gonadiques, iliaques"
+ },
+ "Torso_Arteries_Thorax": {
+  "name": "Torso_Arteries_Thorax",
+  "region": "Torso",
+  "cat": "vessel",
+  "base": [
+   0.72,
+   0.1,
+   0.09
+  ],
+  "tris": 19000,
+  "info": "Crosse et aorte thoracique, tronc brachio-c\u00e9phalique, carotides, subclavi\u00e8res, vert\u00e9brales, thoraciques internes"
+ },
+ "Torso_Nerves_Lumbosacral": {
+  "name": "Torso_Nerves_Lumbosacral",
+  "region": "Torso",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 14780,
+  "info": "Plexus lombaire et sacr\u00e9 : nerfs f\u00e9moraux, obturateurs, sciatiques"
+ },
+ "Torso_SpinalCord": {
+  "name": "Torso_SpinalCord",
+  "region": "Torso",
+  "cat": "nerve",
+  "base": [
+   0.93,
+   0.88,
+   0.78
+  ],
+  "tris": 19000,
+  "info": "Moelle \u00e9pini\u00e8re (renflements, c\u00f4ne terminal), queue de cheval, filum terminal"
+ },
+ "Torso_BrachialPlexus": {
+  "name": "Torso_BrachialPlexus",
+  "region": "Torso",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 19000,
+  "info": "Plexus brachial (racines, troncs, faisceaux) vers les nerfs du bras"
+ },
+ "Torso_SpinalNerves": {
+  "name": "Torso_SpinalNerves",
+  "region": "Torso",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 19000,
+  "info": "Racines des nerfs spinaux avec ganglions spinaux, cha\u00eenes sympathiques"
+ },
+ "Torso_Nerves_Autonomic": {
+  "name": "Torso_Nerves_Autonomic",
+  "region": "Torso",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 12584,
+  "info": "Nerfs phr\u00e9niques et vagues (pneumogastriques), nerf laryng\u00e9 r\u00e9current"
+ },
+ "Torso_Intercostals_L": {
+  "name": "Torso_Intercostals_L",
+  "region": "Torso",
+  "cat": "vessel",
+  "base": [
+   0.7,
+   0.2,
+   0.2
+  ],
+  "tris": 19000,
+  "info": "P\u00e9dicules intercostaux gauches (veine, art\u00e8re, nerf sous chaque c\u00f4te)"
+ },
+ "Torso_Intercostals_R": {
+  "name": "Torso_Intercostals_R",
+  "region": "Torso",
+  "cat": "vessel",
+  "base": [
+   0.7,
+   0.2,
+   0.2
+  ],
+  "tris": 19000,
+  "info": "P\u00e9dicules intercostaux droits (veine, art\u00e8re, nerf sous chaque c\u00f4te)"
+ },
+ "Survivor_Torso": {
+  "name": "Survivor_Torso",
+  "region": "Torso",
+  "cat": "skin",
+  "base": [
+   0.2823529411764706,
+   0.3137254901960784,
+   0.18823529411764706
+  ],
+  "tris": 18544,
+  "info": "Survivant : veste de terrain ouverte, t-shirt, sangles, ceinture, plaques militaires"
+ },
+ "Survivor_Backpack": {
+  "name": "Survivor_Backpack",
+  "region": "Torso",
+  "cat": "gear",
+  "base": [
+   0.4549019607843137,
+   0.4,
+   0.2823529411764706
+  ],
+  "tris": 15614,
+  "info": "Survivant : sac \u00e0 dos, sac de couchage, gourde"
+ },
+ "Survivor_Head": {
+  "name": "Survivor_Head",
+  "region": "Head",
+  "cat": "skin",
+  "base": [
+   0.8313725490196079,
+   0.611764705882353,
+   0.47058823529411764
+  ],
+  "tris": 18880,
+  "info": "Survivant : t\u00eate (peau, barbe de trois jours, salet\u00e9)"
+ },
+ "Survivor_Hat": {
+  "name": "Survivor_Hat",
+  "region": "Head",
+  "cat": "gear",
+  "base": [
+   0.4,
+   0.12941176470588237,
+   0.13725490196078433
+  ],
+  "tris": 14640,
+  "info": "Survivant : bonnet en laine et cheveux"
+ },
+ "Survivor_Face": {
+  "name": "Survivor_Face",
+  "region": "Head",
+  "cat": "skin",
+  "base": [
+   0.13333333333333333,
+   0.09411764705882353,
+   0.0784313725490196
+  ],
+  "tris": 13990,
+  "info": "Survivant : visage (yeux, sourcils, bouche, pansement, \u00e9gratignure)"
+ },
+ "LeftUpperArm_Arteries": {
+  "name": "LeftUpperArm_Arteries",
+  "region": "LeftUpperArm",
+  "cat": "vessel",
+  "base": [
+   0.72,
+   0.1,
+   0.09
+  ],
+  "tris": 3196,
+  "info": "Art\u00e8res du bras gauche (axillaire, brachiale, radiale, ulnaire, arcades palmaires, digitales) - partie bras"
+ },
+ "LeftLowerArm_Arteries": {
+  "name": "LeftLowerArm_Arteries",
+  "region": "LeftLowerArm",
+  "cat": "vessel",
+  "base": [
+   0.72,
+   0.1,
+   0.09
+  ],
+  "tris": 6532,
+  "info": "Art\u00e8res du bras gauche (axillaire, brachiale, radiale, ulnaire, arcades palmaires, digitales) - partie avant-bras"
+ },
+ "Survivor_LeftLowerArm": {
+  "name": "Survivor_LeftLowerArm",
+  "region": "LeftLowerArm",
+  "cat": "skin",
+  "base": [
+   0.8313725490196079,
+   0.611764705882353,
+   0.47058823529411764
+  ],
+  "tris": 6832,
+  "info": "Survivant : avant-bras gauche (manche retrouss\u00e9e, montre, mitaine)"
+ },
+ "Survivor_LeftUpperLeg": {
+  "name": "Survivor_LeftUpperLeg",
+  "region": "LeftUpperLeg",
+  "cat": "skin",
+  "base": [
+   0.16470588235294117,
+   0.21176470588235294,
+   0.3058823529411765
+  ],
+  "tris": 8296,
+  "info": "Survivant : cuisse gauche (jean us\u00e9 d\u00e9chir\u00e9 au genou, poche cargo)"
+ },
+ "RightUpperArm_Arteries": {
+  "name": "RightUpperArm_Arteries",
+  "region": "RightUpperArm",
+  "cat": "vessel",
+  "base": [
+   0.72,
+   0.1,
+   0.09
+  ],
+  "tris": 3196,
+  "info": "Art\u00e8res du bras droit (axillaire, brachiale, radiale, ulnaire, arcades palmaires, digitales) - partie bras"
+ },
+ "RightLowerArm_Arteries": {
+  "name": "RightLowerArm_Arteries",
+  "region": "RightLowerArm",
+  "cat": "vessel",
+  "base": [
+   0.72,
+   0.1,
+   0.09
+  ],
+  "tris": 6532,
+  "info": "Art\u00e8res du bras droit (axillaire, brachiale, radiale, ulnaire, arcades palmaires, digitales) - partie avant-bras"
+ },
+ "LeftUpperLeg_Arteries": {
+  "name": "LeftUpperLeg_Arteries",
+  "region": "LeftUpperLeg",
+  "cat": "vessel",
+  "base": [
+   0.72,
+   0.1,
+   0.09
+  ],
+  "tris": 3820,
+  "info": "Art\u00e8res de la jambe gauche (f\u00e9morale, poplit\u00e9e, tibiales, fibulaire, p\u00e9dieuse) - partie cuisse"
+ },
+ "LeftLowerLeg_Arteries": {
+  "name": "LeftLowerLeg_Arteries",
+  "region": "LeftLowerLeg",
+  "cat": "vessel",
+  "base": [
+   0.72,
+   0.1,
+   0.09
+  ],
+  "tris": 6520,
+  "info": "Art\u00e8res de la jambe gauche (f\u00e9morale, poplit\u00e9e, tibiales, fibulaire, p\u00e9dieuse) - partie jambe"
+ },
+ "RightUpperLeg_Arteries": {
+  "name": "RightUpperLeg_Arteries",
+  "region": "RightUpperLeg",
+  "cat": "vessel",
+  "base": [
+   0.72,
+   0.1,
+   0.09
+  ],
+  "tris": 3820,
+  "info": "Art\u00e8res de la jambe droite (f\u00e9morale, poplit\u00e9e, tibiales, fibulaire, p\u00e9dieuse) - partie cuisse"
+ },
+ "RightLowerLeg_Arteries": {
+  "name": "RightLowerLeg_Arteries",
+  "region": "RightLowerLeg",
+  "cat": "vessel",
+  "base": [
+   0.72,
+   0.1,
+   0.09
+  ],
+  "tris": 6520,
+  "info": "Art\u00e8res de la jambe droite (f\u00e9morale, poplit\u00e9e, tibiales, fibulaire, p\u00e9dieuse) - partie jambe"
+ },
+ "LeftUpperLeg_Veins": {
+  "name": "LeftUpperLeg_Veins",
+  "region": "LeftUpperLeg",
+  "cat": "vessel",
+  "base": [
+   0.2,
+   0.25,
+   0.55
+  ],
+  "tris": 4684,
+  "info": "Veines de la jambe gauche (f\u00e9morale, grande et petite saph\u00e8nes, tibiales) - partie cuisse"
+ },
+ "LeftLowerLeg_Veins": {
+  "name": "LeftLowerLeg_Veins",
+  "region": "LeftLowerLeg",
+  "cat": "vessel",
+  "base": [
+   0.2,
+   0.25,
+   0.55
+  ],
+  "tris": 8772,
+  "info": "Veines de la jambe gauche (f\u00e9morale, grande et petite saph\u00e8nes, tibiales) - partie jambe"
+ },
+ "RightLowerLeg_Veins": {
+  "name": "RightLowerLeg_Veins",
+  "region": "RightLowerLeg",
+  "cat": "vessel",
+  "base": [
+   0.2,
+   0.25,
+   0.55
+  ],
+  "tris": 8772,
+  "info": "Veines de la jambe droite (f\u00e9morale, grande et petite saph\u00e8nes, tibiales) - partie jambe"
+ },
+ "RightUpperLeg_Veins": {
+  "name": "RightUpperLeg_Veins",
+  "region": "RightUpperLeg",
+  "cat": "vessel",
+  "base": [
+   0.2,
+   0.25,
+   0.55
+  ],
+  "tris": 4684,
+  "info": "Veines de la jambe droite (f\u00e9morale, grande et petite saph\u00e8nes, tibiales) - partie cuisse"
+ },
+ "LeftUpperArm_Veins": {
+  "name": "LeftUpperArm_Veins",
+  "region": "LeftUpperArm",
+  "cat": "vessel",
+  "base": [
+   0.2,
+   0.25,
+   0.55
+  ],
+  "tris": 5440,
+  "info": "Veines du bras gauche (brachiale, c\u00e9phalique, basilique, m\u00e9diane du coude, arcade dorsale) - partie bras"
+ },
+ "LeftLowerArm_Veins": {
+  "name": "LeftLowerArm_Veins",
+  "region": "LeftLowerArm",
+  "cat": "vessel",
+  "base": [
+   0.2,
+   0.25,
+   0.55
+  ],
+  "tris": 4548,
+  "info": "Veines du bras gauche (brachiale, c\u00e9phalique, basilique, m\u00e9diane du coude, arcade dorsale) - partie avant-bras"
+ },
+ "LeftUpperArm_Nerves": {
+  "name": "LeftUpperArm_Nerves",
+  "region": "LeftUpperArm",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 5818,
+  "info": "Nerfs du bras gauche (m\u00e9dian, ulnaire, radial, musculo-cutan\u00e9) - partie bras"
+ },
+ "LeftLowerArm_Nerves": {
+  "name": "LeftLowerArm_Nerves",
+  "region": "LeftLowerArm",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 6458,
+  "info": "Nerfs du bras gauche (m\u00e9dian, ulnaire, radial, musculo-cutan\u00e9) - partie avant-bras"
+ },
+ "RightUpperArm_Humerus": {
+  "name": "RightUpperArm_Humerus",
+  "region": "RightUpperArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 12000,
+  "info": "Hum\u00e9rus droit (t\u00eate, tubercules, sillon intertuberculaire, \u00e9picondyles, trochl\u00e9e, capitulum)"
+ },
+ "RightUpperArm_Veins": {
+  "name": "RightUpperArm_Veins",
+  "region": "RightUpperArm",
+  "cat": "vessel",
+  "base": [
+   0.2,
+   0.25,
+   0.55
+  ],
+  "tris": 5440,
+  "info": "Veines du bras droit (brachiale, c\u00e9phalique, basilique, m\u00e9diane du coude, arcade dorsale) - partie bras"
+ },
+ "RightLowerArm_Veins": {
+  "name": "RightLowerArm_Veins",
+  "region": "RightLowerArm",
+  "cat": "vessel",
+  "base": [
+   0.2,
+   0.25,
+   0.55
+  ],
+  "tris": 4548,
+  "info": "Veines du bras droit (brachiale, c\u00e9phalique, basilique, m\u00e9diane du coude, arcade dorsale) - partie avant-bras"
+ },
+ "LeftUpperArm_Humerus": {
+  "name": "LeftUpperArm_Humerus",
+  "region": "LeftUpperArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 12000,
+  "info": "Hum\u00e9rus gauche (t\u00eate, tubercules, sillon intertuberculaire, \u00e9picondyles, trochl\u00e9e, capitulum)"
+ },
+ "RightUpperArm_Nerves": {
+  "name": "RightUpperArm_Nerves",
+  "region": "RightUpperArm",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 5824,
+  "info": "Nerfs du bras droit (m\u00e9dian, ulnaire, radial, musculo-cutan\u00e9) - partie bras"
+ },
+ "RightLowerArm_Nerves": {
+  "name": "RightLowerArm_Nerves",
+  "region": "RightLowerArm",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 6460,
+  "info": "Nerfs du bras droit (m\u00e9dian, ulnaire, radial, musculo-cutan\u00e9) - partie avant-bras"
+ },
+ "LeftUpperLeg_Nerves": {
+  "name": "LeftUpperLeg_Nerves",
+  "region": "LeftUpperLeg",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 5026,
+  "info": "Nerfs de la jambe gauche (sciatique, tibial, fibulaires, f\u00e9moral, saph\u00e8ne) - partie cuisse"
+ },
+ "LeftLowerLeg_Nerves": {
+  "name": "LeftLowerLeg_Nerves",
+  "region": "LeftLowerLeg",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 7190,
+  "info": "Nerfs de la jambe gauche (sciatique, tibial, fibulaires, f\u00e9moral, saph\u00e8ne) - partie jambe"
+ },
+ "RightUpperLeg_Femur": {
+  "name": "RightUpperLeg_Femur",
+  "region": "RightUpperLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 13000,
+  "info": "F\u00e9mur droite (t\u00eate, col, trochanters, ligne \u00e2pre, condyles)"
+ },
+ "RightUpperLeg_Nerves": {
+  "name": "RightUpperLeg_Nerves",
+  "region": "RightUpperLeg",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 5024,
+  "info": "Nerfs de la jambe droite (sciatique, tibial, fibulaires, f\u00e9moral, saph\u00e8ne) - partie cuisse"
+ },
+ "RightLowerLeg_Nerves": {
+  "name": "RightLowerLeg_Nerves",
+  "region": "RightLowerLeg",
+  "cat": "nerve",
+  "base": [
+   0.96,
+   0.88,
+   0.55
+  ],
+  "tris": 7192,
+  "info": "Nerfs de la jambe droite (sciatique, tibial, fibulaires, f\u00e9moral, saph\u00e8ne) - partie jambe"
+ },
+ "LeftUpperLeg_Femur": {
+  "name": "LeftUpperLeg_Femur",
+  "region": "LeftUpperLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 13000,
+  "info": "F\u00e9mur gauche (t\u00eate, col, trochanters, ligne \u00e2pre, condyles)"
+ },
+ "LeftLowerLeg_Tibia": {
+  "name": "LeftLowerLeg_Tibia",
+  "region": "LeftLowerLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 12000,
+  "info": "Tibia gauche (plateau, tub\u00e9rosit\u00e9, cr\u00eate, mall\u00e9ole m\u00e9diale)"
+ },
+ "RightLowerLeg_Tibia": {
+  "name": "RightLowerLeg_Tibia",
+  "region": "RightLowerLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 12000,
+  "info": "Tibia droite (plateau, tub\u00e9rosit\u00e9, cr\u00eate, mall\u00e9ole m\u00e9diale)"
+ },
+ "RightLowerLeg_Tarsals": {
+  "name": "RightLowerLeg_Tarsals",
+  "region": "RightLowerLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 11000,
+  "info": "Os du tarse droite (talus, calcan\u00e9us, naviculaire, cubo\u00efde, 3 cun\u00e9iformes)"
+ },
+ "LeftUpperLeg_Ligaments": {
+  "name": "LeftUpperLeg_Ligaments",
+  "region": "LeftUpperLeg",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 600,
+  "info": "Ligaments gauche (crois\u00e9s, collat\u00e9raux, cheville, fascia plantaire, membrane interosseuse) - partie cuisse"
+ },
+ "LeftLowerLeg_Ligaments": {
+  "name": "LeftLowerLeg_Ligaments",
+  "region": "LeftLowerLeg",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 8784,
+  "info": "Ligaments gauche (crois\u00e9s, collat\u00e9raux, cheville, fascia plantaire, membrane interosseuse) - partie jambe"
+ },
+ "RightUpperLeg_Ligaments": {
+  "name": "RightUpperLeg_Ligaments",
+  "region": "RightUpperLeg",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 596,
+  "info": "Ligaments droite (crois\u00e9s, collat\u00e9raux, cheville, fascia plantaire, membrane interosseuse) - partie cuisse"
+ },
+ "LeftLowerLeg_Tarsals": {
+  "name": "LeftLowerLeg_Tarsals",
+  "region": "LeftLowerLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 11000,
+  "info": "Os du tarse gauche (talus, calcan\u00e9us, naviculaire, cubo\u00efde, 3 cun\u00e9iformes)"
+ },
+ "RightLowerLeg_Ligaments": {
+  "name": "RightLowerLeg_Ligaments",
+  "region": "RightLowerLeg",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 8784,
+  "info": "Ligaments droite (crois\u00e9s, collat\u00e9raux, cheville, fascia plantaire, membrane interosseuse) - partie jambe"
+ },
+ "RightLowerArm_Phalanges": {
+  "name": "RightLowerArm_Phalanges",
+  "region": "RightLowerArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 10000,
+  "info": "Phalanges des doigts droit (14) et s\u00e9samo\u00efdes du pouce"
+ },
+ "LeftLowerArm_Phalanges": {
+  "name": "LeftLowerArm_Phalanges",
+  "region": "LeftLowerArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 10000,
+  "info": "Phalanges des doigts gauche (14) et s\u00e9samo\u00efdes du pouce"
+ },
+ "Survivor_RightLowerLeg": {
+  "name": "Survivor_RightLowerLeg",
+  "region": "RightLowerLeg",
+  "cat": "skin",
+  "base": [
+   0.3843137254901961,
+   0.25098039215686274,
+   0.1568627450980392
+  ],
+  "tris": 8784,
+  "info": "Survivant : jambe droite (jean, botte lac\u00e9e)"
+ },
+ "Survivor_LeftLowerLeg": {
+  "name": "Survivor_LeftLowerLeg",
+  "region": "LeftLowerLeg",
+  "cat": "skin",
+  "base": [
+   0.3843137254901961,
+   0.25098039215686274,
+   0.1568627450980392
+  ],
+  "tris": 8782,
+  "info": "Survivant : jambe gauche (jean, botte lac\u00e9e)"
+ },
+ "LeftLowerArm_Carpals": {
+  "name": "LeftLowerArm_Carpals",
+  "region": "LeftLowerArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 8000,
+  "info": "Os du carpe gauche (8 : scapho\u00efde, lunatum, triquetrum, pisiforme, trap\u00e8ze, trap\u00e9zo\u00efde, capitatum, hamatum)"
+ },
+ "RightLowerArm_Carpals": {
+  "name": "RightLowerArm_Carpals",
+  "region": "RightLowerArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 8000,
+  "info": "Os du carpe droit (8 : scapho\u00efde, lunatum, triquetrum, pisiforme, trap\u00e8ze, trap\u00e9zo\u00efde, capitatum, hamatum)"
+ },
+ "LeftLowerLeg_Phalanges": {
+  "name": "LeftLowerLeg_Phalanges",
+  "region": "LeftLowerLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 8000,
+  "info": "Phalanges des orteils gauche (14) et s\u00e9samo\u00efdes"
+ },
+ "Survivor_RightUpperLeg": {
+  "name": "Survivor_RightUpperLeg",
+  "region": "RightUpperLeg",
+  "cat": "skin",
+  "base": [
+   0.16470588235294117,
+   0.21176470588235294,
+   0.3058823529411765
+  ],
+  "tris": 8296,
+  "info": "Survivant : cuisse droite (jean us\u00e9 rapi\u00e9c\u00e9 au genou, poche cargo)"
+ },
+ "RightLowerLeg_Phalanges": {
+  "name": "RightLowerLeg_Phalanges",
+  "region": "RightLowerLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 8000,
+  "info": "Phalanges des orteils droite (14) et s\u00e9samo\u00efdes"
+ },
+ "LeftLowerArm_Radius": {
+  "name": "LeftLowerArm_Radius",
+  "region": "LeftLowerArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 7000,
+  "info": "Radius gauche (t\u00eate, tub\u00e9rosit\u00e9, stylo\u00efde, tubercule de Lister)"
+ },
+ "LeftLowerArm_Ulna": {
+  "name": "LeftLowerArm_Ulna",
+  "region": "LeftLowerArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 7000,
+  "info": "Ulna (cubitus) gauche (ol\u00e9crane, processus corono\u00efde, t\u00eate, stylo\u00efde)"
+ },
+ "LeftLowerArm_Metacarpals": {
+  "name": "LeftLowerArm_Metacarpals",
+  "region": "LeftLowerArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 7000,
+  "info": "M\u00e9tacarpiens gauche (5)"
+ },
+ "RightLowerArm_Ulna": {
+  "name": "RightLowerArm_Ulna",
+  "region": "RightLowerArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 7000,
+  "info": "Ulna (cubitus) droit (ol\u00e9crane, processus corono\u00efde, t\u00eate, stylo\u00efde)"
+ },
+ "RightLowerArm_Radius": {
+  "name": "RightLowerArm_Radius",
+  "region": "RightLowerArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 7000,
+  "info": "Radius droit (t\u00eate, tub\u00e9rosit\u00e9, stylo\u00efde, tubercule de Lister)"
+ },
+ "RightLowerArm_Metacarpals": {
+  "name": "RightLowerArm_Metacarpals",
+  "region": "RightLowerArm",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 7000,
+  "info": "M\u00e9tacarpiens droit (5)"
+ },
+ "LeftLowerLeg_Metatarsals": {
+  "name": "LeftLowerLeg_Metatarsals",
+  "region": "LeftLowerLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 7000,
+  "info": "M\u00e9tatarsiens gauche (5)"
+ },
+ "RightLowerLeg_Metatarsals": {
+  "name": "RightLowerLeg_Metatarsals",
+  "region": "RightLowerLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 7000,
+  "info": "M\u00e9tatarsiens droite (5)"
+ },
+ "Survivor_LeftUpperArm": {
+  "name": "Survivor_LeftUpperArm",
+  "region": "LeftUpperArm",
+  "cat": "skin",
+  "base": [
+   0.2823529411764706,
+   0.3137254901960784,
+   0.18823529411764706
+  ],
+  "tris": 6832,
+  "info": "Survivant : bras gauche (manche de veste, coudi\u00e8re, \u00e9cusson)"
+ },
+ "LeftUpperArm_Ligaments": {
+  "name": "LeftUpperArm_Ligaments",
+  "region": "LeftUpperArm",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 896,
+  "info": "Ligaments gauche (collat\u00e9raux du coude, annulaire, r\u00e9tinaculum des fl\u00e9chisseurs) - partie bras"
+ },
+ "LeftLowerArm_Ligaments": {
+  "name": "LeftLowerArm_Ligaments",
+  "region": "LeftLowerArm",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 3608,
+  "info": "Ligaments gauche (collat\u00e9raux du coude, annulaire, r\u00e9tinaculum des fl\u00e9chisseurs) - partie avant-bras"
+ },
+ "RightUpperArm_Ligaments": {
+  "name": "RightUpperArm_Ligaments",
+  "region": "RightUpperArm",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 896,
+  "info": "Ligaments droit (collat\u00e9raux du coude, annulaire, r\u00e9tinaculum des fl\u00e9chisseurs) - partie bras"
+ },
+ "RightLowerArm_Ligaments": {
+  "name": "RightLowerArm_Ligaments",
+  "region": "RightLowerArm",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 3608,
+  "info": "Ligaments droit (collat\u00e9raux du coude, annulaire, r\u00e9tinaculum des fl\u00e9chisseurs) - partie avant-bras"
+ },
+ "LeftUpperLeg_Tendons": {
+  "name": "LeftUpperLeg_Tendons",
+  "region": "LeftUpperLeg",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 488,
+  "info": "Tendons gauche (rotulien, quadricipital, calcan\u00e9en d'Achille) - partie cuisse"
+ },
+ "LeftLowerLeg_Tendons": {
+  "name": "LeftLowerLeg_Tendons",
+  "region": "LeftLowerLeg",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 2120,
+  "info": "Tendons gauche (rotulien, quadricipital, calcan\u00e9en d'Achille) - partie jambe"
+ },
+ "LeftLowerLeg_Fibula": {
+  "name": "LeftLowerLeg_Fibula",
+  "region": "LeftLowerLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 5000,
+  "info": "Fibula (p\u00e9ron\u00e9) gauche"
+ },
+ "RightUpperLeg_Tendons": {
+  "name": "RightUpperLeg_Tendons",
+  "region": "RightUpperLeg",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 488,
+  "info": "Tendons droite (rotulien, quadricipital, calcan\u00e9en d'Achille) - partie cuisse"
+ },
+ "RightLowerLeg_Tendons": {
+  "name": "RightLowerLeg_Tendons",
+  "region": "RightLowerLeg",
+  "cat": "ligament",
+  "base": [
+   0.92,
+   0.9,
+   0.82
+  ],
+  "tris": 2120,
+  "info": "Tendons droite (rotulien, quadricipital, calcan\u00e9en d'Achille) - partie jambe"
+ },
+ "RightLowerLeg_Fibula": {
+  "name": "RightLowerLeg_Fibula",
+  "region": "RightLowerLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 5000,
+  "info": "Fibula (p\u00e9ron\u00e9) droite"
+ },
+ "Survivor_RightUpperArm": {
+  "name": "Survivor_RightUpperArm",
+  "region": "RightUpperArm",
+  "cat": "skin",
+  "base": [
+   0.2823529411764706,
+   0.3137254901960784,
+   0.18823529411764706
+  ],
+  "tris": 6832,
+  "info": "Survivant : bras droit (manche de veste, coudi\u00e8re)"
+ },
+ "LeftUpperArm_Cartilage_Elbow": {
+  "name": "LeftUpperArm_Cartilage_Elbow",
+  "region": "LeftUpperArm",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 3000,
+  "info": "Cartilage hum\u00e9ral du coude gauche (trochl\u00e9e, capitulum)"
+ },
+ "Survivor_RightLowerArm": {
+  "name": "Survivor_RightLowerArm",
+  "region": "RightLowerArm",
+  "cat": "skin",
+  "base": [
+   0.8313725490196079,
+   0.611764705882353,
+   0.47058823529411764
+  ],
+  "tris": 6832,
+  "info": "Survivant : avant-bras droit (manche retrouss\u00e9e, bandage tach\u00e9 de sang, mitaine)"
+ },
+ "RightUpperArm_Cartilage_Elbow": {
+  "name": "RightUpperArm_Cartilage_Elbow",
+  "region": "RightUpperArm",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 3000,
+  "info": "Cartilage hum\u00e9ral du coude droit (trochl\u00e9e, capitulum)"
+ },
+ "LeftLowerLeg_Menisci": {
+  "name": "LeftLowerLeg_Menisci",
+  "region": "LeftLowerLeg",
+  "cat": "cartilage",
+  "base": [
+   0.85,
+   0.87,
+   0.86
+  ],
+  "tris": 3000,
+  "info": "M\u00e9nisques m\u00e9dial et lat\u00e9ral gauche"
+ },
+ "LeftUpperLeg_Patella": {
+  "name": "LeftUpperLeg_Patella",
+  "region": "LeftUpperLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 3000,
+  "info": "Rotule gauche"
+ },
+ "RightLowerLeg_Menisci": {
+  "name": "RightLowerLeg_Menisci",
+  "region": "RightLowerLeg",
+  "cat": "cartilage",
+  "base": [
+   0.85,
+   0.87,
+   0.86
+  ],
+  "tris": 3000,
+  "info": "M\u00e9nisques m\u00e9dial et lat\u00e9ral droite"
+ },
+ "RightUpperLeg_Patella": {
+  "name": "RightUpperLeg_Patella",
+  "region": "RightUpperLeg",
+  "cat": "bone",
+  "base": [
+   0.89,
+   0.85,
+   0.75
+  ],
+  "tris": 3000,
+  "info": "Rotule droite"
+ },
+ "LeftUpperArm_Cartilage_Shoulder": {
+  "name": "LeftUpperArm_Cartilage_Shoulder",
+  "region": "LeftUpperArm",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2500,
+  "info": "Cartilage de la t\u00eate hum\u00e9rale gauche"
+ },
+ "RightUpperArm_Cartilage_Shoulder": {
+  "name": "RightUpperArm_Cartilage_Shoulder",
+  "region": "RightUpperArm",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2500,
+  "info": "Cartilage de la t\u00eate hum\u00e9rale droit"
+ },
+ "LeftLowerArm_Cartilage_Wrist": {
+  "name": "LeftLowerArm_Cartilage_Wrist",
+  "region": "LeftLowerArm",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2500,
+  "info": "Cartilage du poignet et disque triangulaire gauche"
+ },
+ "LeftUpperLeg_Cartilage_Hip": {
+  "name": "LeftUpperLeg_Cartilage_Hip",
+  "region": "LeftUpperLeg",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2500,
+  "info": "Cartilage de la t\u00eate f\u00e9morale gauche"
+ },
+ "RightLowerArm_Cartilage_Wrist": {
+  "name": "RightLowerArm_Cartilage_Wrist",
+  "region": "RightLowerArm",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2500,
+  "info": "Cartilage du poignet et disque triangulaire droit"
+ },
+ "RightUpperLeg_Cartilage_Hip": {
+  "name": "RightUpperLeg_Cartilage_Hip",
+  "region": "RightUpperLeg",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2500,
+  "info": "Cartilage de la t\u00eate f\u00e9morale droite"
+ },
+ "LeftLowerLeg_Cartilage_Ankle": {
+  "name": "LeftLowerLeg_Cartilage_Ankle",
+  "region": "LeftLowerLeg",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2000,
+  "info": "Cartilage du d\u00f4me du talus gauche"
+ },
+ "LeftLowerLeg_Cartilage_TibialPlateau": {
+  "name": "LeftLowerLeg_Cartilage_TibialPlateau",
+  "region": "LeftLowerLeg",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2000,
+  "info": "Cartilage du plateau tibial gauche"
+ },
+ "RightLowerLeg_Cartilage_Ankle": {
+  "name": "RightLowerLeg_Cartilage_Ankle",
+  "region": "RightLowerLeg",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2000,
+  "info": "Cartilage du d\u00f4me du talus droite"
+ },
+ "RightLowerLeg_Cartilage_TibialPlateau": {
+  "name": "RightLowerLeg_Cartilage_TibialPlateau",
+  "region": "RightLowerLeg",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 2000,
+  "info": "Cartilage du plateau tibial droite"
+ },
+ "LeftLowerArm_Cartilage_RadialHead": {
+  "name": "LeftLowerArm_Cartilage_RadialHead",
+  "region": "LeftLowerArm",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 1500,
+  "info": "Cartilage de la t\u00eate radiale gauche"
+ },
+ "RightLowerArm_Cartilage_RadialHead": {
+  "name": "RightLowerArm_Cartilage_RadialHead",
+  "region": "RightLowerArm",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 1500,
+  "info": "Cartilage de la t\u00eate radiale droit"
+ },
+ "LeftUpperLeg_Cartilage_Knee": {
+  "name": "LeftUpperLeg_Cartilage_Knee",
+  "region": "LeftUpperLeg",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 4500,
+  "info": "Cartilages du genou gauche (condyles f\u00e9moraux, trochl\u00e9e, rotule)"
+ },
+ "RightUpperLeg_Cartilage_Knee": {
+  "name": "RightUpperLeg_Cartilage_Knee",
+  "region": "RightUpperLeg",
+  "cat": "cartilage",
+  "base": [
+   0.8,
+   0.86,
+   0.9
+  ],
+  "tris": 4500,
+  "info": "Cartilages du genou droite (condyles f\u00e9moraux, trochl\u00e9e, rotule)"
+ }
+}

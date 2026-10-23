@@ -33,6 +33,15 @@ CONV = np.array([[-1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 3], [0, 0, 0, 1]], float
 CONV_INV = np.linalg.inv(CONV)
 
 
+def fcurves_of(act):
+    """Courbes d'une action (actions à emplacements de Blender 4.4+, ou ancienne API)."""
+    layers = getattr(act, 'layers', None)
+    if layers is not None and len(layers) > 0:
+        return [fc for layer in layers for strip in layer.strips
+                for cb in getattr(strip, 'channelbags', []) for fc in cb.fcurves]
+    return list(getattr(act, 'fcurves', None) or [])
+
+
 def clear_action(act):
     """Supprime toutes les courbes d'une action (actions à emplacements de Blender 4.4+ ou ancienne API)."""
     removed = 0
@@ -106,6 +115,12 @@ def update():
                 pb.matrix_basis = Matrix(basis.tolist())
                 pb.keyframe_insert('location', frame=fi + 1, group=name)
                 pb.keyframe_insert('rotation_quaternion', frame=fi + 1, group=name)
+        # linéaire entre les images, comme Roblox entre ses images clés (keyframe_insert de Blender 5.2 ignore la
+        # préférence et crée des clés de Bézier)
+        for fc in fcurves_of(act):
+            for kp in fc.keyframe_points:
+                kp.interpolation = 'LINEAR'
+            fc.update()
         print(f'{clip.name}: {n_old} courbes remplacées, {n + 1} images')
     ad.action = bpy.data.actions.get(active_before) if active_before else None
     for pb in arm.pose.bones:
@@ -143,8 +158,9 @@ def verify():
                     if d > jump[0]:
                         jump = (d, b, f)
             prev = cur
+        interp = sorted({kp.interpolation for fc in fcurves_of(act) for kp in fc.keyframe_points})
         print(f'{name:28s} images {f0}-{f1} ; saut max {jump[0]:5.1f}° ({jump[1]}, image {jump[2]}) ; '
-              f'rotation max {amp[0]:5.1f}° ({amp[1]}, image {amp[2]})')
+              f'rotation max {amp[0]:5.1f}° ({amp[1]}, image {amp[2]}) ; interpolation {"/".join(interp)}')
 
 
 if BLEND_IN:

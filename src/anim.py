@@ -374,13 +374,16 @@ def solve_rocker_ik(WT, side, C, zs):
     return _snap(WT, side, ang), float(np.degrees(a_s)), ok
 
 
-def solve_flat(WT, side, foot):
+def solve_flat(WT, side, foot, upright=False):
     """Planted boot lying flat (shin vertical, boot pointing forward) with its sole centre at `foot`
-    (rig space, y = ground)."""
+    (rig space, y = ground). The shin leans sideways towards the hip, unless `upright`: then the knee is right
+    above the boot and the sole stays level, as in the crouch walk (wide, deep stances, where the leaning shin
+    rolled the boot onto its inner edge, which sank into the ground)."""
     H = apply(WT, HIP_PIV[side])
     A = np.array([foot[0], foot[1], foot[2]], float)
     K = A + np.array([0.0, L_SHIN, 0.0])
-    K[0] = A[0] + (H[0] - A[0]) * (K[1] - A[1]) / max(H[1] - A[1], 1e-3)
+    if not upright:
+        K[0] = A[0] + (H[0] - A[0]) * (K[1] - A[1]) / max(H[1] - A[1], 1e-3)
     ang = _angles_from_points(WT, side, H, K, A)
     ok = ang['d'] >= -1e-3
     ang['d'] = max(0.0, ang['d'])
@@ -406,7 +409,7 @@ def build(root, head=None, arms=None, legs=None, ground='feet', clamp=True, clam
     for side in SIDES:
         L = dict(legs.get(side, {}))
         if 'foot' in L:
-            ang, _ = solve_flat(WT, side, L['foot'])
+            ang, _ = solve_flat(WT, side, L['foot'], L.get('upright', False))
         else:
             ang = {k: L.get(k, 0.0) for k in ('pitch', 'abd', 'twist', 'knee', 'd')}
         world[UPPER_LEG[side]], world[LOWER_LEG[side]] = leg_world(WT, side, **ang)
@@ -785,7 +788,9 @@ def crouch_idle(t):
     head = dict(pitch=22 + s_(br, 0.8, off=0.3), yaw=look - 0.6 * root['yaw'], roll=-0.4 * root['tilt'])
     arms = {'Right': dict(pitch=34 + s_(br, 1.5, off=0.2), abd=8 + s_(br, 0.6), twist=6, elbow=58 + s_(br, 2.0)),
             'Left': dict(pitch=28 + s_(br, 1.5, off=0.25), abd=10 + s_(br, 0.6), twist=6, elbow=50 + s_(br, 2.0, off=0.2))}
-    legs = {s: dict(foot=f) for s, f in CROUCH_FEET.items()}
+    # the wide front (right) boot keeps its sole level, its knee right above it (leaning towards the hip, the shin
+    # rolled it onto its inner edge, 0.08 stud into the ground); the folded back leg keeps its toes forward
+    legs = {s: dict(foot=f, upright=(s == 'Right')) for s, f in CROUCH_FEET.items()}
     return build(root, head, arms, legs)
 
 
@@ -1002,7 +1007,7 @@ def _desc(root, head, arms, legs, ground='feet'):
     out_l, out_a = {}, {}
     for side, L in legs.items():
         if 'foot' in L:
-            ang, _ = solve_flat(WT, side, L['foot'])
+            ang, _ = solve_flat(WT, side, L['foot'], L.get('upright', False))
             out_l[side] = ang
         else:
             out_l[side] = {k: L.get(k, 0.0) for k in ('pitch', 'abd', 'twist', 'knee', 'd')}

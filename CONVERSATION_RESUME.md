@@ -305,3 +305,11 @@ sol pendant un appui ou un balancement.
 
 **Scène Blender** : les 15 actions de `Survivant_R6_Anime.blend` viennent du même `anim.py`. Le script
 `outils/maj_actions_blend.py` les recalcule sur l'armature existante (maillages et pistes NLA conservés).
+
+**Suite (même jour)** : première passe cloud (branche `blender-corrige`, `RAPPORT_BLENDER.md`) : actions
+recalculées, contrôles conformes, maillages et NLA identiques. Elle a relevé deux points, corrigés ensuite sur
+`main` : dans l'accroupi sur place, la botte droite (pied avant écarté) roulait sur son bord intérieur et entrait
+de 0,07 stud dans le sol (tibia penché vers la hanche ; `solve_flat(..., upright=True)` pour ce pied, comme la
+marche accroupie) ; les clés Blender étaient en Bézier (`keyframe_insert` de Blender 5.2 ignore la préférence),
+`maj_actions_blend.py` force maintenant l'interpolation linéaire. Deuxième passe cloud : branche
+`blender-corrige-v2` (`TACHE_CLOUD.md`).

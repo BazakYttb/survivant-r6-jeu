@@ -1,6 +1,12 @@
-"""Peau réaliste faite dans Blender : matière procédurale sur la version HD (marbrures, rougeurs aux
-articulations, veines, crasse dans les plis, griffures, grain de peau, rides), puis cuisson Cycles « sélection
-vers actif » (HD -> maillage jeu) en trois images : couleur, rugosité, normale (espace tangent).
+"""Peau réaliste faite dans Blender : matière de la version HD, puis cuisson Cycles « sélection vers actif »
+(HD -> maillage jeu) en trois images : couleur, rugosité, normale (espace tangent).
+
+La matière mêle de vraies textures de peau et des couches procédurales. Textures réelles (dossier real_dir, voir
+textures_reelles.py) : grain de couleur, relief (pores, ridules, plis) et brillance tirés d'un scan de tête
+(« Infinite, 3D Head Scan » de Lee Perry-Smith, Infinite-Realities, CC BY 3.0), posés en projection triplanaire
+(deux motifs, deux échelles, mélangés par un bruit pour casser la répétition). Couches procédurales : marbrures,
+rougeurs aux articulations, ecchymoses, veines, crasse dans les plis, terre sur les pieds, griffures, rides et plis
+alignés sur les membres.
 
 Types (attribut Mat) : 0 peau, 1 peau du crâne, 2 dent, 3 gencive, 4 ongle/griffe."""
 import math
@@ -11,7 +17,24 @@ import bpy
 from mon_tex import NB, _mask, unwrap, tex_size, _new_image, final_material, save_images
 
 
-def skin_material(name='MON_Peau_HD', ao_distance=0.18):
+def _photo(nb, path, vec, blend=0.3):
+    """Image raccordable en projection triplanaire (coordonnées objet), données brutes (non-couleur)."""
+    img = bpy.data.images.load(path, check_existing=True)
+    img.colorspace_settings.name = 'Non-Color'
+    n = nb.node('ShaderNodeTexImage', Vector=vec)
+    n.image = img
+    n.projection = 'BOX'
+    n.projection_blend = blend
+    n.interpolation = 'Cubic'
+    n.extension = 'REPEAT'
+    return n.outputs['Color']
+
+
+def _tri(nb, p, tile, offset=(0.0, 0.0, 0.0)):
+    return nb.vmath('SCALE', nb.vmath('ADD', p, offset), scale=1.0 / tile)
+
+
+def skin_material(name='MON_Peau_HD', ao_distance=0.18, real_dir=None, color_gain=2.2, relief_gain=1.1):
     mat = bpy.data.materials.new(name)
     nt = mat.node_tree
     nb = NB(nt)
@@ -32,6 +55,18 @@ def skin_material(name='MON_Peau_HD', ao_distance=0.18):
     m2 = nb.node('ShaderNodeTexNoise', Vector=p, Scale=7.0, Detail=3.0).outputs['Fac']
     m3 = nb.node('ShaderNodeTexNoise', Vector=p, Scale=0.9, Detail=2.0).outputs['Fac']
     col = nb.mix(nb.maprange(m1, 0.3, 0.7), nb.rgbmul(base, (0.8, 0.83, 0.93, 1)), nb.rgbmul(base, (1.1, 0.97, 0.86, 1)))
+    if real_dir:
+        # grain de couleur d'une vraie peau : rapport à la teinte locale (moyenne 0,5 dans l'image), contraste accru
+        ca = _photo(nb, os.path.join(real_dir, 'peau_couleur_1.png'), _tri(nb, p, 0.9))
+        cb = _photo(nb, os.path.join(real_dir, 'peau_couleur_2.png'), _tri(nb, p, 1.25, (3.1, 1.7, 5.3)))
+        mixc = nb.maprange(nb.node('ShaderNodeTexNoise', Vector=p, Scale=0.8, Detail=2.0).outputs['Fac'], 0.42, 0.58,
+                           smooth=True)
+        cdet = nb.mix(mixc, ca, cb)
+        ratio = nb.N.new('ShaderNodeVectorMath'); ratio.operation = 'MULTIPLY_ADD'
+        nb.L.new(cdet, ratio.inputs[0])
+        ratio.inputs[1].default_value = (2 * color_gain,) * 3
+        ratio.inputs[2].default_value = (1 - color_gain,) * 3
+        col = nb.rgbmul(col, ratio.outputs['Vector'])
     spots = nb.maprange(nb.node('ShaderNodeTexVoronoi', Vector=p, Scale=18.0, Randomness=1.0).outputs['Distance'], 0.0, 0.2, 1.0, 0.0, smooth=True)
     col = nb.mix(nb.math('MULTIPLY', spots, nb.math('MULTIPLY', nb.maprange(m2, 0.55, 0.75), 0.35)), col, nb.rgbmul(col, (0.85, 0.72, 0.66, 1)))
     col = nb.mix(nb.math('MULTIPLY', nb.maprange(m3, 0.5, 0.72), 0.6), col, nb.rgbmul(col, (1.14, 0.84, 0.8, 1)))
@@ -83,7 +118,10 @@ def skin_material(name='MON_Peau_HD', ao_distance=0.18):
     # rugosité
     r_skin = nb.math('ADD', 0.42, nb.math('ADD', nb.math('MULTIPLY', m2, 0.16), nb.math('MULTIPLY', grime, 0.12)))
     r_skin = nb.math('ADD', r_skin, nb.math('MULTIPLY', dirt, 0.2))
-    r_skin = nb.math('ADD', r_skin, nb.math('MULTIPLY', masks[1], -0.08))
+    r_skin = nb.math('ADD', r_skin, nb.math('MULTIPLY', masks[1], -0.02))
+    if real_dir:                       # brillance réelle : pores mats, plaques plus grasses
+        sp = _photo(nb, os.path.join(real_dir, 'peau_brillance.png'), _tri(nb, p, 0.9, (1.3, 4.1, 2.2)))
+        r_skin = nb.math('ADD', r_skin, nb.math('MULTIPLY', nb.math('SUBTRACT', 0.5, sp), 0.3))
     rough = nb.math('ADD', nb.math('MULTIPLY', r_skin, nb.math('ADD', masks[0], masks[1])),
                     nb.math('ADD', nb.math('MULTIPLY', masks[2], 0.32),
                             nb.math('ADD', nb.math('MULTIPLY', masks[3], 0.16), nb.math('MULTIPLY', masks[4], 0.3))))
@@ -101,6 +139,14 @@ def skin_material(name='MON_Peau_HD', ao_distance=0.18):
     fo = nb.node('ShaderNodeTexNoise', Vector=q2, Scale=1.0, Detail=2.0, Roughness=0.5).outputs['Fac']
     folds = nb.math('MULTIPLY', nb.maprange(fo, 0.45, 0.6, smooth=True), redm)
     bumps = nb.math('ADD', bumps, nb.math('MULTIPLY', folds, -1.6))
+    if real_dir:
+        # relief réel : pores, ridules et plis du scan (deux motifs, deux échelles), à la place du grain procédural
+        pa = _photo(nb, os.path.join(real_dir, 'peau_relief_pores_1.png'), _tri(nb, p, 0.85))
+        pb = _photo(nb, os.path.join(real_dir, 'peau_relief_pores_2.png'), _tri(nb, p, 0.7, (7.3, 2.9, 4.1)))
+        mixr = nb.maprange(nb.node('ShaderNodeTexNoise', Vector=p, Scale=1.1, Detail=2.0).outputs['Fac'], 0.42, 0.58,
+                           smooth=True)
+        hr = nb.math('SUBTRACT', nb.mix(mixr, pa, pb), 0.5)
+        g = nb.math('ADD', nb.math('MULTIPLY', hr, relief_gain / 0.06), 0.5)
     h_skin = nb.math('ADD', nb.math('MULTIPLY', g, 0.06),
                      nb.math('ADD', nb.math('MULTIPLY', wrin, -0.35),
                              nb.math('ADD', nb.math('MULTIPLY', vein, 0.25),
@@ -112,7 +158,7 @@ def skin_material(name='MON_Peau_HD', ao_distance=0.18):
     nb.L.new(col, b.inputs['Base Color'])
     nb.L.new(nb.math('MAXIMUM', rough, 0.05, clamp=True), b.inputs['Roughness'])
     nb.L.new(bump.outputs['Normal'], b.inputs['Normal'])
-    b.inputs['Specular IOR Level'].default_value = 0.45
+    b.inputs['Specular IOR Level'].default_value = 0.42
     return mat
 
 
@@ -158,10 +204,10 @@ def bake_from_hd(lo, hd, size, samples=12, margin=8, extrusion=0.035, max_ray=0.
     return imgs
 
 
-def texture_from_hd(los, hds, folder, samples=12, density=200.0, coat=0.0, log=True):
+def texture_from_hd(los, hds, folder, samples=12, density=200.0, coat=0.0, log=True, real_dir=None):
     """los : maillages jeu ; hds : {pièce: objet HD}. Les maillages jeu sont invisibles aux rayons pendant la cuisson
-    (l'occlusion ne voit que la version HD)."""
-    skin = bpy.data.materials.get('MON_Peau_HD') or skin_material()
+    (l'occlusion ne voit que la version HD). real_dir : dossier des vraies textures de peau (sinon procédural seul)."""
+    skin = bpy.data.materials.get('MON_Peau_HD') or skin_material(real_dir=real_dir)
     for h in hds.values():
         h.data.materials.clear()
         h.data.materials.append(skin)

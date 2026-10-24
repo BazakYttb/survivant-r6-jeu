@@ -7,14 +7,18 @@ Chaîne complète, à lancer depuis ce dossier (temps mesurés sur 4 cœurs, 15 
 
 ```bash
 PY=chemin/vers/venv/bin/python
+$PY -I textures_reelles.py dossier_du_scan ../textures_reelles         # (une fois) motifs de peau tirés du scan
 $PY construire.py -- creature.blend                                    # anatomie -> corps continu -> 37 pièces (~4 min)
-$PY cuire_textures.py -- creature.blend creature_tex.blend textures/   # UV + cuisson couleur/rugosité/normale (~8 min)
+$PY cuire_textures.py -- creature.blend creature_tex.blend textures/   # UV + cuisson couleur/rugosité/normale (~10 min)
 $PY rendus.py -- creature_tex.blend rendus/ trois_quarts,trois_quarts_sombre,face,profil,dos,tete,main,pliage 1024 96
 $PY exporter.py -- creature_tex.blend ../..                            # monstre/blender/Monstre.blend, monstre/export/*
 $PY verifier_export.py -- ../..                                        # réimporte GLB/FBX et contrôle noms, triangles, marqueurs
 ```
 
-(`cuire_textures.py` lit la variable d'environnement `BSPP`, échantillons de la cuisson de couleur : 16 pour les livrables.)
+`cuire_textures.py` lit les variables d'environnement `BSPP` (échantillons de la cuisson de couleur : 16 pour les
+livrables), `TDENS` (pixels par stud, 300 par défaut) et `PEAU_REELLE` (dossier des vraies textures de peau, par défaut
+`../textures_reelles` ; `aucune` pour une peau procédurale seule). Les motifs de `../textures_reelles` sont déjà faits :
+`textures_reelles.py` ne sert qu'à les refaire depuis le scan (voir `../textures_reelles/LISEZMOI.md`).
 
 | Fichier | Rôle |
 |---|---|
@@ -27,7 +31,8 @@ $PY verifier_export.py -- ../..                                        # réimpo
 | `mon_build.py` | assemblage des maillages (numpy <-> Blender), décimation |
 | `mon_cut.py` | découpe du corps continu en pièces (os le plus proche) et manchons rentrés sous la peau |
 | `mon_tex.py` | dépliage UV (Smart UV Project), images, matière finale à textures |
-| `mon_skin.py` | peau procédurale (marbrures, rougeurs, ecchymoses, veines, crasse, terre sur les pieds, griffures, rides, plis, grain) et cuisson « sélection vers actif » |
+| `mon_skin.py` | matière de peau : vraies textures de peau en projection triplanaire (grain de couleur, pores et plis, brillance) et couches procédurales (marbrures, rougeurs, ecchymoses, veines, crasse, terre sur les pieds, griffures, rides, plis) ; cuisson « sélection vers actif » |
+| `textures_reelles.py` | motifs de peau raccordables tirés d'un scan de tête réel (CC BY 3.0) |
 | `mon_rig.py` | rig d'empties dans Blender, poses (présentation, test de pliage) |
 | `mon_scene.py`, `mon_scene2.py` | scènes de rendu : brume claire, intérieur sombre en bois, lueur de la gueule |
 | `construire.py`, `cuire_textures.py`, `rendus.py`, `exporter.py`, `verifier_export.py` | les étapes ci-dessus |

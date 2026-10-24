@@ -20,6 +20,9 @@ tests en jeu.
    basse projetée vers l'avant, lisse, allongée et sans yeux, la fente de gueule aux crocs fins avec la lueur
    orangée, les bras qui pendent jusqu'aux genoux et les longs doigts griffus. Les racines des pieds sont devenues
    de longs pieds osseux griffus ; les tendons noirs et les filaments ont disparu au profit de la peau.
+4. Enfin : « rajoute des meilleures textures, des trucs très réalistes que tu peux créer, générer ou trouver sur
+   internet, mais des vraies textures ». La peau mêle maintenant de **vraies textures de peau scannée** (grain de
+   couleur, pores, ridules et plis, brillance d'un scan de tête humaine, voir § 5) aux couches procédurales.
 
 ## 2. Rendus (`monstre/rendus/`, Cycles, 1024 × 1536)
 
@@ -68,32 +71,53 @@ tests en jeu.
    même pièce.
 5. **Textures** (`cuire_textures.py`, `mon_skin.py`, `mon_tex.py`) : dépliage Smart UV Project par maillage, puis
    cuisson Cycles « sélection vers actif » depuis la peau continue : couleur (16 échantillons), rugosité, normale en
-   espace tangent. Peau procédurale de la version haute définition : marbrures, rougeurs aux articulations,
-   ecchymoses, veines bleutées, crasse dans les plis (occlusion), terre sur les pieds et le bas des jambes, griffures
-   sombres, grain, rides et plis aux articulations ; crocs jaunis, gencives rouge sombre, griffes noires à pointe
-   claire. Taille des images : 256 à 1024 px selon la surface (≈ 200 px par stud).
+   espace tangent (4 échantillons). La matière de la peau haute définition mêle :
+   - de **vraies textures de peau** (§ 5) en projection triplanaire : grain de couleur (deux motifs, deux échelles,
+     mélangés par un bruit pour casser la répétition), relief des pores, ridules et plis (deux motifs), brillance ;
+   - des couches procédurales à l'échelle du corps : marbrures, rougeurs aux articulations, ecchymoses, veines
+     bleutées, crasse dans les plis (occlusion), terre sur les pieds et le bas des jambes, griffures sombres, rides et
+     plis alignés sur les membres ; crocs jaunis, gencives rouge sombre, griffes noires à pointe claire.
+   Taille des images : 256 à 1024 px selon la surface (≈ 300 px par stud, 1024 px au plus, la limite de Roblox).
 6. **Rendus** (`rendus.py`, `mon_scene2.py`) : brume claire (ciel clair, sol qui se fond dans la brume, brume
    volumique, soleil et contre-jour) et intérieur sombre en planches (lampe chaude, contre-jour froid). Diffusion
    sous la peau (rendu seulement) ; lueur orangée dans la gueule (sphère émissive et lampe ponctuelle, parentées à la
    tête), à l'endroit du marqueur `GLOW_MOUTH`.
 
-## 5. Maillages
+## 5. Vraies textures : source, licence, méthode
+
+- Source : **« Infinite, 3D Head Scan » de Lee Perry-Smith**, Infinite-Realities (http://www.ir-ltd.net/), d'après
+  un travail sur www.triplegangers.com, licence **Creative Commons Attribution 3.0 (CC BY 3.0)**. Fichiers utilisés :
+  la carte de couleur (`Map-COL.jpg`), la carte spéculaire (`Map-SPEC.jpg`) et la carte de relief 4096 px
+  (`Infinite-Level_02_Disp_NoSmoothUV-4096.jpg`), distribués avec three.js (`examples/models/gltf/LeePerrySmith/`).
+- Méthode (`scripts/textures_reelles.py`) : zones de peau propre seulement (haut du crâne, cou, nuque ; ni barbe, ni
+  yeux, ni oreilles), passe-haut (le grain reste, l'éclairage et la forme du visage partent), raccord sans couture
+  (mélange avec la copie décalée d'une demi-période, pondération qui garde le contraste). Résultat dans
+  `monstre/blender/textures_reelles/` : 2 motifs de couleur, 2 de relief (16 bits), 1 de brillance.
+- Échelle : un motif couvre 0,7 à 1,25 stud sur le monstre ; le grain est donc agrandi par rapport à une peau humaine
+  (créature de plus de 10 studs, textures de jeu à ≈ 300 px par stud), pour rester lisible dans Roblox.
+- **Crédit obligatoire** dans le jeu (licence CC BY) : « Détail de peau : Infinite, 3D Head Scan by Lee Perry-Smith
+  (Infinite-Realities), CC BY 3.0 ».
+- Les grandes bibliothèques de textures libres (ambientcg.com, polyhaven.com, 3dtextures.me, cgbookcase.com,
+  texture.ninja, commons.wikimedia.org) n'étaient pas joignables depuis l'environnement de travail (politique réseau) ;
+  les fichiers bruts de GitHub l'étaient, d'où ce scan distribué avec three.js.
+
+## 6. Maillages
 
 | Maillage | Pièce | Parent | Triangles | Textures (px) |
 |---|---|---|---:|---:|
-| `MON_Pelvis_1` | Pelvis | HumanoidRootPart | 12 922 | 512 |
-| `MON_Abdomen_1` | Abdomen | Pelvis | 12 157 | 512 |
-| `MON_Chest_1` | Chest | Abdomen | 18 999 | 512 |
+| `MON_Pelvis_1` | Pelvis | HumanoidRootPart | 12 922 | 1024 |
+| `MON_Abdomen_1` | Abdomen | Pelvis | 12 157 | 1024 |
+| `MON_Chest_1` | Chest | Abdomen | 18 999 | 1024 |
 | `MON_UpperChest_1` | UpperChest | Chest | 19 000 | 1024 |
 | `MON_Neck_1` | Neck | UpperChest | 5 841 | 512 |
 | `MON_Head_1` | Head | Neck | 14 937 | 1024 |
-| `MON_Jaw_1` | Jaw | Head | 5 000 | 256 |
+| `MON_Jaw_1` | Jaw | Head | 5 000 | 512 |
 | `MON_Thigh_R_1` | Thigh_R | Pelvis | 10 340 | 1024 |
-| `MON_Shin_R_1` | Shin_R | Thigh_R | 9 387 | 512 |
+| `MON_Shin_R_1` | Shin_R | Thigh_R | 9 387 | 1024 |
 | `MON_Foot_R_1` | Foot_R | Shin_R | 7 010 | 512 |
-| `MON_UpperArm_R_1` | UpperArm_R | UpperChest | 7 178 | 512 |
+| `MON_UpperArm_R_1` | UpperArm_R | UpperChest | 7 178 | 1024 |
 | `MON_Forearm_R_1` | Forearm_R | UpperArm_R | 5 190 | 512 |
-| `MON_Hand_R_1` | Hand_R | Forearm_R | 3 653 | 256 |
+| `MON_Hand_R_1` | Hand_R | Forearm_R | 3 653 | 512 |
 | `MON_Index1_R_1` | Index1_R | Hand_R | 1 406 | 256 |
 | `MON_Index2_R_1` | Index2_R | Index1_R | 1 461 | 256 |
 | `MON_Middle1_R_1` | Middle1_R | Hand_R | 1 496 | 256 |
@@ -104,11 +128,11 @@ tests en jeu.
 | `MON_Pinky2_R_1` | Pinky2_R | Pinky1_R | 1 325 | 256 |
 | `MON_Thumb1_R_1` | Thumb1_R | Hand_R | 1 688 | 256 |
 | `MON_Thigh_L_1` | Thigh_L | Pelvis | 10 171 | 1024 |
-| `MON_Shin_L_1` | Shin_L | Thigh_L | 9 337 | 512 |
+| `MON_Shin_L_1` | Shin_L | Thigh_L | 9 337 | 1024 |
 | `MON_Foot_L_1` | Foot_L | Shin_L | 6 946 | 512 |
-| `MON_UpperArm_L_1` | UpperArm_L | UpperChest | 7 220 | 512 |
+| `MON_UpperArm_L_1` | UpperArm_L | UpperChest | 7 220 | 1024 |
 | `MON_Forearm_L_1` | Forearm_L | UpperArm_L | 5 105 | 512 |
-| `MON_Hand_L_1` | Hand_L | Forearm_L | 3 636 | 256 |
+| `MON_Hand_L_1` | Hand_L | Forearm_L | 3 636 | 512 |
 | `MON_Index1_L_1` | Index1_L | Hand_L | 1 424 | 256 |
 | `MON_Index2_L_1` | Index2_L | Index1_L | 1 472 | 256 |
 | `MON_Middle1_L_1` | Middle1_L | Hand_L | 1 489 | 256 |
@@ -121,7 +145,7 @@ tests en jeu.
 
 Total : **200 607 triangles** en 37 maillages (un par pièce), de 1 314 à 19 000 par maillage (limite Roblox : 20 000). Les griffes et les crocs sont comptés avec leur pièce. Chaque maillage a ses trois images : `T_<Pièce>_1_Couleur.png`, `_Rugosite.png`, `_Normale.png` (intégrées au GLB, au FBX et au .blend).
 
-## 6. Rig
+## 7. Rig
 
 Rig rigide sur mesure, hiérarchie et pivots de `rig_spec()` (repère Roblox, studs). La racine `HumanoidRootPart` est
 au pivot du bassin. Dans `Monstre.blend`, un empty `RIG_<Pièce>` par pièce, placé au pivot de son articulation et
@@ -169,7 +193,7 @@ englobante, hauteur, marqueurs, position de la lueur, repère de la tête et cha
 | Pinky2_L | Pinky1_L | Pinky2Joint_L | (-2,711 ; 3,214 ; -0,682) |
 | Thumb1_L | Hand_L | Thumb1Joint_L | (-2,281 ; 4,314 ; -1,443) |
 
-## 7. Repère, échelle et marqueurs
+## 8. Repère, échelle et marqueurs
 
 - 1 unité Blender = 1 stud. Repère Roblox : Y vers le haut, le monstre regarde vers −Z, sa droite est +X. Dans
   Blender : (x, y, z) Blender = (X, −Z, Y) Roblox (le monstre regarde vers +Y, Z vers le haut). Le GLB (Y en haut)
@@ -180,14 +204,14 @@ englobante, hauteur, marqueurs, position de la lueur, repère de la tête et cha
 - Hauteur du monstre dans sa posture voûtée : 10,61 studs (du sol au sommet du dos) ; la plante des pieds est
   vers Y = 0, les griffes des orteils descendent jusqu'à Y = -0,14.
 
-## 8. Export
+## 9. Export
 
 | Fichier | Contenu | Réglages |
 |---|---|---|
 | `export/Monstre.glb` | 37 maillages `MON_*` + 5 marqueurs, textures intégrées (couleur, normale, rugosité par maillage) | glTF binaire, Y en haut, modificateurs appliqués, normales (personnalisées) et UV, matières exportées, images PNG intégrées, pas de couleurs de sommets |
 | `export/Monstre.fbx` | les mêmes maillages et marqueurs, textures intégrées | échelle 1, `FBX_SCALE_NONE`, axes −Z avant / Y haut, normales seules (pas de groupes de lissage), textures copiées et intégrées |
 | `export/Monstre_couleurs_sommets.glb` | repli sans textures : couleurs des textures cuites dans les couleurs de sommets | glTF binaire, couleurs de sommets actives |
-| `export/rig.json` | rig, maillages, marqueurs | voir § 6 |
+| `export/rig.json` | rig, maillages, marqueurs | voir § 7 |
 | `blender/Monstre.blend` | scène complète compressée : maillages, matières à textures (images empaquetées), rig d'empties, marqueurs, scène de rendu prête (brume, lueur de la gueule, caméra trois quarts, Cycles) | la version haute définition de cuisson n'y est pas (elle se régénère) |
 
 À l'import dans Studio (*Importer 3D*), les maillages texturés deviennent des MeshParts avec SurfaceAppearance.
@@ -206,9 +230,9 @@ Monstre_couleurs_sommets.glb : 37 maillages MON_, 200607 triangles (max 19000), 
 VERIF OK
 ```
 
-Tailles : `Monstre.glb` 20,3 Mo, `Monstre.fbx` 21,9 Mo, `Monstre_couleurs_sommets.glb` 7,5 Mo, `Monstre.blend` 24,1 Mo. Boîte englobante (Roblox) : X de -2,85 à 2,85, Y de -0,14 à 10,61, Z de -3,34 à 0,79.
+Tailles : `Monstre.glb` 40,2 Mo, `Monstre.fbx` 42,1 Mo, `Monstre_couleurs_sommets.glb` 7,5 Mo, `Monstre.blend` 44,2 Mo. Boîte englobante (Roblox) : X de -2,85 à 2,85, Y de -0,14 à 10,61, Z de -3,34 à 0,79.
 
-## 9. Comparaison avec les références
+## 10. Comparaison avec les références
 
 - **Image de style de l'utilisateur** : peau pâle et réaliste, créature nue, très maigre, membres démesurés, os qui
   affleurent ; même ambiance sombre (rendu `trois_quarts_sombre`). Le visage de l'image étant masqué, la tête vient
@@ -218,7 +242,7 @@ Tailles : `Monstre.glb` 20,3 Mo, `Monstre.fbx` 21,9 Mo, `Monstre_couleurs_sommet
   avec lueur orangée, fond clair et brumeux. Ce qui a changé à la demande de l'utilisateur : la matière (peau au lieu
   de tendons noirs mouillés), plus de filaments ni de trous, pieds griffus au lieu de racines.
 
-## 10. Limites connues
+## 11. Limites connues
 
 - **Rig rigide** : chaque pièce bouge en bloc. Les manchons comblent les trous quand une articulation plie, mais un
   pli franc montre la jointure comme un anneau net (voir `pliage.png`), surtout aux hanches, aux genoux et à la
@@ -227,15 +251,18 @@ Tailles : `Monstre.glb` 20,3 Mo, `Monstre.fbx` 21,9 Mo, `Monstre_couleurs_sommet
   sont plus courts sur la cage thoracique (limite de triangles) : le tronc doit garder de petites rotations.
 - Raccords invisibles au repos dans Blender ; dans Roblox, ils dépendent du respect des normales importées et du
   filtrage des textures au bord des îlots UV (un fin liseré reste possible de près).
-- **Textures par maillage** (37 jeux de 3 images, 256 à 1024 px) : environ 18 Mo d'images ; la diffusion sous la peau,
-  la brume et la lueur n'existent que dans les rendus Blender.
+- **Textures par maillage** (37 jeux de 3 images, 256 à 1024 px) : environ 34 Mo d'images ; la diffusion sous la peau,
+  la brume et la lueur n'existent que dans les rendus Blender. Le grain des vraies textures est agrandi (pores à
+  l'échelle d'une créature géante) : de très près, dans Roblox, la limite de 1024 px par image reste visible.
+- Licence des textures de peau : CC BY 3.0, le crédit de l'auteur du scan est obligatoire (§ 5).
 - Total 200 607 triangles : dans la cible (150 000 à 300 000), mais lourd pour un PNJ ; une version plus légère se
   fait en baissant les budgets de `construire.py` (la cuisson garde le détail dans les normales).
 - Taille : environ 10,61 studs de haut ; `Model:ScaleTo()` dans Studio pour l'ajuster.
 - Jamais importé dans un vrai Roblox Studio depuis cette session : la vérification a été faite en réimportant le GLB
   et le FBX dans Blender.
 
-## 11. Régénérer
+## 12. Régénérer
 
-Voir `monstre/blender/scripts/README.md` : `construire.py` (≈ 4 min), `cuire_textures.py` (≈ 8 min), `rendus.py`
-(≈ 5 min par vue en 1024 px), `exporter.py`, `verifier_export.py`.
+Voir `monstre/blender/scripts/README.md` : `textures_reelles.py` (motifs de peau depuis le scan, une fois),
+`construire.py` (≈ 4 min), `cuire_textures.py` (≈ 10 min), `rendus.py` (≈ 5 min par vue en 1024 px), `exporter.py`,
+`verifier_export.py`.

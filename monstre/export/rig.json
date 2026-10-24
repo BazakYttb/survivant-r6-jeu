@@ -1,0 +1,560 @@
+{
+ "unites": "studs (1 unité Blender = 1 stud)",
+ "repere": "Roblox : Y vers le haut, le monstre regarde vers -Z, sa droite est +X ; Blender (x, y, z) = Roblox (X, -Z, Y)",
+ "hauteur_studs": 10.606,
+ "racine": {
+  "nom": "HumanoidRootPart",
+  "pivot": [
+   0.0,
+   7.128,
+   0.2904
+  ]
+ },
+ "pieces": {
+  "Pelvis": {
+   "parent": "HumanoidRootPart",
+   "pivot": [
+    0.0,
+    7.128,
+    0.2904
+   ],
+   "articulation": "Root",
+   "maillages": [
+    "MON_Pelvis_1"
+   ],
+   "triangles": 12922
+  },
+  "Abdomen": {
+   "parent": "Pelvis",
+   "pivot": [
+    0.0,
+    7.854,
+    0.3168
+   ],
+   "articulation": "SpineLow",
+   "maillages": [
+    "MON_Abdomen_1"
+   ],
+   "triangles": 12157
+  },
+  "Chest": {
+   "parent": "Abdomen",
+   "pivot": [
+    0.0,
+    8.8176,
+    0.1584
+   ],
+   "articulation": "SpineMid",
+   "maillages": [
+    "MON_Chest_1"
+   ],
+   "triangles": 18999
+  },
+  "UpperChest": {
+   "parent": "Chest",
+   "pivot": [
+    0.0,
+    9.6096,
+    -0.2904
+   ],
+   "articulation": "SpineHigh",
+   "maillages": [
+    "MON_UpperChest_1"
+   ],
+   "triangles": 19000
+  },
+  "Neck": {
+   "parent": "UpperChest",
+   "pivot": [
+    0.0,
+    10.296,
+    -0.924
+   ],
+   "articulation": "NeckBase",
+   "maillages": [
+    "MON_Neck_1"
+   ],
+   "triangles": 5841
+  },
+  "Head": {
+   "parent": "Neck",
+   "pivot": [
+    0.0,
+    10.0848,
+    -1.584
+   ],
+   "articulation": "HeadJoint",
+   "maillages": [
+    "MON_Head_1"
+   ],
+   "triangles": 14937
+  },
+  "Jaw": {
+   "parent": "Head",
+   "pivot": [
+    0.0,
+    9.8728,
+    -1.86528
+   ],
+   "articulation": "JawHinge",
+   "maillages": [
+    "MON_Jaw_1"
+   ],
+   "triangles": 5000
+  },
+  "Thigh_R": {
+   "parent": "Pelvis",
+   "pivot": [
+    0.66,
+    6.864,
+    0.2904
+   ],
+   "articulation": "Hip_R",
+   "maillages": [
+    "MON_Thigh_R_1"
+   ],
+   "triangles": 10340
+  },
+  "Shin_R": {
+   "parent": "Thigh_R",
+   "pivot": [
+    0.9504,
+    3.9864,
+    -0.8184
+   ],
+   "articulation": "Knee_R",
+   "maillages": [
+    "MON_Shin_R_1"
+   ],
+   "triangles": 9387
+  },
+  "Foot_R": {
+   "parent": "Shin_R",
+   "pivot": [
+    1.1352,
+    0.8712,
+    0.2904
+   ],
+   "articulation": "Ankle_R",
+   "maillages": [
+    "MON_Foot_R_1"
+   ],
+   "triangles": 7010
+  },
+  "UpperArm_R": {
+   "parent": "UpperChest",
+   "pivot": [
+    1.2936,
+    9.7944,
+    -0.5808
+   ],
+   "articulation": "Shoulder_R",
+   "maillages": [
+    "MON_UpperArm_R_1"
+   ],
+   "triangles": 7178
+  },
+  "Forearm_R": {
+   "parent": "UpperArm_R",
+   "pivot": [
+    1.98,
+    7.0752,
+    -1.0296
+   ],
+   "articulation": "Elbow_R",
+   "maillages": [
+    "MON_Forearm_R_1"
+   ],
+   "triangles": 5190
+  },
+  "Hand_R": {
+   "parent": "Forearm_R",
+   "pivot": [
+    2.4552,
+    4.5672,
+    -1.3728
+   ],
+   "articulation": "Wrist_R",
+   "maillages": [
+    "MON_Hand_R_1"
+   ],
+   "triangles": 3653
+  },
+  "Index1_R": {
+   "parent": "Hand_R",
+   "pivot": [
+    2.39841,
+    3.74083,
+    -1.47698
+   ],
+   "articulation": "Index1Joint_R",
+   "maillages": [
+    "MON_Index1_R_1"
+   ],
+   "triangles": 1406
+  },
+  "Index2_R": {
+   "parent": "Index1_R",
+   "pivot": [
+    2.18238,
+    2.94008,
+    -1.13374
+   ],
+   "articulation": "Index2Joint_R",
+   "maillages": [
+    "MON_Index2_R_1"
+   ],
+   "triangles": 1461
+  },
+  "Middle1_R": {
+   "parent": "Hand_R",
+   "pivot": [
+    2.54248,
+    3.70868,
+    -1.36738
+   ],
+   "articulation": "Middle1Joint_R",
+   "maillages": [
+    "MON_Middle1_R_1"
+   ],
+   "triangles": 1496
+  },
+  "Middle2_R": {
+   "parent": "Middle1_R",
+   "pivot": [
+    2.38965,
+    2.78445,
+    -0.94016
+   ],
+   "articulation": "Middle2Joint_R",
+   "maillages": [
+    "MON_Middle2_R_1"
+   ],
+   "triangles": 1613
+  },
+  "Ring1_R": {
+   "parent": "Hand_R",
+   "pivot": [
+    2.67945,
+    3.74247,
+    -1.2585
+   ],
+   "articulation": "Ring1Joint_R",
+   "maillages": [
+    "MON_Ring1_R_1"
+   ],
+   "triangles": 1433
+  },
+  "Ring2_R": {
+   "parent": "Ring1_R",
+   "pivot": [
+    2.56252,
+    2.93619,
+    -0.76912
+   ],
+   "articulation": "Ring2Joint_R",
+   "maillages": [
+    "MON_Ring2_R_1"
+   ],
+   "triangles": 1516
+  },
+  "Pinky1_R": {
+   "parent": "Hand_R",
+   "pivot": [
+    2.79409,
+    3.83845,
+    -1.16246
+   ],
+   "articulation": "Pinky1Joint_R",
+   "maillages": [
+    "MON_Pinky1_R_1"
+   ],
+   "triangles": 1346
+  },
+  "Pinky2_R": {
+   "parent": "Pinky1_R",
+   "pivot": [
+    2.71089,
+    3.21438,
+    -0.68196
+   ],
+   "articulation": "Pinky2Joint_R",
+   "maillages": [
+    "MON_Pinky2_R_1"
+   ],
+   "triangles": 1325
+  },
+  "Thumb1_R": {
+   "parent": "Hand_R",
+   "pivot": [
+    2.28126,
+    4.31385,
+    -1.44263
+   ],
+   "articulation": "Thumb1Joint_R",
+   "maillages": [
+    "MON_Thumb1_R_1"
+   ],
+   "triangles": 1688
+  },
+  "Thigh_L": {
+   "parent": "Pelvis",
+   "pivot": [
+    -0.66,
+    6.864,
+    0.2904
+   ],
+   "articulation": "Hip_L",
+   "maillages": [
+    "MON_Thigh_L_1"
+   ],
+   "triangles": 10171
+  },
+  "Shin_L": {
+   "parent": "Thigh_L",
+   "pivot": [
+    -0.9504,
+    3.9864,
+    -0.8184
+   ],
+   "articulation": "Knee_L",
+   "maillages": [
+    "MON_Shin_L_1"
+   ],
+   "triangles": 9337
+  },
+  "Foot_L": {
+   "parent": "Shin_L",
+   "pivot": [
+    -1.1352,
+    0.8712,
+    0.2904
+   ],
+   "articulation": "Ankle_L",
+   "maillages": [
+    "MON_Foot_L_1"
+   ],
+   "triangles": 6946
+  },
+  "UpperArm_L": {
+   "parent": "UpperChest",
+   "pivot": [
+    -1.2936,
+    9.7944,
+    -0.5808
+   ],
+   "articulation": "Shoulder_L",
+   "maillages": [
+    "MON_UpperArm_L_1"
+   ],
+   "triangles": 7220
+  },
+  "Forearm_L": {
+   "parent": "UpperArm_L",
+   "pivot": [
+    -1.98,
+    7.0752,
+    -1.0296
+   ],
+   "articulation": "Elbow_L",
+   "maillages": [
+    "MON_Forearm_L_1"
+   ],
+   "triangles": 5105
+  },
+  "Hand_L": {
+   "parent": "Forearm_L",
+   "pivot": [
+    -2.4552,
+    4.5672,
+    -1.3728
+   ],
+   "articulation": "Wrist_L",
+   "maillages": [
+    "MON_Hand_L_1"
+   ],
+   "triangles": 3636
+  },
+  "Index1_L": {
+   "parent": "Hand_L",
+   "pivot": [
+    -2.39841,
+    3.74083,
+    -1.47698
+   ],
+   "articulation": "Index1Joint_L",
+   "maillages": [
+    "MON_Index1_L_1"
+   ],
+   "triangles": 1424
+  },
+  "Index2_L": {
+   "parent": "Index1_L",
+   "pivot": [
+    -2.18238,
+    2.94008,
+    -1.13374
+   ],
+   "articulation": "Index2Joint_L",
+   "maillages": [
+    "MON_Index2_L_1"
+   ],
+   "triangles": 1472
+  },
+  "Middle1_L": {
+   "parent": "Hand_L",
+   "pivot": [
+    -2.54248,
+    3.70868,
+    -1.36738
+   ],
+   "articulation": "Middle1Joint_L",
+   "maillages": [
+    "MON_Middle1_L_1"
+   ],
+   "triangles": 1489
+  },
+  "Middle2_L": {
+   "parent": "Middle1_L",
+   "pivot": [
+    -2.38965,
+    2.78445,
+    -0.94016
+   ],
+   "articulation": "Middle2Joint_L",
+   "maillages": [
+    "MON_Middle2_L_1"
+   ],
+   "triangles": 1616
+  },
+  "Ring1_L": {
+   "parent": "Hand_L",
+   "pivot": [
+    -2.67945,
+    3.74247,
+    -1.2585
+   ],
+   "articulation": "Ring1Joint_L",
+   "maillages": [
+    "MON_Ring1_L_1"
+   ],
+   "triangles": 1433
+  },
+  "Ring2_L": {
+   "parent": "Ring1_L",
+   "pivot": [
+    -2.56252,
+    2.93619,
+    -0.76912
+   ],
+   "articulation": "Ring2Joint_L",
+   "maillages": [
+    "MON_Ring2_L_1"
+   ],
+   "triangles": 1523
+  },
+  "Pinky1_L": {
+   "parent": "Hand_L",
+   "pivot": [
+    -2.79409,
+    3.83845,
+    -1.16246
+   ],
+   "articulation": "Pinky1Joint_L",
+   "maillages": [
+    "MON_Pinky1_L_1"
+   ],
+   "triangles": 1354
+  },
+  "Pinky2_L": {
+   "parent": "Pinky1_L",
+   "pivot": [
+    -2.71089,
+    3.21438,
+    -0.68196
+   ],
+   "articulation": "Pinky2Joint_L",
+   "maillages": [
+    "MON_Pinky2_L_1"
+   ],
+   "triangles": 1314
+  },
+  "Thumb1_L": {
+   "parent": "Hand_L",
+   "pivot": [
+    -2.28126,
+    4.31385,
+    -1.44263
+   ],
+   "articulation": "Thumb1Joint_L",
+   "maillages": [
+    "MON_Thumb1_L_1"
+   ],
+   "triangles": 1669
+  }
+ },
+ "marqueurs": {
+  "REF_A": [
+   0.0,
+   5.0,
+   0.0
+  ],
+  "REF_B": [
+   0.0,
+   7.0,
+   0.0
+  ],
+  "REF_C": [
+   1.5,
+   5.0,
+   0.0
+  ],
+  "REF_D": [
+   0.0,
+   5.0,
+   -1.0
+  ]
+ },
+ "marqueur_taille": 0.05,
+ "lueur_gueule": [
+  0.0,
+  9.0236,
+  -2.31455
+ ],
+ "tete": {
+  "centre": [
+   0.0,
+   9.73914,
+   -2.32206
+  ],
+  "avant": [
+   0.0,
+   -0.76604,
+   -0.64279
+  ],
+  "haut": [
+   0.0,
+   0.64279,
+   -0.76604
+  ],
+  "charniere_machoire": [
+   0.0,
+   9.8728,
+   -1.86528
+  ],
+  "ouverture_machoire_deg": 14.0
+ },
+ "boite_englobante": {
+  "min": [
+   -2.854,
+   -0.138,
+   -3.344
+  ],
+  "max": [
+   2.854,
+   10.606,
+   0.787
+  ]
+ },
+ "total_triangles": 200607
+}

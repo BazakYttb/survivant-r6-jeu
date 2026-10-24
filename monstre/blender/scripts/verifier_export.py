@@ -68,10 +68,22 @@ def check(path, kind):
             inward.append(o.name)
     if inward:
         errs.append('normales douteuses : %s' % inward)
+    sang = sorted(o.name for o in obs if o.name.startswith('SANG_'))
+    if 'couleurs_sommets' not in os.path.basename(path):
+        if len(sang) != 7:
+            errs.append('gabarits de sang : %d au lieu de 7 (%s)' % (len(sang), sang))
+        for n in sang:
+            o = bpy.data.objects[n]
+            m = o.data.materials[0] if o.data.materials else None
+            imgs_m = [nd.image for nd in (m.node_tree.nodes if m and m.node_tree else []) if nd.type == 'TEX_IMAGE' and nd.image]
+            if not imgs_m:
+                errs.append('gabarit %s sans texture' % n)
+            if abs(o.data.polygons[0].normal[2]) < 0.99 and abs(o.data.polygons[0].normal[1]) < 0.99:
+                errs.append('gabarit %s pas horizontal' % n)
     imgs = [i for i in bpy.data.images if i.size[0] > 0]
     mats = set(m.name for o in mon for m in o.data.materials if m)
-    print('%s : %d maillages MON_, %d triangles (max %d), %d matières, %d images, hauteur %.2f studs'
-          % (os.path.basename(path), len(mon), sum(tris.values()), max(tris.values()), len(mats), len(imgs), h))
+    print('%s : %d maillages MON_, %d triangles (max %d), %d matières, %d images, hauteur %.2f studs, %d gabarits de sang'
+          % (os.path.basename(path), len(mon), sum(tris.values()), max(tris.values()), len(mats), len(imgs), h, len(sang)))
     for e in errs:
         print('  ERREUR', e)
     if not errs:

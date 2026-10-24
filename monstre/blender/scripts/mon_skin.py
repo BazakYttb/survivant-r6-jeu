@@ -34,7 +34,7 @@ def _tri(nb, p, tile, offset=(0.0, 0.0, 0.0)):
     return nb.vmath('SCALE', nb.vmath('ADD', p, offset), scale=1.0 / tile)
 
 
-def skin_material(name='MON_Peau_HD', ao_distance=0.18, real_dir=None, color_gain=2.2, relief_gain=1.1):
+def skin_material(name='MON_Peau_HD', ao_distance=0.18, real_dir=None, color_gain=2.2, relief_gain=1.1, blood=False):
     mat = bpy.data.materials.new(name)
     nt = mat.node_tree
     nb = NB(nt)
@@ -154,6 +154,30 @@ def skin_material(name='MON_Peau_HD', ao_distance=0.18, real_dir=None, color_gai
     h = nb.math('ADD', nb.math('MULTIPLY', h_skin, nb.math('ADD', masks[0], nb.math('MULTIPLY', masks[1], 0.6))),
                 nb.math('ADD', nb.math('MULTIPLY', masks[3], nb.math('MULTIPLY', m2, 0.4)),
                         nb.math('MULTIPLY', masks[4], nb.math('MULTIPLY', stri, 0.3))))
+    if blood:
+        # sang (attributs Sang et SangFrais calculés par mon_sang.py) : par-dessus tout, crocs et griffes compris.
+        # Bords rongés par un bruit fin ; mince = peau teintée, épais = couche opaque ; frais = rouge sombre mouillé,
+        # séché = croûte brun-rouge mate et craquelée.
+        s_at = nb.node('ShaderNodeAttribute', _attribute_name='Sang').outputs['Fac']
+        f_at = nb.node('ShaderNodeAttribute', _attribute_name='SangFrais').outputs['Fac']
+        bn = nb.node('ShaderNodeTexNoise', Vector=p, Scale=60.0, Detail=4.0, Roughness=0.62).outputs['Fac']
+        bn2 = nb.node('ShaderNodeTexNoise', Vector=p, Scale=9.0, Detail=3.0, Roughness=0.5).outputs['Fac']
+        sv = nb.math('SUBTRACT', s_at, nb.math('ADD', nb.math('MULTIPLY', nb.math('SUBTRACT', bn, 0.5), 0.38),
+                                                 nb.math('MULTIPLY', nb.math('SUBTRACT', bn2, 0.5), 0.3)))
+        cover = nb.maprange(sv, 0.34, 0.52, smooth=True)
+        stain = nb.maprange(sv, 0.06, 0.34, smooth=True)
+        fresh = nb.maprange(f_at, 0.25, 0.85, smooth=True)
+        bcol = nb.mix(fresh, (0.042, 0.012, 0.009, 1), (0.1, 0.007, 0.006, 1))
+        thick = nb.maprange(s_at, 0.6, 1.0, smooth=True)       # le sang épais est presque noir
+        bcol = nb.rgbmul(bcol, nb.gray(nb.math('MULTIPLY', nb.math('ADD', 0.78, nb.math('MULTIPLY', bn2, 0.45)),
+                                                 nb.math('SUBTRACT', 1.0, nb.math('MULTIPLY', thick, 0.4)))))
+        col = nb.mix(nb.math('MULTIPLY', stain, 0.7), col, nb.rgbmul(col, (0.6, 0.3, 0.27, 1)))
+        col = nb.mix(cover, col, bcol)
+        rough = nb.mix(cover, rough, nb.maprange(fresh, 0.0, 1.0, 0.58, 0.07), dtype='FLOAT')
+        crack = nb.node('ShaderNodeTexVoronoi', Vector=p, Scale=28.0, _feature='DISTANCE_TO_EDGE').outputs['Distance']
+        crust = nb.math('MULTIPLY', nb.math('MULTIPLY', cover, nb.math('SUBTRACT', 1.0, fresh)),
+                        nb.maprange(crack, 0.0, 0.05, 1.0, 0.0, smooth=True))
+        h = nb.math('ADD', h, nb.math('SUBTRACT', nb.math('MULTIPLY', cover, 0.14), nb.math('MULTIPLY', crust, 0.22)))
     bump = nb.node('ShaderNodeBump', Strength=0.45, Distance=0.006, Height=h)
     nb.L.new(col, b.inputs['Base Color'])
     nb.L.new(nb.math('MAXIMUM', rough, 0.05, clamp=True), b.inputs['Roughness'])
@@ -204,10 +228,10 @@ def bake_from_hd(lo, hd, size, samples=12, margin=8, extrusion=0.035, max_ray=0.
     return imgs
 
 
-def texture_from_hd(los, hds, folder, samples=12, density=200.0, coat=0.0, log=True, real_dir=None):
+def texture_from_hd(los, hds, folder, samples=12, density=200.0, coat=0.0, log=True, real_dir=None, blood=False):
     """los : maillages jeu ; hds : {pièce: objet HD}. Les maillages jeu sont invisibles aux rayons pendant la cuisson
     (l'occlusion ne voit que la version HD). real_dir : dossier des vraies textures de peau (sinon procédural seul)."""
-    skin = bpy.data.materials.get('MON_Peau_HD') or skin_material(real_dir=real_dir)
+    skin = bpy.data.materials.get('MON_Peau_HD') or skin_material(real_dir=real_dir, blood=blood)
     for h in hds.values():
         h.data.materials.clear()
         h.data.materials.append(skin)

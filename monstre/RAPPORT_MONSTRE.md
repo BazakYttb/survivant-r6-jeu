@@ -1,8 +1,9 @@
 # Le monstre du jeu de survie : modèle Blender, export Roblox, rapport
 
-Branche `monstre-blender`. Tout est fait dans Blender 5.2 (module `bpy`, sans interface) : modélisation procédurale,
-textures cuites, rendus Cycles, export. La session locale fera l'import dans Roblox Studio, le montage du rig et les
-tests en jeu.
+Branche `monstre-blender`. Modèle, textures (sang compris), rendus et export sont faits dans Blender 5.2 (module
+`bpy`, sans interface) ; les animations (déplacement et 8 mises à mort) sont calculées en Python, et le paquet Roblox
+(`monstre/roblox/`) monte le rig, anime le monstre et ses victimes, et déroule les mises à mort en jeu. L'installation
+dans Roblox Studio se fait chez l'utilisateur, en trois gestes ou par Claude en local (`monstre/CLAUDE.md`).
 
 ![Trois quarts face](rendus/trois_quarts.png)
 
@@ -23,8 +24,17 @@ tests en jeu.
 4. Enfin : « rajoute des meilleures textures, des trucs très réalistes que tu peux créer, générer ou trouver sur
    internet, mais des vraies textures ». La peau mêle maintenant de **vraies textures de peau scannée** (grain de
    couleur, pores, ridules et plis, brillance d'un scan de tête humaine, voir § 5) aux couches procédurales.
+5. Puis : « rajoute des textures de sang dessus. Fais ses animations gore » (morsure au cou, morsure répétée,
+   dévoration, attaque au ventre, traînée, « extraction » suggérée, frénésie, victime contaminée), « ainsi que la
+   marche, course, saut etc. et importe-la dans Roblox ». Le sang est cuit dans les textures (§ 6) ; 21 animations du
+   monstre et 13 de la victime (§ 7) ; un paquet Roblox complet (§ 8). Une session dans le cloud ne peut pas agir dans
+   le Studio de l'utilisateur : l'import se fait chez lui (`monstre/roblox/LISEZMOI.md`, trois gestes) ou par Claude
+   en local avec le serveur MCP de Studio (`monstre/CLAUDE.md`).
 
 ## 2. Rendus (`monstre/rendus/`, Cycles, 1024 × 1536)
+
+Toutes les vues montrent le sang cuit dans les textures (§ 6) : gueule et menton, mains et griffes, coulures et
+éclaboussures sur les bras, le torse et les jambes.
 
 | Fichier | Vue |
 |---|---|
@@ -34,6 +44,8 @@ tests en jeu.
 | `main.png` | gros plan de la main droite |
 | `trois_quarts_sombre.png`, `tete_sombre.png` | dans une pièce sombre en bois, comme l'image de style de l'utilisateur (même posture) |
 | `pliage.png` | contrôle : articulations franchement pliées (manchons) |
+| `animations/*.gif` | les 8 mises à mort et le déplacement, animés (aperçu rapide, § 7) |
+| `apercu_morts_1.jpg`, `apercu_morts_2.jpg`, `apercu_deplacement.jpg` | planches Cycles des animations (§ 7) |
 
 ## 3. Versions et environnement
 
@@ -101,7 +113,100 @@ tests en jeu.
   texture.ninja, commons.wikimedia.org) n'étaient pas joignables depuis l'environnement de travail (politique réseau) ;
   les fichiers bruts de GitHub l'étaient, d'où ce scan distribué avec three.js.
 
-## 6. Maillages
+## 6. Sang
+
+Le monstre vient de dévorer quelqu'un : le sang est **cuit dans les textures** (couleur, rugosité, relief), comme le
+reste de la peau, donc il est aussi dans Roblox.
+
+1. **Où** (`mon_sang.py`) : deux attributs par sommet sur la peau haute définition, `Sang` (quantité) et `SangFrais`
+   (1 frais et mouillé, 0 séché). Sources : lèvres, gencives et crocs, menton et gorge (la mâchoire entière est
+   ensanglantée), mains et griffes imbibées, avant-bras, éclaboussures sur le torse, les bras et les cuisses, pieds qui
+   ont marché dedans. Les **coulures** partent de ces zones et descendent de sommet en sommet le long de la plus forte
+   pente (un peu de hasard), s'amincissent et finissent par une goutte. Surface couverte : 8,2 % du corps, 27 à 28 %
+   des mains, toute la mâchoire. Tirages fixés (graine par zone) : le résultat est reproductible.
+2. **Matière** (`mon_skin.py`, cuite par `cuire_textures.py`) : deux bruits découpent le bord des taches ; couche
+   épaisse (rouge très sombre quand elle est fraîche, brun-rouge mat quand elle a séché, noircie là où elle est
+   épaisse), auréole teintée autour, rugosité de 0,07 (frais, brillant) à 0,58 (sec), relief : épaisseur en surépaisseur
+   et craquelures de croûte (cellules de Voronoï).
+3. **Décalques pour le jeu** (`sang_decals.py`) : flaque, trois éclaboussures, traînée raccordable (bande de 4 × 1),
+   sang sur l'écran et goutte pour les particules, en couleur avec transparence, rugosité et relief. Ils sont exportés
+   comme 7 plans `SANG_*` posés à côté du monstre dans le FBX et le GLB : l'import de Roblox téléverse leurs textures,
+   l'installateur les range comme gabarits (`ReplicatedStorage.Monstre.Effets`, transparence par l'alpha) et le jeu les
+   copie au sol (flaques qui s'étendent, éclaboussures, traînée), devant la caméra de la victime, et en particules.
+
+## 7. Animations
+
+Calculées en Python (`mon_anim.py`, `mon_clips.py`, `mon_morts.py`) sur le rig rigide de 37 pièces, plus une pièce
+`VictimeAncre` (enfant du HumanoidRootPart) qui porte la victime pendant une mise à mort.
+
+- **Cadre** : cinématique directe ; IK des jambes à pieds plantés (le lacet du bassin est compensé, roulis pour l'écart
+  latéral, pieds tenus à plat ou au pitch voulu) ; IK des bras (paume sur un point, coude orienté) ; pistes à clés
+  lissées (Hermite monotone) ; pas et demi-tours sur place (pieds en arcs autour de l'axe du corps).
+- **Déplacement et gestes** (9 clips) : repos (respiration, regard qui balaie, doigts qui se crispent), marche
+  (5,5 studs/s) et course (20 studs/s) à pieds plantés (le pied recule exactement à la vitesse du clip), saut, chute
+  (bras qui battent), atterrissage, hurlement, flairer, attaque.
+- **Victime** : le rig du survivant R6 articulé (`src/anim.py` du projet, lu sans être modifié). Son HumanoidRootPart
+  est soudé à `VictimeAncre` ; la piste de l'ancre la colle à la gueule (morsures) ou à une paume (saisies), la pose
+  au sol (son point le plus bas posé sur le sol), ou la fait traîner par la cheville (tangage calculé pour que la tête
+  et le dos frottent le sol). Ses propres animations (lutte, corps mou, chute, mort) sont des clips du survivant.
+- **Les 8 mises à mort** (12 clips appariés monstre + victime, 2,2 à 5,4 s) :
+
+| Mise à mort | Phases (clips) | Moments clés (marqueurs) |
+|---|---|---|
+| 🩸 Morsure au cou | `k_cou` 3,6 s | saisie par les épaules (IK des deux mains), soulevée jusqu'à la gueule ; morsure à 1,05 s avec coupure au noir de 0,4 s, éclaboussures, sang sur l'écran ; tête qui secoue ; corps lâché (2,42 s), flaque sous le cou |
+| 🦷 Morsure répétée | `k_repetee` 3,4 s | tenue d'une main par l'épaule ; morsures à 0,85, 1,2, 1,55 et 1,9 s (la victime est tirée vers la gueule) ; jetée sur le côté à 2,3 s |
+| 👹 Dévoration | `k_dev_saisie` 2,9 s, `k_dev_trainer` (boucle 3 s), `k_dev_tourner` 2,2 s, `k_dev_manger` (boucle 2,4 s) | renversée, saisie par la cheville, demi-tour ; traînée (marche penchée à reculons du HumanoidRootPart, corps tourné de 180°, traînée de sang) ; se retourne, s'agenouille, la soulève et la dévore (mastication, arrachements) |
+| 💀 Attaque au ventre | `k_ventre` 3,3 s | élan ; griffes dans le ventre à 0,56 s (la victime est soulevée, IK de la main dans le torse) ; torsion ; retrait à 1,4 s ; elle se plie, tombe à genoux puis sur le côté |
+| 🩸 Traînée | `k_trainee_saisie` 2,7 s, `k_trainee_trainer` (boucle 2 s) | comme la dévoration mais la victime est vivante (elle s'agrippe au sol, se débat) et tirée vite (8 studs/s) hors de la pièce ; longue traînée de sang |
+| 🫀 Extraction | `k_extraction` 5,4 s | plaquée au sol (main gauche sur la poitrine), il s'agenouille et fouille (main droite qui plonge et tire, IK) ; caméra derrière son épaule à 1,2 s ; coupure au noir d'1 s à 3,8 s ; il se relève, la main à la gueule |
+| 🐺 Frénésie | `k_frenesie` 3,8 s | renversée ; 12 coups et morsures de 0,62 à 2,38 s (pulsations d'IK des mains et de la gueule), caméra qui tremble ; à 2,65 s, silence soudain de 2,5 s et il se fige |
+| ☣️ Contamination | `k_contamination` 2,8 s | saisie par l'avant-bras, morsure à 0,72 s (marqueur `Infection`), jetée à 1,35 s ; elle finit face contre terre dans la pose « allongé » du survivant, d'où elle se relève (clip `getup`) |
+
+Aperçus (victime figurée par des boîtes aux proportions et aux couleurs du survivant) : **GIF animés**
+`rendus/animations/<mise à mort>.gif` (les 8 mises à mort, phases enchaînées, sol qui défile à la vitesse du clip,
+traînée de sang au sol pendant les traînées) et `rendus/animations/deplacement.gif` (repos, marche, course, saut,
+chute, atterrissage, hurlement, flairer, attaque), faits avec le moteur d'aperçu rapide (`gif_morts.py`) ; planches
+Cycles `rendus/apercu_morts_1.jpg`, `rendus/apercu_morts_2.jpg`, `rendus/apercu_deplacement.jpg`.
+
+![Morsure au cou](rendus/animations/morsure_cou.gif) ![Dévoration](rendus/animations/devoration.gif)
+
+Pour Roblox (`exporter_roblox.py`) : échantillonnage à 30 images/s, clés réduites **piste par piste** (garder les
+clés dont l'interpolation s'écarte de plus de 0,5 degré ou 5 mm ; 0,8 degré pour les doigts), quantification (temps
+en ms, quaternion et translation sur 16 bits), base64. Résultat : 13 364 clés pour le monstre (21 clips) et 4 720 pour
+la victime (13 clips), 281 Ko de données ; écart maximal avec le calcul d'origine : 0,8 degré.
+
+## 8. Paquet Roblox (`monstre/roblox/`, détails dans `roblox/LISEZMOI.md`)
+
+- **Installation** : *Importer 3D* de `export/Monstre.fbx`, insertion du kit `roblox/Monstre_Kit.rbxmx`, puis
+  `require(workspace.Monstre_Kit.Installateur)()` dans la barre de commande. L'installateur retrouve échelle et
+  orientation par les marqueurs, remet le modèle à l'échelle 1 et debout, monte le rig (HumanoidRootPart, 38 Motor6D
+  aux pivots, Humanoid R15 HipHeight 5,928, lueur de la gueule), range les gabarits de sang et installe les scripts.
+- **Animation sans AnimationTrack** : chaque client calcule les poses depuis `MonstreDonnees` et écrit
+  `Motor6D.Transform` (après l'Animator) ; rien à publier, et la victime est animée par-dessus les animations du
+  survivant. Les phases sont synchronisées sur l'horloge du serveur (`workspace:GetServerTimeNow()`).
+- **IA** (serveur) : patrouille (points étiquetés ou au hasard), vue (70 studs, champ de 140°, ligne de vue) et ouïe
+  (joueur qui court à 26 studs), hurlement, poursuite par recherche de chemin, mise à mort à 5,5 studs (tirage pondéré,
+  jamais deux fois la même de suite), destinations des traînées (`MonstreTaniere`, `MonstreSortie`), cadavre posé
+  (copie ancrée de la tenue, sans l'anatomie), mort et réapparition du joueur, infection.
+- **Client** : caméra de la victime (vue subjective, plans de côté, par-dessus l'épaule de la victime ou du monstre,
+  à distance, traînée, cadavre), coupures au noir, tremblements, sang sur l'écran, sang au sol (flaques qui
+  s'étendent, éclaboussures, traînées dans le sens du déplacement), particules, sons 3D, silence, symptômes de
+  l'infection (couleurs, flou au rythme du cœur, voile, toux, caméra qui tangue, vitesse réduite) ; commandes coupées
+  pendant la mise à mort.
+- **Sons** : 19 sons synthétisés (`sons_monstre.py` : sources glottiques graves à formants et grain irrégulier pour
+  les grognements et hurlements, bruits filtrés et clics résonants pour morsures, déchirures, craquements, mastication,
+  bruits sourds pour pas, impacts et chutes, battements de cœur, toux), `roblox/sons/*.ogg`, à importer dans Roblox
+  (identifiants à reporter dans `MonstreConfig`).
+- **Tests hors ligne** (`roblox/test/`) : émulation de l'API Roblox (copie étendue de celle du survivant :
+  ordonnanceur à coroutines, attributs, étiquettes, recherche de chemin, sons, particules, caméra, solveur de joints),
+  `luaurun test/rbx_mock.lua test/test_monstre.lua` : **220 vérifications, 0 échec** — installation sur un import
+  penché, tourné et à l'échelle 0,01 (et refus d'un import en miroir ou sans marqueur), décodage des pistes identique
+  au Python, chaîne complète (installateur + lecteur + victime soudée + joints) à moins de 2 millièmes de stud des
+  positions calculées en Python, le monstre qui repère, hurle, poursuit et attaque le joueur, puis chacune des 8 mises
+  à mort de bout en bout (phases, caméra, coupure au noir, sang, traînée alignée, cadavre au sol avec la tenue,
+  infection et relevé), sans erreur.
+
+## 9. Maillages
 
 | Maillage | Pièce | Parent | Triangles | Textures (px) |
 |---|---|---|---:|---:|
@@ -145,7 +250,7 @@ tests en jeu.
 
 Total : **200 607 triangles** en 37 maillages (un par pièce), de 1 314 à 19 000 par maillage (limite Roblox : 20 000). Les griffes et les crocs sont comptés avec leur pièce. Chaque maillage a ses trois images : `T_<Pièce>_1_Couleur.png`, `_Rugosite.png`, `_Normale.png` (intégrées au GLB, au FBX et au .blend).
 
-## 7. Rig
+## 10. Rig
 
 Rig rigide sur mesure, hiérarchie et pivots de `rig_spec()` (repère Roblox, studs). La racine `HumanoidRootPart` est
 au pivot du bassin. Dans `Monstre.blend`, un empty `RIG_<Pièce>` par pièce, placé au pivot de son articulation et
@@ -193,7 +298,10 @@ englobante, hauteur, marqueurs, position de la lueur, repère de la tête et cha
 | Pinky2_L | Pinky1_L | Pinky2Joint_L | (-2,711 ; 3,214 ; -0,682) |
 | Thumb1_L | Hand_L | Thumb1Joint_L | (-2,281 ; 4,314 ; -1,443) |
 
-## 8. Repère, échelle et marqueurs
+Pour les mises à mort, l'installateur Roblox ajoute une 38e articulation, `VictimeAncre` (pièce invisible enfant du
+HumanoidRootPart), qui porte la victime (§ 7 et § 8) ; elle n'est pas dans les fichiers exportés.
+
+## 11. Repère, échelle et marqueurs
 
 - 1 unité Blender = 1 stud. Repère Roblox : Y vers le haut, le monstre regarde vers −Z, sa droite est +X. Dans
   Blender : (x, y, z) Blender = (X, −Z, Y) Roblox (le monstre regarde vers +Y, Z vers le haut). Le GLB (Y en haut)
@@ -204,14 +312,14 @@ englobante, hauteur, marqueurs, position de la lueur, repère de la tête et cha
 - Hauteur du monstre dans sa posture voûtée : 10,61 studs (du sol au sommet du dos) ; la plante des pieds est
   vers Y = 0, les griffes des orteils descendent jusqu'à Y = -0,14.
 
-## 9. Export
+## 12. Export
 
 | Fichier | Contenu | Réglages |
 |---|---|---|
 | `export/Monstre.glb` | 37 maillages `MON_*` + 5 marqueurs, textures intégrées (couleur, normale, rugosité par maillage) | glTF binaire, Y en haut, modificateurs appliqués, normales (personnalisées) et UV, matières exportées, images PNG intégrées, pas de couleurs de sommets |
 | `export/Monstre.fbx` | les mêmes maillages et marqueurs, textures intégrées | échelle 1, `FBX_SCALE_NONE`, axes −Z avant / Y haut, normales seules (pas de groupes de lissage), textures copiées et intégrées |
 | `export/Monstre_couleurs_sommets.glb` | repli sans textures : couleurs des textures cuites dans les couleurs de sommets | glTF binaire, couleurs de sommets actives |
-| `export/rig.json` | rig, maillages, marqueurs | voir § 7 |
+| `export/rig.json` | rig, maillages, marqueurs | voir § 10 |
 | `blender/Monstre.blend` | scène complète compressée : maillages, matières à textures (images empaquetées), rig d'empties, marqueurs, scène de rendu prête (brume, lueur de la gueule, caméra trois quarts, Cycles) | la version haute définition de cuisson n'y est pas (elle se régénère) |
 
 À l'import dans Studio (*Importer 3D*), les maillages texturés deviennent des MeshParts avec SurfaceAppearance.
@@ -232,7 +340,7 @@ VERIF OK
 
 Tailles : `Monstre.glb` 40,2 Mo, `Monstre.fbx` 42,1 Mo, `Monstre_couleurs_sommets.glb` 7,5 Mo, `Monstre.blend` 44,2 Mo. Boîte englobante (Roblox) : X de -2,85 à 2,85, Y de -0,14 à 10,61, Z de -3,34 à 0,79.
 
-## 10. Comparaison avec les références
+## 13. Comparaison avec les références
 
 - **Image de style de l'utilisateur** : peau pâle et réaliste, créature nue, très maigre, membres démesurés, os qui
   affleurent ; même ambiance sombre (rendu `trois_quarts_sombre`). Le visage de l'image étant masqué, la tête vient
@@ -242,7 +350,7 @@ Tailles : `Monstre.glb` 40,2 Mo, `Monstre.fbx` 42,1 Mo, `Monstre_couleurs_sommet
   avec lueur orangée, fond clair et brumeux. Ce qui a changé à la demande de l'utilisateur : la matière (peau au lieu
   de tendons noirs mouillés), plus de filaments ni de trous, pieds griffus au lieu de racines.
 
-## 11. Limites connues
+## 14. Limites connues
 
 - **Rig rigide** : chaque pièce bouge en bloc. Les manchons comblent les trous quand une articulation plie, mais un
   pli franc montre la jointure comme un anneau net (voir `pliage.png`), surtout aux hanches, aux genoux et à la
@@ -257,12 +365,29 @@ Tailles : `Monstre.glb` 40,2 Mo, `Monstre.fbx` 42,1 Mo, `Monstre_couleurs_sommet
 - Licence des textures de peau : CC BY 3.0, le crédit de l'auteur du scan est obligatoire (§ 5).
 - Total 200 607 triangles : dans la cible (150 000 à 300 000), mais lourd pour un PNJ ; une version plus légère se
   fait en baissant les budgets de `construire.py` (la cuisson garde le détail dans les normales).
-- Taille : environ 10,61 studs de haut ; `Model:ScaleTo()` dans Studio pour l'ajuster.
-- Jamais importé dans un vrai Roblox Studio depuis cette session : la vérification a été faite en réimportant le GLB
-  et le FBX dans Blender.
+- Taille : environ 10,61 studs de haut (voir plus bas : ne pas la changer dans Studio).
+- Export vérifié en réimportant le GLB et le FBX dans Blender.
+- **Import dans Roblox** : une session dans le cloud ne peut pas atteindre le Studio de l'utilisateur. L'import se
+  fait chez lui en trois gestes (Importer 3D, insérer le kit, une ligne dans la barre de commande), ou par Claude en
+  local avec le serveur MCP de Studio (`monstre/CLAUDE.md`).
+- **Jamais lancé dans un vrai Roblox Studio** : le paquet Roblox est vérifié en émulation (220 vérifications), pas
+  dans le moteur. À contrôler au premier essai : orientation après l'import, victime collée aux mains et à la gueule,
+  priorité des `Transform` écrits en `PreSimulation` sur les animations du survivant, transparence des gabarits de
+  sang, recherche de chemin pour un agent de cette taille.
+- **Victime** : animée seulement si elle a le rig du survivant R6 articulé ; un autre avatar est saisi et déplacé,
+  mais son corps garde sa pose.
+- **Sons synthétisés** : utilisables mais moins convaincants que des enregistrements ; à remplacer au besoin.
+- **Taille** : ne pas redimensionner le monstre dans Studio (`Model:ScaleTo`) : les animations (translations du
+  bassin et de l'ancre de la victime) sont calculées pour cette taille.
+- **Maturité** : sang réaliste et mises à mort explicites ; voir `roblox/LISEZMOI.md` (questionnaire de maturité de
+  Roblox, réglages pour en montrer moins).
 
-## 12. Régénérer
+## 15. Régénérer
 
 Voir `monstre/blender/scripts/README.md` : `textures_reelles.py` (motifs de peau depuis le scan, une fois),
-`construire.py` (≈ 4 min), `cuire_textures.py` (≈ 10 min), `rendus.py` (≈ 5 min par vue en 1024 px), `exporter.py`,
-`verifier_export.py`.
+`construire.py` (≈ 4 min), `cuire_textures.py` (sang puis cuisson, ≈ 12 min), `sang_decals.py` (décalques),
+`rendus.py` (≈ 3 min par vue en 1024 px), `exporter.py` (avec le dossier des décalques), `verifier_export.py`, puis
+`exporter_roblox.py` (données d'animation, kit `.rbxmx`, données de test, ≈ 15 s), `sons_monstre.py` (sons), et les
+tests Roblox : `cd monstre/roblox && luaurun test/rbx_mock.lua test/test_monstre.lua` (≈ 4 s, `luaurun` dans
+`outils/luaurun`, compilé avec les sources de Luau 0.740). Aperçus d'animation : `apercu_rapide.py` (sans Blender)
+et `apercu_anim.py` (Cycles).

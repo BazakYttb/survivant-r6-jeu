@@ -1,7 +1,7 @@
 """Livrables Roblox depuis la scène texturée : Monstre.blend (propre), Monstre.glb (textures intégrées), Monstre.fbx
 (textures intégrées), Monstre_couleurs_sommets.glb (repli sans textures), rig.json.
 
-usage : python exporter.py -- scene_texturee.blend dossier_monstre"""
+usage : python exporter.py -- scene_texturee.blend dossier_monstre [dossier_textures_sang]"""
 import sys, os, json, math, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
@@ -35,9 +35,64 @@ def cube(name, center_roblox, size, col, color=(1, 0, 1)):
     return ob
 
 
+# décalques de sang (gabarits pour Roblox) : nom, largeur (X), profondeur (Z) en studs
+DECALS = [('SANG_Flaque', 1.0, 1.0), ('SANG_Eclaboussure_1', 1.0, 1.0), ('SANG_Eclaboussure_2', 1.0, 1.0),
+          ('SANG_Eclaboussure_3', 1.0, 1.0), ('SANG_Trainee', 4.0, 1.0), ('SANG_Ecran', 1.6, 1.0), ('SANG_Goutte', 0.5, 0.5)]
+
+
+def image_node(nt, path, non_color, loc):
+    img = bpy.data.images.load(path, check_existing=True)
+    img.pack()
+    if non_color:
+        img.colorspace_settings.name = 'Non-Color'
+    n = nt.nodes.new('ShaderNodeTexImage')
+    n.image = img
+    n.location = loc
+    return n
+
+
+def decal_quad(name, w, h, x0, z0, col, tex_dir):
+    """Plan horizontal (repère Roblox : plan XZ, normale +Y) de w x h studs, posé à côté du monstre ; u le long de +X.
+    Matière : couleur avec alpha, rugosité, normale (textures de sang_decals.py)."""
+    corners = [(x0 - w / 2, 0.01, z0 - h / 2), (x0 + w / 2, 0.01, z0 - h / 2), (x0 + w / 2, 0.01, z0 + h / 2),
+               (x0 - w / 2, 0.01, z0 + h / 2)]
+    V = [tuple(to_blender(np.array(c))) for c in corners]
+    me = bpy.data.meshes.new(name)
+    a, b, c = (np.array(V[i]) for i in range(3))
+    face = (0, 1, 2, 3) if np.cross(b - a, c - a)[2] > 0 else (0, 3, 2, 1)
+    me.from_pydata(V, [], [face])
+    me.update()
+    uv = me.uv_layers.new(name='UVMap')
+    for li, vi in zip(me.polygons[0].loop_indices, face):
+        X, _, Z = corners[vi]
+        uv.data[li].uv = ((X - (x0 - w / 2)) / w, ((z0 + h / 2) - Z) / h)
+    mat = bpy.data.materials.new(name)
+    nt = mat.node_tree
+    bsdf = nt.nodes['Principled BSDF']
+    cimg = image_node(nt, os.path.join(tex_dir, name + '_Couleur.png'), False, (-600, 300))
+    nt.links.new(cimg.outputs['Color'], bsdf.inputs['Base Color'])
+    nt.links.new(cimg.outputs['Alpha'], bsdf.inputs['Alpha'])
+    rimg = image_node(nt, os.path.join(tex_dir, name + '_Rugosite.png'), True, (-600, 0))
+    nt.links.new(rimg.outputs['Color'], bsdf.inputs['Roughness'])
+    nimg = image_node(nt, os.path.join(tex_dir, name + '_Normale.png'), True, (-600, -300))
+    nm = nt.nodes.new('ShaderNodeNormalMap')
+    nm.location = (-300, -300)
+    nt.links.new(nimg.outputs['Color'], nm.inputs['Color'])
+    nt.links.new(nm.outputs['Normal'], bsdf.inputs['Normal'])
+    try:
+        mat.surface_render_method = 'BLENDED'
+    except Exception:
+        pass
+    me.materials.append(mat)
+    ob = bpy.data.objects.new(name, me)
+    col.objects.link(ob)
+    return ob
+
+
 def main():
     args = sys.argv[sys.argv.index('--') + 1:]
     src, root = args[0], args[1]
+    tex_sang = args[2] if len(args) > 2 else None
     exp = os.path.join(root, 'export')
     bld = os.path.join(root, 'blender')
     os.makedirs(exp, exist_ok=True)
@@ -62,6 +117,15 @@ def main():
     mcol = MB.collection('MON_Marqueurs')
     marks = [cube(n, p, MARKER_SIZE, mcol) for n, p in MARKERS.items()]
     marks.append(cube('GLOW_MOUTH', glow_pos(), MARKER_SIZE, mcol, (1.0, 0.45, 0.1)))
+    # gabarits de sang (rangés par l'installateur Roblox dans ReplicatedStorage.Monstre.Effets)
+    decals = []
+    if tex_sang:
+        dcol = MB.collection('MON_Sang_Gabarits')
+        dcol.hide_render = True
+        x = 6.0
+        for name, w, h in DECALS:
+            decals.append(decal_quad(name, w, h, x + w / 2, 3.0, dcol, tex_sang))
+            x += w + 0.5
     # images : empaquetées dans le .blend
     for img in bpy.data.images:
         if img.name.startswith('T_') and not img.packed_file:
@@ -127,7 +191,7 @@ def main():
         mw = o.matrix_world.copy()
         o.parent = None
         o.matrix_world = mw
-    sel = meshes + marks
+    sel = meshes + marks + decals
     for o in bpy.context.selected_objects:
         o.select_set(False)
     for o in sel:
@@ -171,7 +235,7 @@ def main():
         o.data.materials.append(vc)
     for x in bpy.context.selected_objects:
         x.select_set(False)
-    for o in sel:
+    for o in meshes + marks:                              # sans les gabarits de sang (il leur faut leurs textures)
         o.select_set(True)
     bpy.context.view_layer.objects.active = meshes[0]
     bpy.ops.export_scene.gltf(filepath=os.path.join(exp, 'Monstre_couleurs_sommets.glb'), export_format='GLB',

@@ -5,7 +5,38 @@ Repère de travail = repère Roblox : Y vers le haut, le monstre regarde vers -Z
 vers +Y dans Blender. L'export glTF/FBX (+Y vers le haut, avant -Z) redonne exactement le repère Roblox.
 """
 import math
+import os
 import numpy as np
+
+_ICI = os.path.dirname(os.path.abspath(__file__))
+
+
+def src_survivant():
+    """Dossier src/ du survivant (anim.py, rig_spec.py) : variable SURVIVANT_SRC, sinon ../../../src depuis
+    monstre/blender/scripts, sinon le dépôt cloné dans /home/user."""
+    for d in (os.environ.get('SURVIVANT_SRC'), os.path.join(_ICI, '..', '..', '..', 'src'),
+              '/home/user/survivant-r6-jeu/src'):
+        if d and os.path.isfile(os.path.join(d, 'anim.py')):
+            return os.path.abspath(d)
+    raise FileNotFoundError("src/ du survivant introuvable (variable d'environnement SURVIVANT_SRC)")
+
+
+def dossier_monstre():
+    """Dossier monstre/ du dépôt : variable MONSTRE_DIR, sinon ../.. depuis monstre/blender/scripts."""
+    for d in (os.environ.get('MONSTRE_DIR'), os.path.join(_ICI, '..', '..'), '/home/user/survivant-r6-jeu/monstre'):
+        if d and os.path.isdir(os.path.join(d, 'roblox')):
+            return os.path.abspath(d)
+    raise FileNotFoundError('dossier monstre/ introuvable (variable MONSTRE_DIR)')
+
+
+def chemin_proxy():
+    """Maillage allégé pour les aperçus et les données de test (dump_proxy.py) : MONSTRE_PROXY, sinon à côté des
+    scripts, sinon le dossier de travail."""
+    for f in (os.environ.get('MONSTRE_PROXY'), os.path.join(_ICI, '..', 'proxy.npz'), os.path.join(_ICI, 'proxy.npz'),
+              os.path.join(_ICI, '..', 'work', 'apercu', 'proxy.npz')):
+        if f and os.path.isfile(f):
+            return f
+    return None
 
 TAU = 2.0 * math.pi
 

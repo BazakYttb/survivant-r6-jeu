@@ -1,13 +1,13 @@
 """Planches d'aperçu des animations du monstre dans Blender (rig d'empties, Cycles basse définition).
-usage : python apercu_anim.py -- scene.blend sortie.png clé1,clé2@t1;t2,... [images_par_clip] [largeur] [vue]
-Les clés viennent de mon_clips.CLIPS et mon_morts.CLIPS (si présent) ; une victime en boîtes (rig du survivant)
-est posée pour les clips de mise à mort."""
+usage : python apercu_anim.py -- scene.blend sortie.png clé1,clé2@t1;t2,clé3@t1;t2@azimut,... [images_par_clip] [largeur] [vue]
+Les clés viennent de mon_clips.CLIPS et mon_morts.CLIPS (si présent) ; une victime en boîtes (rig du survivant, aux
+couleurs de sa tenue) est posée pour les clips de mise à mort. « @azimut » (degrés) change l'angle de vue d'une ligne."""
 import sys, os, math
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
 import bpy
 from mathutils import Quaternion, Vector
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 from mon_common import to_blender, src_survivant
 import mon_blend as MB
 import mon_rig as RIG
@@ -51,16 +51,34 @@ def setup():
         mw = o.matrix_world.copy(); o.parent = emp['Head']
         o.matrix_parent_inverse = emp['Head'].matrix_world.inverted(); o.matrix_world = mw
     SC2.scene_mist(fog=False)
-    v = VIEWS[view]
-    az = math.radians(v['az'])
-    tgt = np.array([v['tx'], v['ty'], v['tz']])
-    eye = tgt * np.array([1, 0, 1]) + np.array([math.sin(az) * v['d'], v['h'], -math.cos(az) * v['d']])
-    cam = MB.add_camera('cam', eye, tgt, lens=v['lens'])
     scn = MB.setup_cycles(samples=12, res=(width, int(width * 1.5)))
-    scn.camera = cam
+    scn.camera = camera(None)
     scn.cycles.max_bounces = 3
     victim = make_victim()
     return emp, victim
+
+
+CAMS = {}
+
+
+def camera(az_deg):
+    """Caméra de la vue choisie, à un autre azimut si az_deg est donné (une par azimut)."""
+    if az_deg not in CAMS:
+        v = VIEWS[view]
+        az = math.radians(v['az'] if az_deg is None else az_deg)
+        tgt = np.array([v['tx'], v['ty'], v['tz']])
+        eye = tgt * np.array([1, 0, 1]) + np.array([math.sin(az) * v['d'], v['h'], -math.cos(az) * v['d']])
+        CAMS[az_deg] = MB.add_camera('cam_%s' % az_deg, eye, tgt, lens=v['lens'])
+    return CAMS[az_deg]
+
+
+def police(taille):
+    for nom in ('DejaVuSans.ttf', 'arial.ttf', 'Arial.ttf', 'segoeui.ttf', 'Helvetica.ttc'):
+        try:
+            return ImageFont.truetype(nom, taille)
+        except OSError:
+            pass
+    return ImageFont.load_default(size=taille)                  # (sans accents)
 
 
 def make_victim():
@@ -68,8 +86,11 @@ def make_victim():
     sys.path.insert(0, src_survivant())
     import rig_spec as RS
     col = MB.collection('Victime')
-    mat = bpy.data.materials.new('Victime')
-    mat.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = (0.25, 0.32, 0.18, 1)
+    teintes = {'veste': (0.098, 0.122, 0.034), 'peau': (0.55, 0.305, 0.188), 'jean': (0.045, 0.069, 0.155)}
+    mats = {}
+    for nom, c in teintes.items():
+        mats[nom] = bpy.data.materials.new('Victime_' + nom)
+        mats[nom].node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = (*c, 1)
     boxes = {}
     for p in RS.PARTS:
         bpy.ops.mesh.primitive_cube_add(size=1.0)
@@ -80,7 +101,7 @@ def make_victim():
         ob.name = 'V_' + p
         sx, sy, sz = RS.SIZE[p]
         ob.scale = (sx * 0.96, sz * 0.96, sy * 0.96)
-        ob.data.materials.append(mat)
+        ob.data.materials.append(mats['jean' if 'Leg' in p else 'peau' if p == 'Head' or 'LowerArm' in p else 'veste'])
         ob.rotation_mode = 'QUATERNION'
         ob.hide_render = True
         boxes[p] = ob
@@ -118,9 +139,11 @@ if MORTS is not None:
     clips.update(MORTS.CLIPS)
 tiles = []
 tmp = os.path.join(os.path.dirname(os.path.abspath(out)), '_apercu_tmp.png')
-from PIL import ImageDraw
+fonte = police(max(11, width // 25))
 for spec in keys:
-    k, _, ts = spec.partition('@')                       # « clé » ou « clé@t1;t2;... » (instants choisis)
+    k, _, ts = spec.partition('@')                       # « clé », « clé@t1;t2;... » (instants), « ...@azimut »
+    ts, _, az = ts.partition('@')
+    bpy.context.scene.camera = camera(float(az) if az else None)
     clip = clips[k]
     row = []
     if ts:
@@ -137,7 +160,7 @@ for spec in keys:
             pose_victim(victim, None, None)
         MB.render(tmp)
         im = Image.open(tmp).convert('RGB')
-        ImageDraw.Draw(im).text((6, 6), '%s  %.2f s' % (clip.label or k, t), fill=(20, 20, 20))
+        ImageDraw.Draw(im).text((6, 5), '%s  %.2f s' % (clip.label or k, t), fill=(20, 20, 20), font=fonte)
         row.append(im)
         print(k, '%.2f s' % t, flush=True)
     tiles.append(row)

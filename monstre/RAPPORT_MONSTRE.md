@@ -316,29 +316,36 @@ HumanoidRootPart), qui porte la victime (§ 7 et § 8) ; elle n'est pas dans les
 
 | Fichier | Contenu | Réglages |
 |---|---|---|
-| `export/Monstre.glb` | 37 maillages `MON_*` + 5 marqueurs, textures intégrées (couleur, normale, rugosité par maillage) | glTF binaire, Y en haut, modificateurs appliqués, normales (personnalisées) et UV, matières exportées, images PNG intégrées, pas de couleurs de sommets |
-| `export/Monstre.fbx` | les mêmes maillages et marqueurs, textures intégrées | échelle 1, `FBX_SCALE_NONE`, axes −Z avant / Y haut, normales seules (pas de groupes de lissage), textures copiées et intégrées |
-| `export/Monstre_couleurs_sommets.glb` | repli sans textures : couleurs des textures cuites dans les couleurs de sommets | glTF binaire, couleurs de sommets actives |
+| `export/Monstre.glb` | 37 maillages `MON_*` + 5 marqueurs + 7 gabarits de sang `SANG_*`, textures intégrées (couleur, normale, rugosité par maillage ; couleur avec transparence, normale, rugosité par gabarit) | glTF binaire, Y en haut, modificateurs appliqués, normales (personnalisées) et UV, matières exportées, images PNG intégrées, pas de couleurs de sommets |
+| `export/Monstre.fbx` | les mêmes maillages, marqueurs et gabarits, textures intégrées | échelle 1, `FBX_SCALE_NONE`, axes −Z avant / Y haut, normales seules (pas de groupes de lissage), textures copiées et intégrées |
+| `export/Monstre_couleurs_sommets.glb` | repli sans textures : couleurs des textures cuites dans les couleurs de sommets (sans gabarits de sang) | glTF binaire, couleurs de sommets actives |
 | `export/rig.json` | rig, maillages, marqueurs | voir § 10 |
-| `blender/Monstre.blend` | scène complète compressée : maillages, matières à textures (images empaquetées), rig d'empties, marqueurs, scène de rendu prête (brume, lueur de la gueule, caméra trois quarts, Cycles) | la version haute définition de cuisson n'y est pas (elle se régénère) |
+| `blender/Monstre.blend` | scène complète compressée : maillages, matières à textures (images empaquetées), rig d'empties, marqueurs, gabarits de sang (collection `MON_Sang_Gabarits`, cachée au rendu), scène de rendu prête (brume, lueur de la gueule, caméra trois quarts, Cycles) | la version haute définition de cuisson n'y est pas (elle se régénère) |
 
-À l'import dans Studio (*Importer 3D*), les maillages texturés deviennent des MeshParts avec SurfaceAppearance.
-Chaque maillage reste sous 20 000 triangles ; un script de montage peut retrouver échelle et orientation avec les
-marqueurs, créer les Motor6D depuis `rig.json` et poser la lueur sur `GLOW_MOUTH`.
+Les gabarits `SANG_Flaque`, `SANG_Eclaboussure_1` à `_3`, `SANG_Trainee` (bande de 4 × 1), `SANG_Ecran` et
+`SANG_Goutte` sont des plans horizontaux posés à côté du monstre (§ 6) : *Importer 3D* en fait des MeshParts avec
+SurfaceAppearance (textures téléversées avec le modèle), que l'installateur range dans
+`ReplicatedStorage.Monstre.Effets`. À l'import dans Studio, les maillages du monstre deviennent des MeshParts avec
+SurfaceAppearance ; chacun reste sous 20 000 triangles. L'installateur Roblox (§ 8) retrouve échelle et orientation
+avec les marqueurs, crée les Motor6D et pose la lueur sur `GLOW_MOUTH`.
 
 Vérification (`verifier_export.py`, réimport dans une scène Blender vide) :
 
 ```
-Monstre.glb : 37 maillages MON_, 200607 triangles (max 19000), 37 matières, 111 images, hauteur 10.61 studs
+Monstre.glb : 37 maillages MON_, 200607 triangles (max 19000), 37 matières, 132 images, hauteur 10.61 studs, 7 gabarits de sang
   OK : noms, limite de triangles, marqueurs, normales
-Monstre.fbx : 37 maillages MON_, 200607 triangles (max 19000), 37 matières, 111 images, hauteur 10.61 studs
+Monstre.fbx : 37 maillages MON_, 200607 triangles (max 19000), 37 matières, 146 images, hauteur 10.61 studs, 7 gabarits de sang
   OK : noms, limite de triangles, marqueurs, normales
-Monstre_couleurs_sommets.glb : 37 maillages MON_, 200607 triangles (max 19000), 1 matières, 0 images, hauteur 10.61 studs
+Monstre_couleurs_sommets.glb : 37 maillages MON_, 200607 triangles (max 19000), 1 matières, 0 images, hauteur 10.61 studs, 0 gabarits de sang
   OK : noms, limite de triangles, marqueurs, normales
 VERIF OK
 ```
 
-Tailles : `Monstre.glb` 40,2 Mo, `Monstre.fbx` 42,1 Mo, `Monstre_couleurs_sommets.glb` 7,5 Mo, `Monstre.blend` 44,2 Mo. Boîte englobante (Roblox) : X de -2,85 à 2,85, Y de -0,14 à 10,61, Z de -3,34 à 0,79.
+(Le contrôle vérifie aussi que chaque gabarit a ses textures et reste horizontal. Au réimport du FBX, Blender charge
+trois fois l'image de couleur de chaque gabarit, qui porte aussi la transparence : 146 images au lieu de 132.)
+
+Tailles : `Monstre.glb` 47,7 Mo, `Monstre.fbx` 48,3 Mo, `Monstre_couleurs_sommets.glb` 7,5 Mo, `Monstre.blend`
+50,4 Mo. Boîte englobante du monstre (Roblox) : X de -2,85 à 2,85, Y de -0,14 à 10,61, Z de -3,34 à 0,79.
 
 ## 13. Comparaison avec les références
 
@@ -359,9 +366,10 @@ Tailles : `Monstre.glb` 40,2 Mo, `Monstre.fbx` 42,1 Mo, `Monstre_couleurs_sommet
   sont plus courts sur la cage thoracique (limite de triangles) : le tronc doit garder de petites rotations.
 - Raccords invisibles au repos dans Blender ; dans Roblox, ils dépendent du respect des normales importées et du
   filtrage des textures au bord des îlots UV (un fin liseré reste possible de près).
-- **Textures par maillage** (37 jeux de 3 images, 256 à 1024 px) : environ 34 Mo d'images ; la diffusion sous la peau,
-  la brume et la lueur n'existent que dans les rendus Blender. Le grain des vraies textures est agrandi (pores à
-  l'échelle d'une créature géante) : de très près, dans Roblox, la limite de 1024 px par image reste visible.
+- **Textures par maillage** (37 jeux de 3 images, 256 à 1024 px) : environ 34 Mo d'images (plus 6,6 Mo pour les
+  7 gabarits de sang) ; la diffusion sous la peau, la brume et la lueur n'existent que dans les rendus Blender. Le
+  grain des vraies textures est agrandi (pores à l'échelle d'une créature géante) : de très près, dans Roblox, la
+  limite de 1024 px par image reste visible.
 - Licence des textures de peau : CC BY 3.0, le crédit de l'auteur du scan est obligatoire (§ 5).
 - Total 200 607 triangles : dans la cible (150 000 à 300 000), mais lourd pour un PNJ ; une version plus légère se
   fait en baissant les budgets de `construire.py` (la cuisson garde le détail dans les normales).
@@ -389,5 +397,5 @@ Voir `monstre/blender/scripts/README.md` : `textures_reelles.py` (motifs de peau
 `rendus.py` (≈ 3 min par vue en 1024 px), `exporter.py` (avec le dossier des décalques), `verifier_export.py`, puis
 `exporter_roblox.py` (données d'animation, kit `.rbxmx`, données de test, ≈ 15 s), `sons_monstre.py` (sons), et les
 tests Roblox : `cd monstre/roblox && luaurun test/rbx_mock.lua test/test_monstre.lua` (≈ 4 s, `luaurun` dans
-`outils/luaurun`, compilé avec les sources de Luau 0.740). Aperçus d'animation : `apercu_rapide.py` (sans Blender)
-et `apercu_anim.py` (Cycles).
+`outils/luaurun`, compilé avec les sources de Luau 0.740). Aperçus d'animation : `apercu_rapide.py` (sans Blender),
+`gif_morts.py` (GIF animés, ≈ 1 min) et `apercu_anim.py` (planches Cycles).

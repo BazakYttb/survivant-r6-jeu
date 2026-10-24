@@ -166,9 +166,10 @@ for spec in keys:
     tiles.append(row)
 w, h = tiles[0][0].size
 ncol = max(len(r) for r in tiles)
-sheet = Image.new('RGB', (w * ncol, h * len(tiles)), (255, 255, 255))
-for r, row in enumerate(tiles):
-    for c, im in enumerate(row):
-        sheet.paste(im, (c * w, r * h))
+flux = [im for row in tiles for im in row]              # vignettes à la suite, ncol par ligne
+nrow = (len(flux) + ncol - 1) // ncol
+sheet = Image.new('RGB', (w * ncol, h * nrow), (255, 255, 255))
+for i, im in enumerate(flux):
+    sheet.paste(im, ((i % ncol) * w, (i // ncol) * h))
 sheet.save(out, quality=88)
 print('planche', out)

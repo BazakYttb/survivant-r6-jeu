@@ -1,7 +1,9 @@
 """Livrables Roblox depuis la scène texturée : Monstre.blend (propre), Monstre.glb (textures intégrées), Monstre.fbx
 (textures intégrées), Monstre_couleurs_sommets.glb (repli sans textures), rig.json.
 
-usage : python exporter.py -- scene_texturee.blend dossier_monstre [dossier_textures_sang]"""
+usage : python exporter.py -- scene_texturee.blend dossier_monstre [dossier_textures_sang]
+Sans le 3e argument (version pour Roblox) : aucun gabarit SANG_*. Avec : les 7 décalques de sang de sang_decals.py, à
+ne pas importer dans Roblox (la modération refuse les images de sang)."""
 import sys, os, json, math, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np

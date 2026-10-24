@@ -5,8 +5,9 @@ La matière mêle de vraies textures de peau et des couches procédurales. Textu
 textures_reelles.py) : grain de couleur, relief (pores, ridules, plis) et brillance tirés d'un scan de tête
 (« Infinite, 3D Head Scan » de Lee Perry-Smith, Infinite-Realities, CC BY 3.0), posés en projection triplanaire
 (deux motifs, deux échelles, mélangés par un bruit pour casser la répétition). Couches procédurales : marbrures,
-rougeurs aux articulations, ecchymoses, veines, crasse dans les plis, terre sur les pieds, griffures, rides et plis
-alignés sur les membres.
+rougeurs très discrètes aux articulations, veines, crasse dans les plis, terre sur les pieds, rides et plis alignés
+sur les membres. Rien qui ressemble à du sang ou à une plaie (la modération de Roblox refuse ces images) : ni
+griffures rouges ni ecchymoses ; le sang (blood=True, SANG=oui) n'est cuit que sur demande, pour des rendus hors jeu.
 
 Types (attribut Mat) : 0 peau, 1 peau du crâne, 2 dent, 3 gencive, 4 ongle/griffe."""
 import math
@@ -70,13 +71,8 @@ def skin_material(name='MON_Peau_HD', ao_distance=0.18, real_dir=None, color_gai
     spots = nb.maprange(nb.node('ShaderNodeTexVoronoi', Vector=p, Scale=18.0, Randomness=1.0).outputs['Distance'], 0.0, 0.2, 1.0, 0.0, smooth=True)
     col = nb.mix(nb.math('MULTIPLY', spots, nb.math('MULTIPLY', nb.maprange(m2, 0.55, 0.75), 0.35)), col, nb.rgbmul(col, (0.85, 0.72, 0.66, 1)))
     col = nb.mix(nb.math('MULTIPLY', nb.maprange(m3, 0.5, 0.72), 0.6), col, nb.rgbmul(col, (1.14, 0.84, 0.8, 1)))
-    col = nb.mix(nb.math('MULTIPLY', redm, 0.9), col, nb.rgbmul(col, (1.05, 0.66, 0.62, 1)))
-    # ecchymoses violacées à bord jaunâtre, rares
-    bz = nb.node('ShaderNodeTexNoise', Vector=p, Scale=1.7, Detail=3.0, Roughness=0.55).outputs['Fac']
-    bm = nb.maprange(bz, 0.66, 0.74, smooth=True)
-    col = nb.mix(nb.math('MULTIPLY', bm, 0.5), col, nb.rgbmul(col, (0.8, 0.64, 0.8, 1)))
-    halo = nb.math('MULTIPLY', nb.maprange(bz, 0.6, 0.67, smooth=True), nb.math('SUBTRACT', 1.0, bm))
-    col = nb.mix(nb.math('MULTIPLY', halo, 0.3), col, nb.rgbmul(col, (1.04, 1.0, 0.72, 1)))
+    # rougeur des articulations très discrète (pas de rouge vif ; pas d'ecchymoses)
+    col = nb.mix(nb.math('MULTIPLY', redm, 0.45), col, nb.rgbmul(col, (1.03, 0.87, 0.83, 1)))
     # veines bleutées : lignes sinueuses le long des membres (bruit en crête dans des coordonnées étirées), rares
     pv = nb.vmath('ADD', nb.vmath('SCALE', t, scale=nb.math('MULTIPLY', nb.vmath('DOT_PRODUCT', p, t), 0.9)),
                   nb.vmath('SCALE', nb.vmath('SUBTRACT', p, nb.vmath('SCALE', t, scale=nb.vmath('DOT_PRODUCT', p, t))), scale=4.5))
@@ -85,16 +81,10 @@ def skin_material(name='MON_Peau_HD', ao_distance=0.18, real_dir=None, color_gai
     vmask = nb.maprange(nb.node('ShaderNodeTexNoise', Vector=p, Scale=1.3, Detail=2.0).outputs['Fac'], 0.44, 0.58, smooth=True)
     vein = nb.math('MULTIPLY', nb.maprange(ridge, 0.0, 0.032, 1.0, 0.0, smooth=True), vmask)
     col = nb.mix(nb.math('MULTIPLY', vein, 0.5), col, nb.rgbmul(col, (0.55, 0.63, 0.9, 1)))
-    # griffures rouge sombre (bandes ondulées très fines, par endroits)
-    wv = nb.node('ShaderNodeTexWave', Vector=p, Scale=1.6, Distortion=6.0, _wave_type='BANDS', _bands_direction='DIAGONAL')
-    wv.inputs['Detail'].default_value = 3.0
-    scr_mask = nb.maprange(nb.node('ShaderNodeTexNoise', Vector=p, Scale=1.4, Detail=2.0).outputs['Fac'], 0.6, 0.7, smooth=True)
-    scr = nb.math('MULTIPLY', nb.maprange(wv.outputs['Fac'], 0.96, 1.0, smooth=True), scr_mask)
-    col = nb.mix(nb.math('MULTIPLY', scr, 0.85), col, (0.28, 0.04, 0.03, 1))
-    # crasse dans les plis (occlusion)
+    # crasse dans les plis (occlusion) : gris-brun, sans tirer vers le brun-rouge d'un sang séché
     ao = nb.node('ShaderNodeAmbientOcclusion', Distance=ao_distance, _samples=12, _only_local=True)
     aof = nb.maprange(ao.outputs['AO'], 0.2, 0.95, smooth=True)
-    col = nb.mix(aof, nb.rgbmul(col, (0.3, 0.2, 0.17, 1)), col)
+    col = nb.mix(aof, nb.rgbmul(col, (0.33, 0.26, 0.22, 1)), col)
     # crasse et taches brunâtres par endroits
     grime = nb.maprange(nb.node('ShaderNodeTexNoise', Vector=p, Scale=3.5, Detail=6.0, Roughness=0.7).outputs['Fac'], 0.55, 0.75, smooth=True)
     col = nb.mix(nb.math('MULTIPLY', grime, 0.4), col, nb.rgbmul(col, (0.62, 0.52, 0.42, 1)))
@@ -125,7 +115,7 @@ def skin_material(name='MON_Peau_HD', ao_distance=0.18, real_dir=None, color_gai
     rough = nb.math('ADD', nb.math('MULTIPLY', r_skin, nb.math('ADD', masks[0], masks[1])),
                     nb.math('ADD', nb.math('MULTIPLY', masks[2], 0.32),
                             nb.math('ADD', nb.math('MULTIPLY', masks[3], 0.16), nb.math('MULTIPLY', masks[4], 0.3))))
-    # relief : grain de peau, rides le long des membres (plus marquées aux articulations), veines, griffures
+    # relief : grain de peau, rides le long des membres (plus marquées aux articulations), veines (pas de griffures)
     grain = nb.node('ShaderNodeTexVoronoi', Vector=p, Scale=40.0, Randomness=1.0)
     g = nb.maprange(grain.outputs['Distance'], 0.0, 0.55, 0.0, 1.0, smooth=True)
     q = nb.vmath('ADD', nb.vmath('SCALE', t, scale=nb.math('MULTIPLY', nb.vmath('DOT_PRODUCT', p, t), 24.0)),
@@ -149,8 +139,7 @@ def skin_material(name='MON_Peau_HD', ao_distance=0.18, real_dir=None, color_gai
         g = nb.math('ADD', nb.math('MULTIPLY', hr, relief_gain / 0.06), 0.5)
     h_skin = nb.math('ADD', nb.math('MULTIPLY', g, 0.06),
                      nb.math('ADD', nb.math('MULTIPLY', wrin, -0.35),
-                             nb.math('ADD', nb.math('MULTIPLY', vein, 0.25),
-                                     nb.math('ADD', nb.math('MULTIPLY', scr, -0.4), nb.math('MULTIPLY', bumps, 0.13)))))
+                             nb.math('ADD', nb.math('MULTIPLY', vein, 0.25), nb.math('MULTIPLY', bumps, 0.13))))
     h = nb.math('ADD', nb.math('MULTIPLY', h_skin, nb.math('ADD', masks[0], nb.math('MULTIPLY', masks[1], 0.6))),
                 nb.math('ADD', nb.math('MULTIPLY', masks[3], nb.math('MULTIPLY', m2, 0.4)),
                         nb.math('MULTIPLY', masks[4], nb.math('MULTIPLY', stri, 0.3))))

@@ -1,5 +1,10 @@
 # Le monstre du jeu de survie : modèle Blender, export Roblox, rapport
 
+> **Branche `monstre-sans-sang`** : ce rapport décrit la version d'origine, avec du sang. La modération de Roblox l'a
+> refusée ; les textures ont été recuites sans sang ni plaie et l'export n'a plus de gabarits `SANG_*` : voir
+> `RAPPORT_SANS_SANG.md` (rendus de contrôle dans `rendus/sans_sang/`). Les rendus et GIF ci-dessous sont ceux de la
+> version avec sang.
+
 Branche `monstre-blender`. Modèle, textures (sang compris), rendus et export sont faits dans Blender 5.2 (module
 `bpy`, sans interface) ; les animations (déplacement et 8 mises à mort) sont calculées en Python, et le paquet Roblox
 (`monstre/roblox/`) monte le rig, anime le monstre et ses victimes, et déroule les mises à mort en jeu. L'installation

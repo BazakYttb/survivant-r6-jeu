@@ -4,7 +4,8 @@ définition (couleur, rugosité, normale) et matière finale à textures.
 usage : python cuire_textures.py -- creature.blend creature_tex.blend dossier_textures [préfixes de pièces]
 Variables d'environnement : BSPP (échantillons de la cuisson de couleur, 12 par défaut, 16 pour les livrables),
 TDENS (pixels par stud, 300 par défaut), PEAU_REELLE (dossier des vraies textures de peau ; par défaut
-../textures_reelles à côté de ce script ; « aucune » pour la peau procédurale seule), SANG (« non » : pas de sang)."""
+../textures_reelles à côté de ce script ; « aucune » pour la peau procédurale seule), SANG (« non » par défaut : pas
+de sang ; « oui » seulement pour des rendus hors jeu : la modération de Roblox refuse les textures tachées de sang)."""
 import sys, os, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import bpy
@@ -25,7 +26,7 @@ for o in bpy.data.objects:
         for pc in (o['pieces'].split(',') if 'pieces' in o else [o['piece']]):
             hds[pc] = o
 print('textures réelles :', real)
-blood = os.environ.get('SANG', 'oui') != 'non'
+blood = os.environ.get('SANG', 'non') == 'oui'
 if blood:                      # sang : attributs Sang / SangFrais sur chaque maillage HD (gueule, mains, coulures...)
     t0 = time.time()
     for o in sorted(set(hds.values()), key=lambda o: o.name):

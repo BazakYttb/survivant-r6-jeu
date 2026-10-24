@@ -4,6 +4,13 @@ Ce dossier contient le monstre du jeu de survie : modèle Blender (`blender/`), 
 `Monstre.glb`, `rig.json`), rendus (`rendus/`), et le paquet Roblox (`roblox/` : kit, scripts, données d'animation,
 sons, tests). Le rapport complet est `RAPPORT_MONSTRE.md`. Réponds en français.
 
+**Version sans sang (branche `monstre-sans-sang`, `RAPPORT_SANS_SANG.md`)** : la modération de Roblox a refusé une
+texture tachée de sang (`MAT_Ring1_L_1`) et averti le compte de l'utilisateur. Les textures de `export/Monstre.fbx`
+sont recuites sans sang ni plaie et l'export n'a plus de gabarits `SANG_*` (l'installateur en range alors 0, et
+`MonstreOutils.verifier()` affiche « ERR gabarits de sang : 0 » : attendu). Dans Studio, coupe le sang du kit :
+`MonstreConfig.SANG.actif = false`. N'importe jamais un export fait avec `SANG=oui` ou
+avec les décalques de sang ; `blender/scripts/controle_sang.py` doit répondre `SANG ABSENT` avant tout import.
+
 L'utilisateur veut que le monstre tourne dans **sa** place Roblox, avec ses 8 mises à mort. Une session dans le cloud
 ne peut pas atteindre Studio : c'est à toi, sur son ordinateur, avec le serveur MCP de Roblox Studio
 (`list_roblox_studios`, `execute_luau`, `get_studio_state`, `start_stop_play`, `screen_capture`, `get_console_output`,

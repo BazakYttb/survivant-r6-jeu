@@ -1,5 +1,6 @@
 """Rendus finaux de la créature texturée : python rendus.py -- scene.blend dossier [vues] [largeur] [spp]
-vues : trois_quarts, trois_quarts_sombre, face, profil, dos, tete, tete_sombre, main, pliage (séparées par des virgules)."""
+vues : trois_quarts, trois_quarts_sombre, face, profil, dos, tete, tete_sombre, tete_sans_lueur (contrôle : gueule sans
+la lumière orange), main, pliage (séparées par des virgules)."""
 import sys, os, math
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
@@ -25,6 +26,7 @@ CAMS = {
     'dos': dict(az=180, d=17, h=5.5, ty=5.6, lens=40, tx=0, pose='', scene='mist'),
     'tete': dict(az=-35, d=4.6, h=8.9, ty=9.6, lens=50, tx=0, tz=-2.2, pose='', scene='mist'),
     'tete_sombre': dict(az=-30, d=4.4, h=8.6, ty=9.5, lens=50, tx=0, tz=-2.2, pose='', scene='interior'),
+    'tete_sans_lueur': dict(az=-35, d=4.6, h=8.9, ty=9.6, lens=50, tx=0, tz=-2.2, pose='', scene='mist', lueur=False),
     'main': dict(az=74, d=4.1, h=3.75, ty=3.45, lens=50, tx=2.5, tz=-0.8, pose='', scene='mist'),
     'pliage': dict(az=-40, d=15.0, h=3.0, ty=5.4, lens=38, tx=0.3, pose='pliage', scene='mist'),
 }
@@ -45,14 +47,15 @@ def setup(view):
     meshes = [o for o in bpy.data.objects if o.type == 'MESH' and o.name.startswith('MON_')]
     emp = RIG.build_rig(meshes)
     gpos = HEAD_C + (FH * 0.42 - UH * 0.36) * SCALE * 0.98
-    g, gl = SC2.glow(gpos)
-    bpy.context.view_layer.update()
     head_emp = emp['Head']
-    for o in (g, gl):
-        mw = o.matrix_world.copy()
-        o.parent = head_emp
-        o.matrix_parent_inverse = head_emp.matrix_world.inverted()
-        o.matrix_world = mw
+    if v.get('lueur', True):
+        g, gl = SC2.glow(gpos)
+        bpy.context.view_layer.update()
+        for o in (g, gl):
+            mw = o.matrix_world.copy()
+            o.parent = head_emp
+            o.matrix_parent_inverse = head_emp.matrix_world.inverted()
+            o.matrix_world = mw
     bpy.context.view_layer.update()
     if v['pose'] == 'hero':
         RIG.pose(emp, RIG.HERO_PEAU)

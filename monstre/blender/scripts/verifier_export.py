@@ -1,11 +1,16 @@
 """Contrôle des livrables : réimporte Monstre.glb (et Monstre.fbx) dans une scène vide et vérifie noms, triangles,
-textures, marqueurs, normales et hauteur. usage : python verifier_export.py -- dossier_monstre"""
+textures, marqueurs, normales, hauteur et gabarits de sang.
+usage : python verifier_export.py -- dossier_monstre [sang]
+Par défaut, aucun gabarit SANG_* n'est admis (version pour Roblox, sans sang) ; « sang » : les 7 gabarits sont
+attendus (export fait avec le dossier des décalques, hors Roblox)."""
 import sys, os, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
 import bpy
 
-root = sys.argv[sys.argv.index('--') + 1]
+args = sys.argv[sys.argv.index('--') + 1:]
+root = args[0]
+with_blood = 'sang' in args[1:]
 exp = os.path.join(root, 'export')
 rig = json.load(open(os.path.join(exp, 'rig.json'), encoding='utf-8'))
 MARKERS = rig['marqueurs']
@@ -69,17 +74,17 @@ def check(path, kind):
     if inward:
         errs.append('normales douteuses : %s' % inward)
     sang = sorted(o.name for o in obs if o.name.startswith('SANG_'))
-    if 'couleurs_sommets' not in os.path.basename(path):
-        if len(sang) != 7:
-            errs.append('gabarits de sang : %d au lieu de 7 (%s)' % (len(sang), sang))
-        for n in sang:
-            o = bpy.data.objects[n]
-            m = o.data.materials[0] if o.data.materials else None
-            imgs_m = [nd.image for nd in (m.node_tree.nodes if m and m.node_tree else []) if nd.type == 'TEX_IMAGE' and nd.image]
-            if not imgs_m:
-                errs.append('gabarit %s sans texture' % n)
-            if abs(o.data.polygons[0].normal[2]) < 0.99 and abs(o.data.polygons[0].normal[1]) < 0.99:
-                errs.append('gabarit %s pas horizontal' % n)
+    expected = 7 if with_blood and 'couleurs_sommets' not in os.path.basename(path) else 0
+    if len(sang) != expected:
+        errs.append('gabarits de sang : %d au lieu de %d (%s)' % (len(sang), expected, sang))
+    for n in sang:
+        o = bpy.data.objects[n]
+        m = o.data.materials[0] if o.data.materials else None
+        imgs_m = [nd.image for nd in (m.node_tree.nodes if m and m.node_tree else []) if nd.type == 'TEX_IMAGE' and nd.image]
+        if not imgs_m:
+            errs.append('gabarit %s sans texture' % n)
+        if abs(o.data.polygons[0].normal[2]) < 0.99 and abs(o.data.polygons[0].normal[1]) < 0.99:
+            errs.append('gabarit %s pas horizontal' % n)
     imgs = [i for i in bpy.data.images if i.size[0] > 0]
     mats = set(m.name for o in mon for m in o.data.materials if m)
     print('%s : %d maillages MON_, %d triangles (max %d), %d matières, %d images, hauteur %.2f studs, %d gabarits de sang'
@@ -87,7 +92,7 @@ def check(path, kind):
     for e in errs:
         print('  ERREUR', e)
     if not errs:
-        print('  OK : noms, limite de triangles, marqueurs, normales')
+        print('  OK : noms, limite de triangles, marqueurs, normales, gabarits de sang (%d)' % len(sang))
     return errs
 
 

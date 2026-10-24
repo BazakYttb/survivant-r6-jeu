@@ -19,10 +19,10 @@ SKIN_PALE = np.array([0.67, 0.61, 0.57])
 SKIN_RED = np.array([0.63, 0.5, 0.46])
 SKIN_BONE = np.array([0.69, 0.64, 0.57])
 SKIN_DARK = np.array([0.5, 0.44, 0.41])
-NAIL = np.array([0.16, 0.13, 0.11])
-NAIL_TIP = np.array([0.42, 0.37, 0.30])
+NAIL = np.array([0.13, 0.125, 0.12])        # griffes : gris anthracite propre (pas de sang)
+NAIL_TIP = np.array([0.42, 0.38, 0.32])     # pointe ivoire sale
 TOOTH = np.array([0.66, 0.59, 0.43])
-GUMC = np.array([0.36, 0.08, 0.07])
+GUMC = np.array([0.12, 0.09, 0.075])        # gencives, palais, gorge : brun-noir, presque pas de rouge
 SEED = 4242
 EX, EY, EZ = np.array([1.0, 0, 0]), np.array([0, 1.0, 0]), np.array([0, 0, 1.0])
 
@@ -216,7 +216,8 @@ def build_foot(ft, side, s, ankle):
         blob(ft, p1, (EX, EY, EZ), (0.046, 0.044, 0.05), SKIN_BONE)
         dn = unit(d - EY * 0.9)
         G.claw(ft, p2 - d * 0.01, dn, unit(np.cross(EY, d)), RNG('toe%s%d' % (side, i)),
-               length=0.15 + 0.03 * (2 - abs(i - 2)), r0=0.033, curl=0.9, m=10, sides=8, kind_claw=K_NAIL)
+               length=0.15 + 0.03 * (2 - abs(i - 2)), r0=0.033, curl=0.9, m=10, sides=8, kind_claw=K_NAIL,
+               col=NAIL, tip=NAIL_TIP)
     for i in range(4):                                                   # tendons extenseurs, à fleur de peau
         o = spread[i + 1] * s
         sx = 1.0 if fX @ EX > 0 else -1.0
@@ -622,7 +623,7 @@ def build_hand(side, s):
         a, b, d = segs[-1]
         Lc = 0.56 if name in ('Middle', 'Ring') else (0.5 if name != 'Thumb' else 0.44)
         G.claw(last, b - d * 0.035, d, cax, RNG('claw' + name + side), length=Lc, r0=0.05, curl=0.75,
-               kind_claw=K_NAIL)
+               kind_claw=K_NAIL, col=NAIL, tip=NAIL_TIP)
 
 
 # ----------------------------------------------------------------------------------------------------------------
@@ -632,7 +633,7 @@ from mon_body import head_radius, lip_upper, sphere_dirs, sphere_faces, jaw_poin
 
 
 def build_head():
-    """Crâne sans yeux recouvert de peau (fusionné), gueule fendue au palais rouge sombre, crocs fins."""
+    """Crâne sans yeux recouvert de peau (fusionné), gueule fendue au palais brun-noir, crocs fins."""
     rng = RNG('head')
     head = P('Head'); head.voxel, head.fillet = 0.008, 4
     nlat, nlon = 90, 150

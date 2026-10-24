@@ -382,8 +382,9 @@ def braid(piece, center, rng, strands=3, rb=0.035, turns_per_stud=2.0, tube_r=0.
 
 
 def claw(piece, base_p, direction, curl_axis, rng, length=0.5, r0=0.065, curl=1.0, flat=0.75, m=16, sides=8,
-         kind_claw=K_CLAW):
-    """Griffe : cône courbe, pointu, un peu aplati sur les côtés ; noire avec la pointe plus claire."""
+         kind_claw=K_CLAW, col=None, tip=None):
+    """Griffe : cône courbe, pointu, un peu aplati sur les côtés ; sombre (col, CLAW par défaut) avec la pointe plus
+    claire (tip, CLAW_TIP par défaut)."""
     t = np.linspace(0.0, 1.0, m)
     d = unit(direction)
     ca = unit(curl_axis)
@@ -421,7 +422,9 @@ def claw(piece, base_p, direction, curl_axis, rng, length=0.5, r0=0.065, curl=1.
         F = F[:, ::-1].copy()
     tt = np.concatenate([np.repeat(t, sides), [0.0]])
     k = np.clip((tt - 0.55) / 0.45, 0, 1) ** 1.6
-    col = CLAW[None] * rng.uniform(0.8, 1.2) * (1 - k[:, None]) + CLAW_TIP[None] * k[:, None]
+    c0 = CLAW if col is None else np.asarray(col, float)
+    c1 = CLAW_TIP if tip is None else np.asarray(tip, float)
+    col = c0[None] * rng.uniform(0.8, 1.2) * (1 - k[:, None]) + c1[None] * k[:, None]
     tang = np.vstack([np.repeat(T, sides, axis=0), T[:1]])
     piece.free_meshes.append((V, F, col, kind_claw, tang))
     return Pp
